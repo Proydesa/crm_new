@@ -1,0 +1,107 @@
+/* Correccion del UI jquery */
+.ui-widget { 
+	font-size: 0.7em; 
+}
+.ui-widget .ui-widget { font-size: 1em; }
+
+#sidebar, #header, .footer, .noprint{
+	display:none !important;
+}
+.print{
+	display:inline !important;
+}
+.block { display: block; }
+
+.rendicion{	width:100%;}
+
+table, tr, th, td,{
+	margin: 0;
+	padding: 0;
+	border:0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+.academycourse{
+	max-height:none;
+	width: auto;
+    height: auto;
+    overflow: visible;	
+}
+.academycourse table{
+	width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+	border:solid #000 !important;
+    border-width:1px 0 0 1px !important;	
+}
+.academycourse th, .academycourse td{
+    border:solid #000 !important;
+    border-width:0 1px 1px 0 !important;
+}
+.header-academycourse{
+    font-size: 11px;
+	border:solid #000 !important;
+    border-width:1px 0 0 1px !important;	
+}
+.header-academycourse th, .header-academycourse td{
+    border:solid #000 !important;
+    border-width:0 1px 1px 0 !important;
+}
+.printable{
+	max-height:none;
+	width: auto;
+    height: auto;
+    overflow: visible;	
+	width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+	border:solid #000 !important;
+    border-width:1px 0 0 1px !important;	
+}
+.printable th, .printable td{
+    border:solid #000 !important;
+    border-width:0 1px 1px 0 !important;
+}
+
+
+
+/*----------- Global Classes -------------*/
+
+.clear { clear: both }
+
+.floatLeft { float: left }
+
+.floatRight { float: right }
+
+.textLeft { text-align: left }
+
+.textRight { text-align: right }
+
+.textCenter { text-align: center }
+
+.textJustify	{ text-align: justify }
+
+.bold { font-weight: bold !important }
+
+.italic { font-style: italic }
+
+.underline { border-bottom: 1px solid }
+
+.highlight { background: #ffc }
+
+.noBG { background: none !important}
+
+.noPadding { padding: 0 !important}
+
+.noMargin { margin: 0 !important }
+
+.noIndent { margin-left: 0; padding-left: 0 }
+
+.noBullet { list-style: none; list-style-image: none }
+
+.noBorder { border: none !important }
+

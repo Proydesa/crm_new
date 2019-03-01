@@ -1,0 +1,141 @@
+
+A.HeadLink
+{
+    COLOR: #cc0000;
+    TEXT-DECORATION: none;
+	font-weight:lighter;
+}
+A.HeadLink:hover
+{
+    COLOR: #000000;
+    TEXT-DECORATION: underline;
+	font-weight:lighter;
+}
+
+HeadLink
+{
+    COLOR: #cc0000;
+    TEXT-DECORATION: none
+	
+}
+TABLE.Narrow
+{
+    FONT-SIZE: 10pt;
+	border: #CCCCCC solid 1px;
+    WIDTH: 300px
+}
+TABLE.Narrowlog
+{
+    FONT-SIZE: 10pt;
+    WIDTH: 493px;
+	border: #CCCCCC solid 1px;
+	padding: 5px;
+	background: url(/hulk/views/hd/cabecera-1.jpg) top center no-repeat;
+	padding-top: 20px;
+}
+TABLE.Narrow2
+{
+	margin-left: 20px;
+    FONT-SIZE: 10pt;
+    WIDTH: 440px;
+}
+TABLE.Normal
+{	
+	border: #CCCCCC solid 1px;
+    WIDTH: 500px
+}
+TABLE.Wide
+{
+    FONT-SIZE: 10pt;
+    WIDTH: 620px
+}
+TABLE.Inout
+{
+    FONT-SIZE: 10pt;
+    WIDTH: 500px;
+    BORDER-COLLAPSE: collapse
+}
+TABLE.InoutWide
+{
+    FONT-SIZE: 10pt;
+    WIDTH: 620px;
+    BORDER-COLLAPSE: collapse
+}
+TR.Head1
+{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size: 14px;
+font-weight:bold;
+background-color:#eeeeee;
+    COLOR: #000000;
+    TEXT-ALIGN: center;
+	padding-left: 10px;
+}
+div.Head1log
+{
+margin-top: 20PX;	
+	background: url(/hulk/views/hd/titulo.jpg) no-repeat left top;
+	height: 115px;
+}
+TR.Head2
+{	font: Verdana, Arial, Helvetica, sans-serif;
+font-size: 12px;
+font-weight: bold;
+background-color:#eeeeee;
+    COLOR: #003300;
+	padding: 4px 5px 5px 5px;
+}
+TR.Body1
+{
+    COLOR: #000000;
+}
+TR.Body1log
+{
+    COLOR: #000000;
+}
+TR.Body1c
+{
+    COLOR: #000000;
+    TEXT-ALIGN: center
+}
+TR.Body2
+{
+    COLOR: #000000;
+    BACKGROUND-COLOR: #cccccc
+}
+TR.Body3
+{
+    COLOR: #000000;
+    BACKGROUND-COLOR: #ffffff
+}
+TR.Body3c
+{
+    COLOR: #000000;
+    BACKGROUND-COLOR: #ffffff;
+    TEXT-ALIGN: center
+}
+EM
+{
+    COLOR: #ff0000
+}
+.info
+{
+    FONT-FAMILY: Webdings, Verdana, Arial, Helvetica
+}
+A.NavLink
+{
+    COLOR: #cc0000
+}
+A.NavLink:hover
+{
+    COLOR: #000000;
+    TEXT-DECORATION: underline
+}
+TR.HeadRep
+{
+    FONT-WEIGHT: normal;
+    COLOR: #aeaeae;
+	font-size: 11px;
+    BACKGROUND-COLOR: #ffffff;
+    TEXT-ALIGN: right
+}

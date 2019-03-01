@@ -1,0 +1,7 @@
+[09-Jun-2009 07:08:42] PHP Warning:  upload_max_filesize of 2097152 bytes exceeded - file [file=Zend.zip] not saved in Unknown on line 0
+[09-Jun-2009 21:28:19] PHP Warning:  upload_max_filesize of 2097152 bytes exceeded - file [file=Zend.tar.gz] not saved in Unknown on line 0
+[23-Jun-2009 08:10:01] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 8048706 bytes) in /home/aulav3/public_html/ei/phpwebftp40/phpWebFTP/include/ss_zip.class.php on line 194
+[23-Jun-2009 08:11:51] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 8048706 bytes) in /home/aulav3/public_html/ei/phpwebftp40/phpWebFTP/include/ss_zip.class.php on line 194
+[10-Mar-2010 06:07:38] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 11126415 bytes) in /home/aulav3/public_html/ei/phpwebftp40/phpWebFTP/include/ss_zip.class.php on line 193
+[12-Jan-2012 15:07:17] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 47215284 bytes) in /home/aulav3/public_html/ei/phpwebftp40/phpWebFTP/include/ss_zip.class.php on line 176
+[12-Jan-2012 15:09:51] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 47215285 bytes) in /home/aulav3/public_html/ei/phpwebftp40/phpWebFTP/include/ss_zip.class.php on line 176
