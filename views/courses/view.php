@@ -207,6 +207,10 @@
 				$arrAttendance = array('E'=>'bg-primary','P'=>'bg-success','T'=>'bg-warning','A'=>'bg-danger');
 				foreach($estudiantes as $ke=>$estudiante):
 					$eStatus = $LMS->user_status($estudiante['id'],$row['id']);
+					if($eStatus === false){
+						$eStatus = $H_DB->GetField_sql("SELECT finalgrade FROM vw_enrolados WHERE userid=".$estudiante['id']." AND id=".$row['id']);
+						$eStatus=array (''=>'E','0.00000'=>'E','1.00000'=>'I','2.00000'=>'F','3.00000'=>'P')[$eStatus];
+					}
 				?>
 					<tr data-userid="<?= $estudiante['id'] ?>" data-username="<?= $estudiante['namefull'] ?>" >
 						<td class="textCenter"><?= $ke+1 ?></td>
