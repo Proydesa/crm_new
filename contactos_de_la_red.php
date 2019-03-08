@@ -12,31 +12,10 @@ switch($v){
 /************************/
 	case 'view':
 
-		$H_USER->require_capability('academy/view');
-		$H_USER->require_capability("academy/viewall");
-		$menuroot['ruta'] = array("Nuevo Contactos de la Red"=>"contactos_de_la_red.php?v=view");
+		$menuroot['ruta'] = array("Llamados de la Red"=>"contactos_de_la_red.php?v=view");
 
-		if(isset($_POST['fd_date_from']) && isset($_POST['fd_date_to'])){
-			$from  = tounixtime(str_replace('/', '-', $_POST['fd_date_from']));
-			$to = tounixtime(str_replace('/', '-', $_POST['fd_date_to']));
-			// 30/08/2018 Se suma 1 dia para contemplar la fecha fin MDIAZ
-			$to = strtotime('+1 day', $to);
-		}else{
-			$from = time()-(3*31*24*60*60);
-			$to = time();
-		}
-		$data = $LMS->getActivitiesByGroup($from,$to,$_REQUEST['academias'],$_POST['radio_views'],$_POST['users'],$_POST['fd_date_search']);
-
-		$data['acad_sel'] = array();
-		if(isset($_REQUEST['academias'])){
-			$data['acad_sel'] = $_REQUEST['academias'];
-		}
-		$data['user_sel'] = array();
-		if(isset($_POST['users'])){
-			$data['user_sel'] = $_POST['users'];
-		}
+		
 		$data['academias_list'] = $LMS->getAcademys();
-		$data['academias_users'] = $LMS->getUsersActivities();
 		//$data['academias_user'] = $LMS->getAcademy();
   break;
   case 'search':
@@ -105,7 +84,7 @@ switch($v){
       }
     }
 
-    $menuroot['ruta'] = array("Nuevo Contactos de la Red"=>"contactos_de_la_red.php?v=view");
+    $menuroot['ruta'] = array("Llamados de la Red"=>"contactos_de_la_red.php?v=view");
     $data	=	$LMS->getAcademyActivity($_REQUEST['idAcademia']);
 
     $data['datosAcademia'] = $LMS->getAcademy($_REQUEST['idAcademia']);
