@@ -252,6 +252,41 @@ class Calendar {
 		return $this->_hdb->GetAll("SELECT * FROM h_course_periods");
 	}
 
+
+	public function generate_image(){
+		$filename = 'grilla-'.Input::get('year').'-'.Input::get('period').'-'.rand(1111,9999);
+		$rawdata = str_replace('data:image/jpeg;base64,', '', Input::get('rawdata'));
+		$base64 = base64_decode($rawdata);
+		$im = imagecreatefromstring($base64);
+		imagejpeg($im,'../../images/calendario/'.$filename.'.jpg',100);
+    imagedestroy($im);
+
+    $this->_hdb->insert('h_calendario_images',array(
+    	'year'=>Input::get('year'),
+    	'period'=>Input::get('period'),
+    	'image'=>$filename,
+    ));
+
+    return $filename;
+	}
+	public function get_images($year=0,$period=0){
+		return $this->_hdb->GetAll(
+			"SELECT * 
+			FROM h_calendario_images
+			WHERE year={$year} AND period={$period}"
+		);
+	}
+	public function delete_image($id=0){
+		$image = $this->_hdb->GetRow("SELECT * FROM h_calendario_images WHERE id={$id}");
+		if(empty($image)) return false;
+
+		$this->_hdb->delete('h_calendario_images',"id={$id}");
+		if(file_exists('../../images/calendario/'.$image['image'].'.jpg')){
+			unlink('../../images/calendario/'.$image['image'].'.jpg');
+		}
+		return true;
+	}
+
 }
 
 

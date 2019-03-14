@@ -99,12 +99,13 @@ switch ($v) {
 
 			
 			ksort($arrdays);
-			$data['_schedules'][$nodesch]['days'] = $arrdays;
-			
-
+			$data['_schedules'][$nodesch]['days'] = $arrdays;			
 
 			$nodesch++;
+
 		}
+
+		$data['_images'] = $_calendar->get_images($data['_year'],$data['_period']);
 
 		///////////////////////////////////////
 		break;

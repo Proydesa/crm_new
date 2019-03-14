@@ -5,6 +5,8 @@ require_once '../../libraries/Input.php';
 require_once '../../libraries/Calendar.php';
 //$H_USER->require_login();
 
+header("Content-Type: application/json; charset=utf-8", true);
+
 if(!Input::exists()) die(json_encode(array('status'=>'fail','message'=>'faltan parámetros')));
 
 $_calendar = new Calendar();
@@ -44,15 +46,14 @@ switch(Input::get('mode')) {
 
 
 	case 'generate_image':
-
 		if(!$H_USER->has_capability('calendario/cronograma')) die(json_encode(array('status'=>'fail','message'=>'No tienes permiso para realizar esta operación')));
+		$filename = $_calendar->generate_image();
+		echo json_encode(array('status'=>'ok','filename'=>$filename));
+		break;
 
-		$rawdata = str_replace('data:image/jpeg;base64,', '', Input::get('rawdata'));
-		$base64 = base64_decode($rawdata);
-		$im = imagecreatefromstring($base64);
-		imagejpeg($im,'../../images/calendario/'.Input::get('filename').'.jpg',100);
-    imagedestroy($im);
-
+	case 'delete_image':
+		if(!$H_USER->has_capability('calendario/cronograma')) die(json_encode(array('status'=>'fail','message'=>'No tienes permiso para realizar esta operación')));
+		if(!$_calendar->delete_image(Input::get('id'))) die(json_encode(array('status'=>'fail')));
 		echo json_encode(array('status'=>'ok'));
 		break;
 	

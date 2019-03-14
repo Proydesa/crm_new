@@ -142,8 +142,16 @@
 		<div class="calendar-block">
 			<a id="btn_download" href="#" class="btn btn-success"><i class="fa fa-save fa-fw"></i> Generar Imagen</a>
 			<p class="status-image">
-				<?php if(file_exists('images/calendario/grilla-'.$_year.'-'.$_period.'.jpg')): ?>
-				Ya se generaró una imagen descargable, <a href="images/calendario/grilla-<?=$_year.'-'.$_period?>.jpg" target="_blank">click aquí</a> para verla
+				<?php if(!empty($_images)): ?>
+				Ya se generó una o varias imágenes descargables: 
+				<ul>
+					<?php foreach($_images as $img): ?>
+					<li style="margin:4px 0">
+						<a href="images/calendario/<?=$img['image']?>.jpg" target="_blank" title="descargar"><?=$img['image']?></a> 
+						<span data-btn="delete-image" data-id="<?=$img['id']?>" title="borrar" style="cursor:pointer" >(<i class="fa fa-times"></i>)</span>
+					</li>
+				<?php endforeach; ?>
+				</ul>
 				<?php endif; ?>
 			</p>
 		</div>
@@ -151,13 +159,20 @@
 		<?php else: ?>
 
 			<!--- --->
-			<?php if(file_exists('images/calendario/grilla-'.$_year.'-'.$_period.'.jpg')): ?>
-			
-			<div style="text-align: center"><img src="images/calendario/grilla-<?=$_year.'-'.$_period.'.jpg?id='.rand(1111,9999)?>" alt="" style="width:100%;max-width: 1660px;margin:4px auto"></div>		
+			<?php if(!empty($_images)): ?>
 
-			<div class="calendar-block">
-				<a href="#" download="grilla-<?=$_year.'-'.$_period?>.jpg" class="btn btn-success"><i class="fa fa-download fa-fw"></i> Descargar Imagen</a>
-			</div>
+				<?php foreach($_images as $img): ?>
+				<div class="calendar-block" style="margin-bottom:26px">
+			
+					<div style="text-align: center"><img src="images/calendario/<?=$img['image'].'.jpg?id='.rand(1111,9999)?>" alt="" style="width:100%;max-width: 1660px;margin:4px auto"></div>		
+					<hr>
+
+					<a href="#" download="<?=$img['image']?>.jpg" class="btn btn-success"><i class="fa fa-download fa-fw"></i> Descargar Imagen</a>
+				</div>
+
+				<?php endforeach; ?>
+
+
 			<?php else: ?>
 				<div class="calendar-block">
 					<p>No se encontró ninguna calendario para el ciclo lectivo seleccionado</p>
@@ -184,14 +199,13 @@ $(function(){
 		html2canvas($('.schedule')).then(function(canvas) {
 			TheCanvas = canvas;
 			TheCanvas = Canvas2Image.convertToJPEG(canvas);
-			///$('#btn_hidden').attr({'href':TheCanvas.src}).find('span').trigger('click');
-			///return console.log(TheCanvas.src);
 			var ajx = $.ajax({
 				type:'POST',
 				url:'views/calendario/ajaxCalendario.php',
 				data:{
 					rawdata:TheCanvas.src,
-					filename:'grilla-'+$('[name="years"]').val()+'-'+$('[name="periods"]').val(),
+					year:$('[name="years"]').val(),
+					period:$('[name="periods"]').val(),
 					mode:'generate_image'
 				},
 				dataType:'json',
@@ -199,11 +213,33 @@ $(function(){
 			});
 			ajx.done(function(data){
 				if(data.status != 'ok') alert(data.message);
-				$('.status-image').html('La imagen se generó con éxito. <a href="images/calendario/grilla-'+$('[name="years"]').val()+'-'+$('[name="periods"]').val()+'.jpg?id='+Math.random(1111,9999)+'" target="_blank">click para verla</a>');
+				window.location.reload();
 			});
 			ajx.fail(function(data){z
 				alert('Hubo un error al generar la imagen. Intenta nuevamente.');
 			});
+		});
+	});
+
+	$('[data-btn="delete-image"]').click(function(){
+		var id = $(this).attr('data-id');
+		var ajx = $.ajax({
+			type:'POST',
+			url:'views/calendario/ajaxCalendario.php',
+			data:{
+				mode:'delete_image',
+				id:id
+			},
+			dataType:'json',
+			cache:false
+		})
+		.done(function(data){
+			if(data.status != 'ok') alert('Hubo un error al generar la imagen. Intenta nuevamente.');
+			window.location.reload();
+		})
+		.fail(function(data){
+			alert('Hubo un error al generar la imagen. Intenta nuevamente.');
+			console.log(data);
 		});
 	});
 
@@ -245,7 +281,7 @@ intro.setOptions({
 		},
 		{
 			element:document.querySelector('#btn_download'),
-			intro:'Click para guardar una imagen del calendario. Esta imagen luego podrá ser vista y descargada por los usuarios que no tengan permiso de edición de esta pantalla.'
+			intro:'Click para guardar una imagen del calendario. Esta imagen luego podrá ser vista y descargada por los usuarios que no tengan permiso de edición de esta pantalla. Puedes generar más de una imagen para este cronograma. Se listarán debajo con la posibilidad de borrar cada uno.'
 		}
 	]
 });

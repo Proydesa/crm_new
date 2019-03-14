@@ -111,7 +111,7 @@ static private $instance = NULL;
 				print_r($e);
 			}
 		}
-		return result;
+		return $result;
 	}
 	/**
 	 * Returns a prepared query . Works just like execute , only instead of running the prepared query it returns it

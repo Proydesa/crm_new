@@ -436,12 +436,13 @@ switch($v){
 			date_default_timezone_set('America/Argentina/Buenos_Aires');
 
 			if(!empty($_POST['newdate']) && !empty($_POST['day'])){
-				$dateid = $_POST['day'];
+				$sessid = $_POST['day'];
 				$newdate = explode('/',$_POST['newdate']);
 				$description = utf8_decode($_POST['description']);
-				$att = $LMS->GetRow("SELECT attendanceid, sessdate, TIME(FROM_UNIXTIME(sessdate)) sesstime FROM mdl_attendance_sessions WHERE id={$dateid}");
+				$att = $LMS->GetRow("SELECT attendanceid, sessdate, TIME(FROM_UNIXTIME(sessdate)) sesstime FROM mdl_attendance_sessions WHERE id={$sessid}");
 
-				$LMS->delete('mdl_attendance_sessions',"id={$dateid}");
+
+				$LMS->delete('mdl_attendance_sessions',"id={$sessid}");
 				$LMS->insert('mdl_attendance_sessions_cancelled',array(
 					'attendanceid'=>$att['attendanceid'],
 					'sessdate'=>$att['sessdate'],
@@ -453,12 +454,15 @@ switch($v){
 					'sessdate'=>$newdate,
 					'descriptionformat'=>1
 				));
-				$firstday = $data['asistencias'][0]['id'];
-				$lastday = $data['asistencias'][count($data['asistencias'])-1]['id'];
-				if($dateid==$firstday){
+				$firstday = $data['asistencias'][0]['sessdate'];
+				$lastday = $data['asistencias'][count($data['asistencias'])-1]['sessdate'];
+				/*echo '<pre>';
+				print_r($newdate.' - '.$firstday.' - '.$lastday);
+				echo '</pre><br><br><br>';*/
+				if($newdate<$firstday){
 					$LMS->update('mdl_course',array('startdate'=>$newdate),"id={$id}");
 				}
-				if($dateid==$lastday){
+				if($newdate>$lastday){
 					$LMS->update('mdl_course',array('enddate'=>$newdate),"id={$id}");
 				}
 			}
