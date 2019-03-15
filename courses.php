@@ -454,17 +454,14 @@ switch($v){
 					'sessdate'=>$newdate,
 					'descriptionformat'=>1
 				));
+
+				$data['asistencias']	= $LMS->getCourseAttendance($id);
 				$firstday = $data['asistencias'][0]['sessdate'];
 				$lastday = $data['asistencias'][count($data['asistencias'])-1]['sessdate'];
-				/*echo '<pre>';
-				print_r($newdate.' - '.$firstday.' - '.$lastday);
-				echo '</pre><br><br><br>';*/
-				if($newdate<$firstday){
-					$LMS->update('mdl_course',array('startdate'=>$newdate),"id={$id}");
-				}
-				if($newdate>$lastday){
-					$LMS->update('mdl_course',array('enddate'=>$newdate),"id={$id}");
-				}
+				
+				$LMS->update('mdl_course',array('startdate'=>$firstday),"id={$id}");
+				$LMS->update('mdl_course',array('enddate'=>$lastday),"id={$id}");
+
 			}
 		}
 		////////////
