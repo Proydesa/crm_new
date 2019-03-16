@@ -176,6 +176,9 @@ switch($v){
 											ORDER BY sortorder;");
 		}
 		$data['cuotas'] = $H_DB->GetAll("SELECT DISTINCT(c.cuota) FROM h_cuotas c LEFT JOIN h_inscripcion h ON h.courseid=c.courseid WHERE h.comisionid={$id} ORDER BY c.cuota");
+
+		$contextid = $LMS->GetRow("SELECT id FROM mdl_context WHERE contextlevel=50 AND instanceid={$id}");
+		$data['hasblocks'] = $LMS->GetAll("SELECT * FROM mdl_block_instances WHERE parentcontextid=".$contextid['id']);
 		///////// END EDIT //////////////////
 
 		break;
@@ -558,13 +561,13 @@ switch($v){
 			$CFG->defaultblocks_override = 'course_proydesa,activity_modules:attendance,news_items,calendar_upcoming,recent_activity';
 			$CFG->defaultblocks_site = 'site_main_menu,site_proydesa:html,calendar_month';
 	 		$context = context_course::instance($course->id);
-	   		blocks_delete_all_for_context($context->id);
-	   		blocks_add_default_course_blocks($course);
-		 	echo "Reseteando bloques por defecto de {$course->id} <br/>";
+	   	blocks_delete_all_for_context($context->id);
+	   	blocks_add_default_course_blocks($course);
+		 	//echo "Bloques generados por defecto de {$course->id} <br/>";
 		 	ob_flush(); flush();
 		}
-		redireccionar("courses.php?v=view&id={$courseid}");
-		die();		
+		//redireccionar("courses.php?v=view&id={$courseid}");
+		//die();		
 		break;
 	/***********************/
 	default:

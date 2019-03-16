@@ -51,10 +51,16 @@
 							<td class="ui-widget-content" colspan="2" align="center">
 							<?php if($row['lms_version']=="LMS2"): ?>								
 								<a class="button" href="courses.php?v=edit&id=<?= $row['id'];?>">Editar</a>
+								
 								<?php if($H_USER->has_capability('course/cambio_instructor')): ?>
 								<a class="button" href="courses.php?v=cambio_instructor&id=<?= $row['id'];?>">Cambiar instructor</a>
-								<?php endif; ?>		
-							<?php endif; ?>		
+								<?php endif; ?>
+
+								<?php if($H_USER->has_capability('convenios/view') && !$hasblocks): ?>
+								<a class="button" href="courses.php?v=reset_course_blocks&id=<?=$row['id']?>">Generar Bloques</a>
+								<?php endif; ?>
+
+							<?php endif; ?>
 							</td>
 						</tr>
 				</tbody>
