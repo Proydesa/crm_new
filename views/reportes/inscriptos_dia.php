@@ -47,7 +47,7 @@ Esto es por como se guarda la información de inscripción en la base de datos."
 			<table class="ui-widget" align="center" style="width:100%;">
 				<thead>
 					<tr style="height: 20px;" class="ui-widget-header">
-						<th align="center"></th>
+						<th align="center">Ord</th>
 						<th>Carrera</th>
 						<?php for($x=1;$x<$cantdias;$x++):?>
 							<th align="center" style="width: 20px;"><?= $x;?></th>
@@ -75,7 +75,7 @@ Esto es por como se guarda la información de inscripción en la base de datos."
 						<?php endforeach;?>
 					<tr style="height: 20px;">
 						<td align="center"></td>
-						<td align="left"><b>Total</b></td>
+						<td align="left"><b>SubTotal</b></td>
 						<?php for($x=1;$x<$cantdias;$x++):?>
 							<td align="center"><b><?= $total[$x];?></b></td>
 							<?php $totalisimo +=$total[$x];?>
@@ -91,6 +91,21 @@ Esto es por como se guarda la información de inscripción en la base de datos."
 					<?php endfor;?>
 					<td align="center"><b><?= $totalisimo;?></b></td>
 				</tr>
+					<tr style="height: 20px;">
+						<td align="center"></td>
+						<td align="left"><b>Cambios de comisi&oacute;n:</b></td>
+						<?php 	$puntero=$totalcambio=0;
+								for($x=1;$x<$cantdias;$x++):
+									if($cambios[$puntero]['dia']==$x){?>
+										<td align="center"><b><?= $cambios[$puntero]['cant'] ?></b></td>
+								<?php   $totalcambio+= $cambios[$puntero]['cant'];
+										$puntero++;
+									}else{ ?>
+										<td align="center"><b>0</b></td>
+								<?php } 
+								endfor;?>
+						<td align="center"><b><?= $totalcambio ?></b></td>
+					</tr>
 			</tbody>
 			</table>
 		</div>
@@ -128,7 +143,7 @@ Esto es por como se guarda la información de inscripción en la base de datos."
 							</tr>
 						<?php endforeach;?>
 					<tr style="height: 20px;">
-						<td align="left"><b>Total</b></td>
+						<td align="left"><b>SubTotal</b></td>
 						<?php for($x=1;$x<$cantdias;$x++):?>
 							<td align="center"><b><?= $total3[$x];?></b></td>
 						<?php endfor;?>
@@ -142,7 +157,6 @@ Esto es por como se guarda la información de inscripción en la base de datos."
 					<?php endfor;?>
 							<td align="center"><b><?= $totalisimo;?></b></td>
 					</tr>
-
 				</tbody>
 			</table>
 		</div>
