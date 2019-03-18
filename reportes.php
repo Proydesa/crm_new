@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 require_once 'config.php';
 
@@ -335,6 +335,7 @@ function deudores(){
 					la cuota 1 del intensivo es la 3 de los normales. Si el periodo es 3 y el mes de inicio del curso es octubre o noviembre
 					lo mismo, la cuota 1 es la 3 del normal y ahi en adelante.
 					*/
+					
 					if ($comision['intensivo']==1){
 						if ((substr($comision['periodo'],-1)=="2") AND (date("n",$comision['startdate'])==5 OR date("n",$comision['startdate'])==6)){
 							$cuota_alum['cuota']+=2;
@@ -342,6 +343,7 @@ function deudores(){
 							$cuota_alum['cuota']+=2;
 						}
 					}
+
 					if(in_array($comision['from_courseid'],array(100334,100075,100144,100071,100072,100073,100074))){
 						if (substr($comision['periodo'],-1)=="2"){
 							$cuota_alum['cuota']=date("n",$comision['startdate'])-2;
@@ -351,6 +353,7 @@ function deudores(){
 					}
 					// Solo para 1 comisión que empieza en abril y el plan se pasa de 5 a 4 cuotas.
 					if(in_array($comision['id'],array(100390,100459))){
+echo "entro?";
 						$cuota_alum['cuota']=$cuota_alum['cuota']+1;
 					}
 					// Chequear que el comprobante al que está asociada la cuota no esté pendiente
@@ -367,7 +370,7 @@ function deudores(){
 					}
 					if($cuota_alum['valor_pagado']<$cuota_alum['valor_cuota']){
 									// No tiene que ser baja para que sume a deuda
-						if (!$H_DB->GetOne("SELECT DISTINCT insc_id FROM h_bajas WHERE userid={$cuota_alum['userid']}																			 AND courseid={$cuota_alum['courseid']}
+						if (!$H_DB->GetOne("SELECT DISTINCT insc_id FROM h_bajas WHERE userid={$cuota_alum['userid']} AND courseid={$cuota_alum['courseid']}
 																 AND comisionid={$comision['id']}
 																 AND cancel=0;")){
 							$data['deudores'][$comision['id']][$cuota_alum['cuota']]['alumnos']++;
@@ -477,7 +480,8 @@ function d_cuota(){
 																				AND courseid={$enrolado['modelid']}
 																				AND periodo={$enrolado['periodo']}
 																				AND cancel=0);");
-
+																				
+		
 			if($cuota_alum){
 
 				if($cuota_alum['cuota'] > 0){
@@ -712,11 +716,12 @@ function xls(){
 		//show_array($_REQUEST);die();
 
 		$name = $_REQUEST['name-xls'];
-		$table = str_replace("\\", "", $_REQUEST['table-xls']);
+	    $table = str_replace("\\", "", $_REQUEST['table-xls']);
 
 		$view->Load('xls',array("xlsname"=> $name,"table" => $table));
 		die();
 }
+
 function ekits(){
 
 	global $HULK,$LMS,$H_DB,$H_USER,$view; $data['v'] = $v = $_REQUEST['v'];
@@ -1382,8 +1387,27 @@ function inscriptos_dia(){
 			AND u.roleid = 5
 			GROUP BY c2.shortname, c.intensivo, DAY(FROM_UNIXTIME(u.timestart)), MONTHNAME(FROM_UNIXTIME(u.timestart)), YEAR(FROM_UNIXTIME(u.timestart))
 			ORDER BY c.intensivo,c2.shortname,u.timestart ASC;";
-
+//echo $sql;
+//die();
 		$comparativa=$LMS->GetAll($sql);
+
+		$sqlcambiocomision="SELECT 
+								periodo, 
+								DAY(FROM_UNIXTIME(date)) as dia,
+								MONTHNAME(FROM_UNIXTIME(date)) as mes, 
+								YEAR(FROM_UNIXTIME(date)) as ano,
+								COUNT(*) as cant,
+								GROUP_CONCAT(DISTINCT userid SEPARATOR ',') as usuarios
+							FROM crm.h_bajas h 
+							WHERE 
+								YEAR(FROM_UNIXTIME(date)) IN ({$data['ano']}) AND 
+								MONTH(FROM_UNIXTIME(date)) IN ({$data['mes']}) AND 
+								cancel=0 AND 
+								periodo IN (192)  AND 
+								detalle LIKE '%tica por cambio de comisi%' 
+							GROUP BY periodo, DAY(FROM_UNIXTIME(date));";
+		$data['cambios'] = $LMS->GetAll($sqlcambiocomision);
+//show_array($cambiocomision);
 		$intensivo= array(0=>"",1=>"_intensivo");
 		foreach($comparativa as $compa){
 			$data['carreras'][]= $compa['carrera'].$intensivo[$compa['intensivo']];
@@ -1394,7 +1418,6 @@ function inscriptos_dia(){
 				$origen = $H_DB->GetField("h_user_profile", "origen", $usuario, "userid");
 				if($origen=="") $origen="Otros";
 				$data['origenes'][$origen][$compa['dia']]++;
-
 			}
 		}
 		$data['cantdias'] = date("t",mktime(0,0,0,$data['mes'],1,$data['ano']))+1;
