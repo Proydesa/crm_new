@@ -295,7 +295,7 @@ $(function(){
 	$('#btn_download').unbind('click').on('click',function(e){
 		e.preventDefault();
 		$('.grid').css({overflow:'visible'});
-		html2canvas($('.table-grid')).then(function(canvas) {
+		html2canvas($('.grid')).then(function(canvas) {
 			TheCanvas = canvas;
 			TheCanvas = Canvas2Image.convertToJPEG(canvas);
 			$('#btn_hidden').attr({'href':TheCanvas.src}).find('span').trigger('click');
@@ -324,7 +324,7 @@ $(function(){
 		drag_init();
 	});
 
-	$('.table-grid .mod').on('click','.remove',function(){
+	$('.table-grid').on('click','.remove',function(){
 		var _this = this;
 		Messages.dialog({
 			show:true,
