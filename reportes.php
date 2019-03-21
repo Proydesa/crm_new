@@ -658,7 +658,6 @@ function inscriptos(){
 													{$WHERECA}
 													ORDER BY c.fullname;");
 
-
 		foreach($rows as $row):
 
 			$row['instructor'] = $LMS->GetOne("SELECT GROUP_CONCAT(CONCAT(lastname, ', ',firstname) SEPARATOR ' / ') AS inst
@@ -676,15 +675,26 @@ function inscriptos(){
 				$WHERE2 = "";
 			}
 
-			$row['alumnos'] = $LMS->GetAll("SELECT u.id AS uid, CONCAT(u.lastname, ', ', u.firstname) AS alumno,
-																			u.username, u.email, u.acid, u.phone1, u.phone2
-																			FROM {$HULK->dbname}.vw_enrolados enr
-																			INNER JOIN mdl_user u  ON u.id=enr.userid
-																			WHERE enr.id={$row['id']}
-																			AND enr.roleid = 5
-																			{$WHERE2}
-																			ORDER BY u.lastname, u.firstname;");
-
+			$row['alumnos'] = $LMS->GetAll("SELECT 
+												u.id AS uid, CONCAT(u.lastname, ', ', u.firstname) AS alumno,
+												u.username, u.email, u.acid, u.phone1, u.phone2, 
+													(	select distinct co.detalle 
+														from {$HULK->dbname}.h_comprobantes co 
+															INNER JOIN {$HULK->dbname}.h_comprobantes_cuotas cc ON co.id = cc.comprobanteid 
+															INNER JOIN {$HULK->dbname}.h_cuotas cu ON cc.cuotaid = cu.id
+														where
+															cu.courseid={$row['from_courseid']} and 
+															co.detalle like '%Promo%' and 
+															cu.cuota=1 and 
+															co.concepto=3 and
+															cu.userid=u.id) detalle, timestart
+											FROM {$HULK->dbname}.vw_enrolados enr
+												INNER JOIN moodle.mdl_user u  ON u.id=enr.userid
+											WHERE enr.id={$row['id']}
+												AND enr.roleid = 5
+												{$WHERE2}
+											ORDER BY u.lastname, u.firstname;");
+	
 			$row['capacidad'] = $H_DB->GetOne("SELECT aa.capacity
 																				 FROM h_academy_aulas aa INNER JOIN h_course_config cc ON aa.id = cc.aulaid
 																				 WHERE cc.courseid={$row['id']};");

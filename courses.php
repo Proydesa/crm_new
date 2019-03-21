@@ -155,6 +155,7 @@ switch($v){
 
 		$data['row']			= $LMS->getCourse($id);
 		$data['estudiantes']	= $LMS->getCourseStudents($id);
+		
 		$data['instructores']	= $LMS->getCourseInstructors($id);
 
 		$data['bajas']	= $H_DB->GetAll("SELECT b.* FROM h_bajas b WHERE b.comisionid={$id} AND b.cancel=0;");

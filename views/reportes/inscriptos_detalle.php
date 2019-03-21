@@ -186,6 +186,8 @@
 										<td><?= $alumno['alumno']; ?> - DNI: <?= $alumno['username']; ?></td>
 										<td>- Tel&eacute;fonos: <?= $alumno['phone1']." / ".$alumno['phone2']; ?> </td>
 										<td>- Email: <?= $alumno['email']; ?> </td>
+										<td>- Inscr: <?= date('d',$alumno['timestart']).'/'.ConvertMonth(date('M',$alumno['timestart'])).'/'.date('Y',$alumno['timestart']); ?> </td>
+										<td>- Detalle: <?= $alumno['detalle']; ?> </td>
 									</tr>
 									<?php $e++; ?>
 								<?php endforeach;?>
