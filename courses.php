@@ -159,7 +159,6 @@ switch($v){
 
 		$data['bajas']	= $H_DB->GetAll("SELECT b.* FROM h_bajas b WHERE b.comisionid={$id} AND b.cancel=0;");
 	
-
 		$data['capacidad']		= $H_DB->GetRow("SELECT capacity FROM h_academy_aulas aa
 											INNER JOIN h_course_config cah ON aa.id=cah.aulaid
 											WHERE cah.courseid={$id};");
@@ -175,10 +174,10 @@ switch($v){
 											AND itemname != 'Asistencia' AND itemname NOT LIKE '%e-Kit%' AND itemname NOT LIKE '%Graduacion%'
 											ORDER BY sortorder;");
 		}
-		$data['cuotas'] = $H_DB->GetAll("SELECT DISTINCT(c.cuota) FROM h_cuotas c LEFT JOIN h_inscripcion h ON h.courseid=c.courseid WHERE h.comisionid={$id} ORDER BY c.cuota");
-
-		$contextid = $LMS->GetRow("SELECT id FROM mdl_context WHERE contextlevel=50 AND instanceid={$id}");
-		$data['hasblocks'] = $LMS->GetAll("SELECT * FROM mdl_block_instances WHERE parentcontextid=".$contextid['id']);
+		$data['cuotas'] = $H_DB->GetAll("SELECT DISTINCT(c.cuota) FROM h_cuotas c inner JOIN h_inscripcion h ON c.insc_id = h.id and h.comisionid={$id} and c.courseid={$data['row']['from_courseid']} ORDER BY c.cuota");
+		
+		/*$data['cuotas'] = $H_DB->GetAll("SELECT DISTINCT(c.cuota) FROM h_cuotas c LEFT JOIN h_inscripcion h ON h.courseid=c.courseid WHERE h.comisionid={$id} ORDER BY c.cuota");*/
+		
 		///////// END EDIT //////////////////
 
 		break;
@@ -439,13 +438,12 @@ switch($v){
 			date_default_timezone_set('America/Argentina/Buenos_Aires');
 
 			if(!empty($_POST['newdate']) && !empty($_POST['day'])){
-				$sessid = $_POST['day'];
+				$dateid = $_POST['day'];
 				$newdate = explode('/',$_POST['newdate']);
 				$description = utf8_decode($_POST['description']);
-				$att = $LMS->GetRow("SELECT attendanceid, sessdate, TIME(FROM_UNIXTIME(sessdate)) sesstime FROM mdl_attendance_sessions WHERE id={$sessid}");
+				$att = $LMS->GetRow("SELECT attendanceid, sessdate, TIME(FROM_UNIXTIME(sessdate)) sesstime FROM mdl_attendance_sessions WHERE id={$dateid}");
 
-
-				$LMS->delete('mdl_attendance_sessions',"id={$sessid}");
+				$LMS->delete('mdl_attendance_sessions',"id={$dateid}");
 				$LMS->insert('mdl_attendance_sessions_cancelled',array(
 					'attendanceid'=>$att['attendanceid'],
 					'sessdate'=>$att['sessdate'],
@@ -457,14 +455,14 @@ switch($v){
 					'sessdate'=>$newdate,
 					'descriptionformat'=>1
 				));
-
-				$data['asistencias']	= $LMS->getCourseAttendance($id);
-				$firstday = $data['asistencias'][0]['sessdate'];
-				$lastday = $data['asistencias'][count($data['asistencias'])-1]['sessdate'];
-				
-				$LMS->update('mdl_course',array('startdate'=>$firstday),"id={$id}");
-				$LMS->update('mdl_course',array('enddate'=>$lastday),"id={$id}");
-
+				$firstday = $data['asistencias'][0]['id'];
+				$lastday = $data['asistencias'][count($data['asistencias'])-1]['id'];
+				if($dateid==$firstday){
+					$LMS->update('mdl_course',array('startdate'=>$newdate),"id={$id}");
+				}
+				if($dateid==$lastday){
+					$LMS->update('mdl_course',array('enddate'=>$newdate),"id={$id}");
+				}
 			}
 		}
 		////////////
@@ -561,13 +559,13 @@ switch($v){
 			$CFG->defaultblocks_override = 'course_proydesa,activity_modules:attendance,news_items,calendar_upcoming,recent_activity';
 			$CFG->defaultblocks_site = 'site_main_menu,site_proydesa:html,calendar_month';
 	 		$context = context_course::instance($course->id);
-	   	blocks_delete_all_for_context($context->id);
-	   	blocks_add_default_course_blocks($course);
-		 	//echo "Bloques generados por defecto de {$course->id} <br/>";
+	   		blocks_delete_all_for_context($context->id);
+	   		blocks_add_default_course_blocks($course);
+		 	echo "Reseteando bloques por defecto de {$course->id} <br/>";
 		 	ob_flush(); flush();
 		}
-		//redireccionar("courses.php?v=view&id={$courseid}");
-		//die();		
+		redireccionar("courses.php?v=view&id={$courseid}");
+		die();		
 		break;
 	/***********************/
 	default:
