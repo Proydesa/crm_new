@@ -1242,6 +1242,21 @@ function widget_activity(){
 																				 INNER JOIN h_activity_type t ON a.typeid=t.id 
 																				 WHERE (a.contactid={$id} OR a.userid={$id}) AND a.parent=0 AND a.typeid IN (5)
 																				 ORDER BY a.startdate DESC,a.id DESC LIMIT 0,5;");
+
+	
+	
+		$data['promosiones'] = $H_DB->GetAll("	SELECT DISTINCT
+													co.detalle,
+													co.takenby userid,
+													co.date startdate
+												FROM h_comprobantes co
+													INNER JOIN h_comprobantes_cuotas cc ON co.id = cc.comprobanteid
+													INNER JOIN h_cuotas cu ON cc.cuotaid = cu.id
+												WHERE
+													cu.userid={$id} and 
+													co.detalle like '%Promo%' and cu.cuota=1
+												ORDER BY co.date;");
+	
 		$data['id']=$id;																				 
 		$view->Load('hd/widget_activity',$data);	
 }

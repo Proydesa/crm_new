@@ -49,6 +49,24 @@
 				<th>Estado</th>
 			</tr>
 		</thead>
+<?php if(count($promosiones)>0){ ?>
+		<tbody class="ui-widget-content">
+			<tr>
+				<th colspan="6">Promos adquiridas</th>
+			</tr>				
+			<?php foreach($promosiones as $promo):?>
+			<tr class="ui-widget-content" style="height: 30px; text-align:center;" class="activity" >
+					<td></td>
+					<td><?= date('d-m-Y',$promo['startdate']);?></td>
+					<td align="left"><b><?php echo $promo['detalle']; ?></b></td>
+					<td><?= $LMS->GetField('mdl_user','username',$promo['userid']);?></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<?php endforeach;?>
+		</tbody>
+<?php } ?>
+<?php if(count($incidentes)>0){ ?>
 		<tbody class="ui-widget-content">
 			<tr>
 				<th colspan="6">Incidentes</th>
@@ -69,6 +87,8 @@
 			</tr>
 			<?php endforeach;?>
 		</tbody>
+<?php } ?>
+<?php if(count($notes)>0){ ?>
 		<tbody class="ui-widget-content">
 			<tr>
 				<th colspan="6">Notas</th>
@@ -89,6 +109,8 @@
 			</tr>
 			<?php endforeach;?>
 		</tbody>
+<?php } ?>
+<?php if(count($activitys)>0){ ?>
 		<tbody class="ui-widget-content">
 			<tr>
 				<th colspan="6">Log</th>
@@ -109,6 +131,7 @@
 			</tr>
 			<?php endforeach;?>
 		</tbody>
+<?php } ?>
 	</table>
 	<p align="right">
 		<a class="button" href="hd.php?v=lista&id=<?= $id;?>"><b>Ver todo</b></a>&nbsp;
