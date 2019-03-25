@@ -1310,7 +1310,7 @@ class H_LMS extends H_LMS_CONN {
 	function getCursosEnAcademiaQueSeDictanEnDia($idAcademia,$fecha){
 		global $HULK;
 		$fechaReverse = substr($fecha,-4).'-'.substr($fecha,3,2).'-'.substr($fecha,0,2);
-		$fecha = strtotime($fechaReverse)+3600;
+		$fecha = strtotime($fechaReverse);
 		$dayletter = date('D',$fecha);
 		$dayletter = str_replace(['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], ['L','M','W','J','V','S','D'], $dayletter);
 
