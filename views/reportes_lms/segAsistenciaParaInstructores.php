@@ -193,6 +193,7 @@ if (!isset($_POST['idAcademia'] )){
 						<th >Comision</th>
 						<th >Llegada/Inicio de clase</th>
 						<th >Finalización de clase</th>
+						<th >Observacion</th>
 					</thead>
 					<tbody>
 						<?php $nro=1; ?>
@@ -233,6 +234,7 @@ if (!isset($_POST['idAcademia'] )){
 								<td class="ui-widget-content textCenter <?= $colorFila?>"><a href='./courses.php?v=view&id=<?= $row['id_comision']; ?>'><?= $row['nombre_comision']; ?></a></td>
 								<td class="ui-widget-content textCenter <?= $colorFila?> <?= $colorInicio?> "><?=  $row['inicio']; ?></td>
 								<td class="ui-widget-content textCenter <?= $colorFila?> <?= $colorFin?> "><?=  $row['fin']; ?></td>
+								<td class="ui-widget-content textCenter <?= $colorFila?> "><?=  $row['Observacion']; ?></td>
 							</tr>
 						<?php } ?>
 					</tbody>

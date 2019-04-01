@@ -153,7 +153,8 @@ cconfig.dias like (SELECT  case
 		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Thursday' THEN '%J%'
 		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Friday' THEN '%V%'
 
-	END) ) deberia_finalizar
+	END) ) deberia_finalizar,
+	a.Observacion
 	 FROM {$HULK->dbname}.h_asistencia_instructor a, {$HULK->lms_dbname}.mdl_course c WHERE a.idComision= c.id and date_format(FROM_UNIXTIME(a.fecha),'%d-%m-%Y')= '".$data['dia']."'");
 		$data['asistenciaInstructores']=$asistenciaInstructores;
 	$HULK->SELF = $_SERVER['PHP_SELF']."?p={$p}&v={$v}";
@@ -260,7 +261,8 @@ cconfig.dias like (SELECT  case
 		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Thursday' THEN '%J%'
 		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Friday' THEN '%V%'
 
-	END) ) deberia_finalizar
+	END) ) deberia_finalizar,
+		a.Observacion
 	 FROM {$HULK->dbname}.h_asistencia_instructor a, {$HULK->lms_dbname}.mdl_course c WHERE a.idComision= c.id and date_format(FROM_UNIXTIME(a.fecha),'%d-%m-%Y')= '".$data['dia']."'");
 		$data['asistenciaInstructores']=$asistenciaInstructores;
 	$HULK->SELF = $_SERVER['PHP_SELF']."?p={$p}&v={$v}";

@@ -27,6 +27,7 @@ switch($v){
 			$idDocenteReemplazo = $_POST['reemplazo'][$i];
 			$inicio = $_POST['inicio'][$i];
 			$fin = $_POST['fin'][$i];
+			$observacion = $_POST['observacion'][$i];
 			$asistio = false;
 			
 			foreach ($_POST['asiste'] as $id){
@@ -40,7 +41,8 @@ switch($v){
 				'fecha' => strtotime ($fechaReverse),
 				'idInstructor' => $idDocente,
 				'Inicio' => $inicio=== '' ? '' : strtotime ($fechaReverse." ".$inicio),
-				'Fin' =>    $fin=== '' ? '' : strtotime ($fechaReverse ." ".$fin)
+				'Fin' =>    $fin=== '' ? '' : strtotime ($fechaReverse ." ".$fin),
+				'Observacion' =>    $observacion
 			);
 			if (!$asistio && $idDocenteReemplazo ==''){
 				$nuevaAsistencia['Asistencia'] ='AUSENTE';
@@ -76,7 +78,8 @@ switch($v){
 					"SELECT id,idInstructor,idInstructorReemplazo,
 					 CASE WHEN Inicio =0 THEN '' ELSE FROM_UNIXTIME(Inicio,'%H:%i') END Inicio ,
 					 CASE WHEN Fin    =0 THEN '' ELSE FROM_UNIXTIME(Fin,'%H:%i')    END Fin,
-					 Asistencia
+					 Asistencia,
+					 Observacion
 					FROM $HULK->dbname.h_asistencia_instructor 
 					WHERE idComision={$idComision} AND idAcademia={$idAcademia} AND FROM_UNIXTIME(fecha,'%Y-%m-%d')='{$fechaReverse}';"
 				);
