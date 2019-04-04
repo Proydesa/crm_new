@@ -88,7 +88,102 @@ switch($v){
 		}
 			$menuroot['ruta'] = array("Asistencia Instructores"=>"asistencia.php?v=view",$data['row']['name']=>"#");
 	break;
+	case 'reporte':
+		$data['academies']		= $LMS->getAcademys();
+		$data['ejecuto']=0;
+		
+		if (isset($_POST['startdate']) && isset($_POST['enddate']) &&  isset($_POST['idAcademia'])){
+			$data['ejecuto']=1;
+			$data['diaInicio']= $_POST['startdate'];
+			$data['diaFin']= $_POST['enddate'];
+			$fechaInicioReverse = substr($data['diaInicio'],-4).'-'.substr($data['diaInicio'],3,2).'-'.substr($data['diaInicio'],0,2);
+			$fechaInicio = strtotime($fechaInicioReverse);
+			$fechaFinReverse = substr($data['diaFin'],-4).'-'.substr($data['diaFin'],3,2).'-'.substr($data['diaFin'],0,2);
+			$fechaFin = strtotime($fechaFinReverse);
+			$idAcademia = $_POST['idAcademia'];
+			$asistenciaInstructores=$H_DB->GetAll("SELECT a.id,date_format(FROM_UNIXTIME(a.fecha),'%d-%m-%Y') fecha,c.id id_comision, c.fullname nombre_comision, 
+		(SELECT concat(lastname,' ',firstname) nombre FROM {$HULK->lms_dbname}.mdl_user where id=IFNULL(a.idInstructorReemplazo,a.idInstructor) ) nombre_instructor,
+		date_format(FROM_UNIXTIME(a.Inicio),'%H:%i') inicio,
+		(select inicio from {$HULK->dbname}.h_course_config cconfig, {$HULK->dbname}.h_horarios h where cconfig.horarioid= h.id and cconfig.courseid=c.id AND
+	cconfig.dias like (SELECT  case  
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Saturday' THEN '%S%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Sunday' THEN '%D%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Monday' THEN '%L%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Tuesday' THEN '%M%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Wednesday' THEN '%W%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Thursday' THEN '%J%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Friday' THEN '%V%'
 
+		END) ) deberia_iniciar,
+		date_format(FROM_UNIXTIME(a.Fin),'%H:%i') fin,
+		(select fin from {$HULK->dbname}.h_course_config cconfig, {$HULK->dbname}.h_horarios h where cconfig.horarioid= h.id and cconfig.courseid=c.id AND
+	cconfig.dias like (SELECT  case  
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Saturday' THEN '%S%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Sunday' THEN '%D%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Monday' THEN '%L%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Tuesday' THEN '%M%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Wednesday' THEN '%W%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Thursday' THEN '%J%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Friday' THEN '%V%'
+
+		END) ) deberia_finalizar,
+		a.Observacion,
+		a.Asistencia
+		FROM {$HULK->dbname}.h_asistencia_instructor a, {$HULK->lms_dbname}.mdl_course c WHERE a.idComision= c.id and a.fecha>=".$fechaInicio." and a.fecha<= ".$fechaFin);
+		$data['asistenciaInstructores']=$asistenciaInstructores;
+			
+		}
+			$menuroot['ruta'] = array("Asistencia Instructores"=>"asistencia.php?v=view",$data['row']['name']=>"#");
+	break;
+	case 'reporteXLS':
+	$data['academies']		= $LMS->getAcademys();
+	$data['ejecuto']=0;
+	
+	if (isset($_POST['startdate']) && isset($_POST['enddate']) &&  isset($_POST['idAcademia'])){
+		$data['ejecuto']=1;
+		$data['diaInicio']= $_POST['startdate'];
+		$data['diaFin']= $_POST['enddate'];
+		$fechaInicioReverse = substr($data['diaInicio'],-4).'-'.substr($data['diaInicio'],3,2).'-'.substr($data['diaInicio'],0,2);
+		$fechaInicio = strtotime($fechaInicioReverse);
+		$fechaFinReverse = substr($data['diaFin'],-4).'-'.substr($data['diaFin'],3,2).'-'.substr($data['diaFin'],0,2);
+		$fechaFin = strtotime($fechaFinReverse);
+		$idAcademia = $_POST['idAcademia'];
+		$asistenciaInstructores=$H_DB->GetAll("SELECT a.id,date_format(FROM_UNIXTIME(a.fecha),'%d-%m-%Y') fecha,c.id id_comision, c.fullname nombre_comision, 
+	(SELECT concat(lastname,' ',firstname) nombre FROM {$HULK->lms_dbname}.mdl_user where id=IFNULL(a.idInstructorReemplazo,a.idInstructor) ) nombre_instructor,
+	date_format(FROM_UNIXTIME(a.Inicio),'%H:%i') inicio,
+	(select inicio from {$HULK->dbname}.h_course_config cconfig, {$HULK->dbname}.h_horarios h where cconfig.horarioid= h.id and cconfig.courseid=c.id AND
+cconfig.dias like (SELECT  case  
+		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Saturday' THEN '%S%'
+		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Sunday' THEN '%D%'
+		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Monday' THEN '%L%'
+		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Tuesday' THEN '%M%'
+		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Wednesday' THEN '%W%'
+		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Thursday' THEN '%J%'
+		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Friday' THEN '%V%'
+
+	END) ) deberia_iniciar,
+	date_format(FROM_UNIXTIME(a.Fin),'%H:%i') fin,
+	(select fin from {$HULK->dbname}.h_course_config cconfig, {$HULK->dbname}.h_horarios h where cconfig.horarioid= h.id and cconfig.courseid=c.id AND
+cconfig.dias like (SELECT  case  
+		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Saturday' THEN '%S%'
+		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Sunday' THEN '%D%'
+		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Monday' THEN '%L%'
+		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Tuesday' THEN '%M%'
+		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Wednesday' THEN '%W%'
+		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Thursday' THEN '%J%'
+		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Friday' THEN '%V%'
+
+	END) ) deberia_finalizar,
+	a.Asistencia,
+	a.Observacion
+	FROM {$HULK->dbname}.h_asistencia_instructor a, {$HULK->lms_dbname}.mdl_course c WHERE a.idComision= c.id and a.fecha>=".$fechaInicio." and a.fecha<= ".$fechaFin);
+	$data['asistenciaInstructores']=$asistenciaInstructores;
+		
+	}
+		$menuroot['ruta'] = array("Asistencia Instructores"=>"asistencia.php?v=view",$data['row']['name']=>"#");
+		$view->Load('asistencia/'.$v,$data);
+		die();
+break;
 	default:
 		$v	=	'index';
 		break;
