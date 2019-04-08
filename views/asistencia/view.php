@@ -7,7 +7,7 @@ function enabledAllSelect(){
 }
 </script>
 <form action="asistencia.php?v=view" method="POST" style="margin:0; padding:0;">
-	<div class="column" style="width:80%">
+	<div class="column" style="width:100%">
 		<div class="portlet">
 			<div class="portlet-header">Filtros</div>
 			<div class="portlet-content" >
@@ -42,7 +42,7 @@ function enabledAllSelect(){
 <input type="hidden" name="dia" value="<?= $dia;?>"/>
 <input type="hidden" name="idAcademia" value="<?= $_POST['idAcademia'];?>"/>
 
-<div class="column" style="width:80%<?= $ejecuto==1 ? '': ';display:none;' ?>">
+<div class="column" style="width:100%<?= $ejecuto==1 ? '': ';display:none;' ?>">
 		<div class="portlet">
 			<div class="portlet-header">Asistencias Instructores</div>
 			<div class="portlet-content" >
@@ -54,6 +54,7 @@ function enabledAllSelect(){
 						<th>Reemplazo</th>	
 						<th>Llegada/Inicio de clase</th>	
 						<th>Finalización de clase</th>	
+						<th>Observaciones</th>	
 					</thead>
 					<tbody>
 					<?php foreach ($cursosDelDia as $curso){ 
@@ -68,10 +69,10 @@ function enabledAllSelect(){
 						<input type="hidden" name="idsCursos[]" value="<?= $curso['id'];?>"/>
 						<input type="hidden" name="idsRegistro[]" value="<?= $registroGuardado ? $curso['asistencia'][0]['id']  : ''; ?>"/>
 						<input type="hidden" name="idsDocente[]" value="<?= $curso['Instructores'][0]['id']; ?>"/>
-							<td class="ui-widget-content textCenter"><?=$curso['fullname'];?></td>
-							<td class="ui-widget-content textCenter"><?=$curso['Instructores'][0]['fullname'];?></td>
-							<td class="ui-widget-content textCenter"><input type="checkbox" name="asiste[]" value="<?= $curso['id'];?>" <?= $registroGuardado && !$hayDocenteReemplazo && $asistio  ? 'checked' : '' ?> onclick="if (this.checked){document.getElementById('SelectReemplazo<?= $curso['id'];?>').disabled = true;document.getElementById('SelectReemplazo<?= $curso['id'];?>').value = ''}else{document.getElementById('SelectReemplazo<?= $curso['id'];?>').disabled = false}" ></td>
-							<td class="ui-widget-content textCenter">
+							<td style="width:15%" class="ui-widget-content textCenter"><?=$curso['fullname'];?></td>
+							<td style="width:15%" class="ui-widget-content textCenter"><?=$curso['Instructores'][0]['fullname'];?></td>
+							<td style="width:5%" class="ui-widget-content textCenter"><input type="checkbox" name="asiste[]" value="<?= $curso['id'];?>" <?= $registroGuardado && !$hayDocenteReemplazo && $asistio  ? 'checked' : '' ?> onclick="if (this.checked){document.getElementById('SelectReemplazo<?= $curso['id'];?>').disabled = true;document.getElementById('SelectReemplazo<?= $curso['id'];?>').value = ''}else{document.getElementById('SelectReemplazo<?= $curso['id'];?>').disabled = false}" ></td>
+							<td style="width:15%" class="ui-widget-content textCenter">
 								<select id="SelectReemplazo<?= $curso['id'];?>" class="selectProfReemplazo" name="reemplazo[]" <?= $registroGuardado && !$hayDocenteReemplazo ? 'disabled' : '' ?> >
 									<option value="" name="instructorReemplazo" <?= !$hayDocenteReemplazo ? 'selected': '' ?> ></option>
 									<?php for ($i=1;$i < count($curso['Instructores']);$i++){ ?>
@@ -79,12 +80,13 @@ function enabledAllSelect(){
 									<?php	} ?>
 								</select>
 							</td>
-							<td class="ui-widget-content textCenter"><input type="time" name="inicio[]" id="timeStart" value="<?= $registroGuardado && $asistio ? $curso['asistencia'][0]['Inicio'] : '' ?>"  /></td>
-							<td class="ui-widget-content textCenter"><input type="time" name="fin[]"  id="timeEnd" value="<?= $registroGuardado && $asistio ? $curso['asistencia'][0]['Fin'] : '' ?>" /></td>
+							<td style="width:5%" class="ui-widget-content textCenter"><input type="time" name="inicio[]" id="timeStart" value="<?= $registroGuardado && $asistio ? $curso['asistencia'][0]['Inicio'] : '' ?>"  /></td>
+							<td style="width:5%" class="ui-widget-content textCenter"><input type="time" name="fin[]"  id="timeEnd" value="<?= $registroGuardado && $asistio ? $curso['asistencia'][0]['Fin'] : '' ?>" /></td>
+							<td style="width:40%" class="ui-widget-content textCenter"><input type="text" style="width:100%" name="observacion[]"  id="observacion" value="<?= $registroGuardado && $asistio ? $curso['asistencia'][0]['Observacion'] : '' ?>" /></td>
 						</tr>	
 					<?php } ?>
 					<tr>
-						<td colspan=6 class="textCenter"><input type="submit" onclick="enabledAllSelect()" name="boton"  style="height: 30px; font-size:13px; width:25%; font-weight: bold;" class="button"  value="Guardar" /></td>			
+						<td colspan="7" class="textCenter"><input type="submit" onclick="enabledAllSelect()" name="boton"  style="height: 30px; font-size:13px; width:25%; font-weight: bold;" class="button"  value="Guardar" /></td>			
 					</tr>	
 					</tbody>
 				</table>

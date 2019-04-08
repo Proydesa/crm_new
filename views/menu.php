@@ -264,6 +264,12 @@
 						<a href="asistencia.php?v=view" style="width:75%;">Instructores</a>
 						</li>
 						<li>
+							<a href="#" onclick="window.open('asistencia.php?v=reporte');" style="width:10%;">
+							<span class="ui-icon ui-icon-newwin" style="float:left;"></span>
+							</a>
+						<a href="asistencia.php?v=reporte" style="width:75%;">Reporte Asistencia Instructores</a>
+						</li>
+						<li>
 							<a href="#" onclick="window.open('reportes_lms.php?v=segAsistenciaParaInstructores');" style="width:10%;">
 							<span class="ui-icon ui-icon-newwin" style="float:left;"></span>
 							</a>
@@ -540,6 +546,11 @@
 				</a>
 				<a href="contactos.php?v=view&id=<?= $H_USER->get_property('id');?>" style="width:75%;">Perfil</a></li>
 			<?php if ($H_USER->has_capability('user/rendicion/rendir')):	?>
+				<li>
+					<a href="#" onclick="window.open('users.php?v=rendicion');" style="width:10%;">
+						<span class="ui-icon ui-icon-newwin" style="float:left;"></span>
+					</a>
+				<a href="users.php?v=rendicion"  style="width:75%;">Carga Manual Rendici&oacute;n</a></li>
 				<li>
 					<a href="#" onclick="window.open('users.php?v=rendicion');" style="width:10%;">
 						<span class="ui-icon ui-icon-newwin" style="float:left;"></span>

@@ -128,7 +128,7 @@ function segAsistenciaParaInstructores(){
 		}
 		$data['alumnosPorCurso']=$alumnosPorCurso;
 	}
-	$asistenciaInstructores=$H_DB->GetAll("SELECT a.id,c.id id_comision, c.fullname nombre_comision, 
+	$asistenciaInstructores=$H_DB->GetAll("SELECT a.id,date_format(FROM_UNIXTIME(a.fecha),'%d-%m-%Y') fecha,c.id id_comision, c.fullname nombre_comision, 
 	(SELECT concat(lastname,' ',firstname) nombre FROM {$HULK->lms_dbname}.mdl_user where id=IFNULL(a.idInstructorReemplazo,a.idInstructor) ) nombre_instructor,
 	date_format(FROM_UNIXTIME(a.Inicio),'%H:%i') inicio,
 	(select inicio from {$HULK->dbname}.h_course_config cconfig, {$HULK->dbname}.h_horarios h where cconfig.horarioid= h.id and cconfig.courseid=c.id AND
@@ -137,7 +137,7 @@ cconfig.dias like (SELECT  case
 		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Sunday' THEN '%D%'
 		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Monday' THEN '%L%'
 		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Tuesday' THEN '%M%'
-		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Wednesday' THEN '%X%'
+		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Wednesday' THEN '%W%'
 		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Thursday' THEN '%J%'
 		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Friday' THEN '%V%'
 
@@ -149,14 +149,16 @@ cconfig.dias like (SELECT  case
 		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Sunday' THEN '%D%'
 		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Monday' THEN '%L%'
 		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Tuesday' THEN '%M%'
-		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Wednesday' THEN '%X%'
+		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Wednesday' THEN '%W%'
 		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Thursday' THEN '%J%'
 		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Friday' THEN '%V%'
 
-	END) ) deberia_finalizar
-	 FROM {$HULK->dbname}.h_asistencia_instructor a, {$HULK->lms_dbname}.mdl_course c WHERE a.idComision= c.id and date_format(FROM_UNIXTIME(a.fecha),'%d-%m-%Y')= '".$data['dia']."'");
-		$data['asistenciaInstructores']=$asistenciaInstructores;
-	$HULK->SELF = $_SERVER['PHP_SELF']."?p={$p}&v={$v}";
+	END) ) deberia_finalizar,
+	a.Observacion,
+	a.Asistencia
+ FROM {$HULK->dbname}.h_asistencia_instructor a, {$HULK->lms_dbname}.mdl_course c WHERE a.idComision= c.id and date_format(FROM_UNIXTIME(a.fecha),'%d-%m-%Y')= '".$data['dia']."'");
+	$data['asistenciaInstructores']=$asistenciaInstructores;
+$HULK->SELF = $_SERVER['PHP_SELF']."?p={$p}&v={$v}";
 	
 	$view->Load('header');
 	if(empty($print)) $view->Load('menu',$data);
@@ -235,32 +237,34 @@ function segAsistenciaParaInstructoresXLS(){
 		}
 		$data['alumnosPorCurso']=$alumnosPorCurso;
 	}
-	$asistenciaInstructores=$H_DB->GetAll("SELECT a.id,c.id id_comision, c.fullname nombre_comision, 
-	(SELECT concat(lastname,' ',firstname) nombre FROM {$HULK->lms_dbname}.mdl_user where id=IFNULL(a.idInstructorReemplazo,a.idInstructor) ) nombre_instructor,
-	date_format(FROM_UNIXTIME(a.Inicio),'%H:%i') inicio,
-	(select inicio from {$HULK->dbname}.h_course_config cconfig, {$HULK->dbname}.h_horarios h where cconfig.horarioid= h.id and cconfig.courseid=c.id AND
-cconfig.dias like (SELECT  case  
-		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Saturday' THEN '%S%'
-		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Sunday' THEN '%D%'
-		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Monday' THEN '%L%'
-		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Tuesday' THEN '%M%'
-		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Wednesday' THEN '%X%'
-		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Thursday' THEN '%J%'
-		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Friday' THEN '%V%'
+	$asistenciaInstructores=$H_DB->GetAll("SELECT a.id,date_format(FROM_UNIXTIME(a.fecha),'%d-%m-%Y') fecha,c.id id_comision, c.fullname nombre_comision, 
+		(SELECT concat(lastname,' ',firstname) nombre FROM {$HULK->lms_dbname}.mdl_user where id=IFNULL(a.idInstructorReemplazo,a.idInstructor) ) nombre_instructor,
+		date_format(FROM_UNIXTIME(a.Inicio),'%H:%i') inicio,
+		(select inicio from {$HULK->dbname}.h_course_config cconfig, {$HULK->dbname}.h_horarios h where cconfig.horarioid= h.id and cconfig.courseid=c.id AND
+	cconfig.dias like (SELECT  case  
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Saturday' THEN '%S%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Sunday' THEN '%D%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Monday' THEN '%L%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Tuesday' THEN '%M%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Wednesday' THEN '%W%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Thursday' THEN '%J%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Friday' THEN '%V%'
 
-	END) ) deberia_iniciar,
-	date_format(FROM_UNIXTIME(a.Fin),'%H:%i') fin,
-	(select fin from {$HULK->dbname}.h_course_config cconfig, {$HULK->dbname}.h_horarios h where cconfig.horarioid= h.id and cconfig.courseid=c.id AND
-cconfig.dias like (SELECT  case  
-		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Saturday' THEN '%S%'
-		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Sunday' THEN '%D%'
-		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Monday' THEN '%L%'
-		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Tuesday' THEN '%M%'
-		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Wednesday' THEN '%X%'
-		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Thursday' THEN '%J%'
-		WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Friday' THEN '%V%'
+		END) ) deberia_iniciar,
+		date_format(FROM_UNIXTIME(a.Fin),'%H:%i') fin,
+		(select fin from {$HULK->dbname}.h_course_config cconfig, {$HULK->dbname}.h_horarios h where cconfig.horarioid= h.id and cconfig.courseid=c.id AND
+	cconfig.dias like (SELECT  case  
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Saturday' THEN '%S%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Sunday' THEN '%D%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Monday' THEN '%L%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Tuesday' THEN '%M%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Wednesday' THEN '%W%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Thursday' THEN '%J%'
+			WHEN DAYNAME(date_format(FROM_UNIXTIME(a.Inicio),'%Y-%m-%d') )='Friday' THEN '%V%'
 
-	END) ) deberia_finalizar
+		END) ) deberia_finalizar,
+		a.Observacion,
+		a.Asistencia
 	 FROM {$HULK->dbname}.h_asistencia_instructor a, {$HULK->lms_dbname}.mdl_course c WHERE a.idComision= c.id and date_format(FROM_UNIXTIME(a.fecha),'%d-%m-%Y')= '".$data['dia']."'");
 		$data['asistenciaInstructores']=$asistenciaInstructores;
 	$HULK->SELF = $_SERVER['PHP_SELF']."?p={$p}&v={$v}";

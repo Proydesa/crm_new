@@ -80,6 +80,7 @@ header("Cache-Control: private",false);
 					<th bgcolor="#004023" style="color: white;">Comision</th>
 					<th bgcolor="#004023" style="color: white;">Llegada/Inicio de clase</th>
 					<th bgcolor="#004023" style="color: white;">Finalización de clase</th>
+					<th bgcolor="#004023" style="color: white;">Observacion</th>
 				</thead>
 				<tbody style="color: white;">
 					<?php $nro=1; ?>
@@ -113,6 +114,7 @@ header("Cache-Control: private",false);
 							<td style="<?= $colorFila?>"><?= $row['nombre_comision']; ?></td>
 							<td style="<?= $colorFila?> <?= $colorInicio?> "><?=  $row['inicio']; ?></td>
 							<td style="<?= $colorFila?><?= $colorFin?>"><?=  $row['fin']; ?></td>
+							<td class="<?= $colorFila?> "><?=  $row['Observacion']; ?></td>
 						</tr>
 					<?php } ?>
 				</tbody>
