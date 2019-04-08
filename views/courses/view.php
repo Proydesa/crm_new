@@ -33,7 +33,13 @@
 						</tr>
 						<tr>
 							<td class="ui-widget-content" align="right"><b>Cursada:</b></td>
-							<td class="ui-widget-content"><?= $HULK->course_cursada[$row['intensivo']];?></td>
+							<td class="ui-widget-content"><?php if($row['intensivo']==2){
+																	echo "Banda Negativa";
+																}else{
+																	echo $HULK->course_cursada[$row['intensivo']];
+																}
+															?>
+							</td>
 							<td class="ui-widget-content" align="right"><b>LMS ID:</b></td>
 							<td class="ui-widget-content"><a href="<?= $HULK->lms_wwwroot;?>/course/view.php?id=<?= $row['id'];?>" target="_blank">
 								<span class="ui-icon ui-icon-newwin" style="float:left;"></span>
@@ -41,7 +47,12 @@
 						</tr>
 						<tr>
 							<td class="ui-widget-content" align="right"><b>Modalidad:</b></td>
-							<td class="ui-widget-content"><?= $HULK->course_modalidad[$row['modalidad']];?></td>
+							<td class="ui-widget-content"><?php if($row['modalidad']==2){
+																	echo "Blended";
+																}else{
+																	echo $HULK->course_modalidad[$row['modalidad']];
+																};
+															?></td>
 							<td class="ui-widget-content" align="right"><b>CLASSID:</b></td>
 							<td class="ui-widget-content"><?= $row['classid'];?></td>
 						</tr>
@@ -165,7 +176,7 @@
 			<table id="listado" class="ui-widget" align="center" style="width:100%;">
 				<thead>
 					<tr class="ui-widget-header" style="height:20px;font-size:7pt">
-						<th colspan="6"></th>
+						<th colspan="7"></th>
 						<th colspan="<?= count($cuotas) == 0 ? 1 : count($cuotas) ?>">Cuotas</th>
 						<th colspan="<?= count($asistencias) == 0 ? 1 : count($asistencias) ?>">Asistencia</th>
 						<th colspan="<?= count($examenes) == 0 ? 1 : count($examenes) ?>">Exámenes</th>
@@ -177,6 +188,7 @@
 						<th>N°</th>
 						<th>DNI</th>
 						<th>Alumno</th>
+						<th>Img</th>
 						<th>Cat.</th>
 						<th>Estado</th>
 						<th>Enrolado</th>
@@ -222,6 +234,7 @@
 						<td class="textCenter"><?= $ke+1 ?></td>
 						<td class="textCenter"><?= $estudiante['username']; ?></td>
 						<td class="textCenter"><a title="<?= $estudiante['obs']; ?>" href="contactos.php?v=view&id=<?= $estudiante['id']; ?>" target="_blank" ><?= $estudiante['fullname']; ?></a></td>
+						<td class="textCenter"><?= $estudiante['autorizousoimg']; ?></td>
 						<td class="textCenter">I</td>
 						<td class="<?= $arrStatus[$eStatus]; ?> textCenter"><?= $eStatus ?></td>
 						<td class="textCenter"><?= date('d',$estudiante['timestart']).'/'.ConvertMonth(date('M',$estudiante['timestart'])).'/'.date('Y',$estudiante['timestart']); ?></td>
@@ -234,7 +247,11 @@
 							foreach($cuotas as $kc=>$cuota):
 								$difcuota = $LMS->getValorCuota($row['id'],$estudiante['id'],$cuota['cuota']);
 						?>
-						<td data-cuota="<?= $difcuota ?>" class="<?= $difcuota == '' ? '' : ($difcuota >= 0 ? 'bg-success' : 'bg-danger') ?> textCenter"><?= $difcuota == '' ? '-' : ($difcuota >= 0 ? 'ok' : '$'.number_format($difcuota,0,',','.')) ?></td>
+						<td data-cuota="<?= $difcuota ?>" class="<?= $difcuota == '' ? '' : ($difcuota >= 0 ? 'bg-success' : 'bg-danger') ?> textCenter"><?= $difcuota." - " ?>se
+						
+						<?= $difcuota == '' ? '-' : ($difcuota >= 0 ? 'ok' : '$'.number_format($difcuota,0,',','.')) ?>
+						
+						</td>
 						<?php
 							endforeach;
 						else:

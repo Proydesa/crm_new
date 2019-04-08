@@ -30,6 +30,7 @@ switch($v){
 				$data['academys']	= $LMS->getAcademys();
 				break;
 			case 1:
+				
 				$jquerynew = true;
 				// TODO Configura curso
 				$modelid		= $_REQUEST['modid'];
@@ -62,9 +63,11 @@ switch($v){
 				break;
 
 			case 2:
+				
 				$course = $_POST;
+				
 				/*echo '<pre>';
-				print_r($course['holidays']);
+				print_r($course);
 				echo '</pre>';
 				die();*/
 
@@ -98,6 +101,7 @@ switch($v){
 						show_error("Error","Error al enrolar el instructor");
 					}
 				}
+				
 				if ($course['secundario']>0){
 					if(!$LMS->enrolUser($course['secundario'], $courseid, 4) ){
 						show_error("Error","Error al enrolar el instructor secundario");
@@ -154,6 +158,7 @@ switch($v){
 		$H_USER->require_capability('course/view');
 
 		$data['row']			= $LMS->getCourse($id);
+		
 		$data['estudiantes']	= $LMS->getCourseStudents($id);
 		
 		$data['instructores']	= $LMS->getCourseInstructors($id);
@@ -166,6 +171,7 @@ switch($v){
 		$data['horario']		= $H_DB->GetRow("SELECT h.name FROM h_horarios h
 										INNER JOIN h_course_config cah ON h.id=cah.horarioid
 										WHERE cah.courseid={$id};");
+
 		if ($data['row']['lms_version']=="LMS2"){
 			$data['asistencias']	= $LMS->getCourseAttendance($id);
 			$data['asistencias_canceladas']	= $LMS->getCourseAttendanceCancelled($id);

@@ -145,8 +145,12 @@
 								</div>
 								<br />
 								<div class="item">
-									<label for="assitance">Curso Intensivo: </label>
-									<input type="checkbox" id="intensivo" name="intensivo" value="1" />
+									<label for="assitance">Tipo de Curso: </label>
+									<select id="tipo_curso" name="intensivo">
+									  <option value="0" selected="selected">Regular</option>
+									  <option value="1">Intensivo</option>
+									  <option value="2">Banda negativa</option>
+									</select>
 								</div>
 								<br/>
 								<div class="item">
@@ -173,6 +177,7 @@
 									<select name="modalidad">
 									<option value="0">Presencial</option>
 									<option value="1">A distancia</option>
+									<option value="2">Blended</option>
 								</select>
 							</div>
 						</div>
@@ -324,7 +329,11 @@ var Messages = {
 }
 var GenerateName = function(){
 	var nombre = $('#id_shortname').val();
-	var intensivo = $('#intensivo').is(':checked') ? 'INTENSIVO' : '';
+	var tipo_curso='';
+	if($('#tipo_curso').val()!=0){
+		$('#tipo_curso').val()==1 ? tipo_curso='INTENSIVO' : tipo_curso='BANDANEG';
+	}
+
 	var fecha = $('#startdate').val();
 	var mes = parseInt(fecha.substring(3,5));
 	var year = fecha.substring(8);
@@ -345,7 +354,7 @@ var GenerateName = function(){
 	});
 	var aula = $('#aulita option:selected').attr('data-code');
 	var detalle = $('#id_detalle').val();
-	var fullname = nombre+intensivo+'-'+periodo+'-'+schedules+aula+detalle;
+	var fullname = nombre+tipo_curso+'-'+periodo+'-'+schedules+aula+detalle;
 
 	$('input[name="fullname_complete"]').prop('value',fullname);
 	$('input[name="schedules"]').prop('value',idschedules.join(','));
@@ -384,15 +393,28 @@ $(document).ready(function(){
 			});
 			return false;
 		}
-
-		if($('#selected_days li').length>1 && !$('#intensivo').is(':checked')){
+		//TIPO CURSO
+		//regular es una vez por semana
+		//intensivo es dos veces por semana
+		//banda negativa es dos veces por semana (una presencial y otra a distancia)
+		//Blended
+		
+		if($('#selected_days li').length>1 && $('#tipo_curso').val()==0){
 			Messages.dialog({
 				show:true,
-				message:'Has elegido más de dos días de cursada en la semana y no has seleccionado "Curso Intensivo"'
+				message:'Has elegido más de dos días de cursada en la semana para curso Regular'
 			});
 			return false;
 		}
 
+		if($('#selected_days li').length==1 && $('#tipo_curso').val()!=0){
+			Messages.dialog({
+				show:true,
+				message:'Has elegido un día de cursada en la semana para curso '+$('select[name="tipo_curso"] option:selected').text()
+			});
+			return false;
+		}
+		
 		$(this).prop('disabled',true);
 		var fullname = GenerateName();
 		var html = $.ajax({
