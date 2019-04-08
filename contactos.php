@@ -66,19 +66,20 @@ switch($v){
 				$form_data->fnacimiento	= mktime(0,0,0,$fnac[1],$fnac[0],$fnac[2]);
 			}
 
-			$form_data->username	= $_POST['username'];
-			$form_data->firstname	= utf8_decode($_POST['firstname']);
-			$form_data->lastname	= utf8_decode($_POST['lastname']);
-			$form_data->email		= $_POST['email'];
-			$form_data->address		= $_POST['address'];
-			$form_data->city		= $_POST['city'];
-			$form_data->phone1		= $_POST['phone1'];
-			$form_data->phone2		= $_POST['phone2'];
-			$form_data->country		= $_POST['country'];
-			$form_data->sexo 		= $_POST['sexo'];
-			$form_data->obs 		= $_POST['obs'];
-			$form_data->noquierospam= $_POST['noquierospam'];
-			$form_data->cp	 		= $_POST['cp'];
+			$form_data->username		= $_POST['username'];
+			$form_data->firstname		= utf8_decode($_POST['firstname']);
+			$form_data->lastname		= utf8_decode($_POST['lastname']);
+			$form_data->email			= $_POST['email'];
+			$form_data->address			= $_POST['address'];
+			$form_data->city			= $_POST['city'];
+			$form_data->phone1			= $_POST['phone1'];
+			$form_data->phone2			= $_POST['phone2'];
+			$form_data->country			= $_POST['country'];
+			$form_data->sexo 			= $_POST['sexo'];
+			$form_data->obs 			= $_POST['obs'];
+			$form_data->noquierospam	= $_POST['noquierospam'];
+			$form_data->autorizousoimg	= $_POST['autorizousoimg'];
+			$form_data->cp	 			= $_POST['cp'];
 			if(!$LMS->update('mdl_user',$form_data,"id = {$id}")){
 				show_error("Error","Error al actualizar el usuario");
 			}
@@ -158,19 +159,22 @@ switch($v){
 				if($_POST['comi']>0){
 					$data['id'] = $id = $_REQUEST['id'];
 					$comision 	= $_POST['comi'];
-					$modelo 		= $_POST['curso'];
-					$cuotas 		= $_POST['cuotas'];
-					$cuotas2		= $_POST['cuotas2'];
-					$importe		=	$importe2 = $_POST['pago'];
-					$concepto		=	$_POST['concepto'];
+					$modelo 	= $_POST['curso'];
+					$cuotas 	= $_POST['cuotas'];
+					$cuotas2	= $_POST['cuotas2'];
+					$importe	= $importe2 = $_POST['pago'];
+					$concepto	= $_POST['concepto'];
 					$nrocheque 	= $_POST['nrocheque'];
-					$libroid 		= $_POST['libroid'];
-					$tipo				= $_POST['tipo'];
+					$libroid 	= $_POST['libroid'];
+					$tipo		= $_POST['tipo'];
 
 					if(!$_POST['pendiente']){	$pendiente = 0;	}else{	$pendiente = $_POST['pendiente'];	}
 					if(!$_POST['becado']){ $becado = 0;	}else{ $becado = $_POST['porc_beca']; }
 					if(!$_POST['descuento']){ $descuento = 0;	}else{ $descuento = $_POST['porc_desc'];	}
 
+					if(!$_POST['banco']){$banco = 0;}else{$banco = $_POST['banco'];}
+					if(!$_POST['tarjeta']){$tarjeta = 0;}else{$tarjeta = $_POST['tarjeta'];}
+					
 					$comprobante->numero = 0;
 					$cuotas_default = $H_DB->getCuotasDefault($comision);
 					$p_especial = $H_DB->compararCuotas($cuotas,$cuotas_default);
@@ -198,17 +202,20 @@ switch($v){
 
 					// Creo recibo de pago
 					if($importe>0){
-						$comprobante->userid		= $id;
-						$comprobante->grupoid		= $_POST['grupoid'];
-						$comprobante->date			= time();
-						$comprobante->importe		= $importe;
+
+						$comprobante->userid	= $id;
+						$comprobante->grupoid	= $_POST['grupoid'];
+						$comprobante->date		= time();
+						$comprobante->importe	= $importe;
 						$comprobante->concepto	= $concepto;
-						$comprobante->tipo			= $tipo;			
-						$comprobante->detalle		= $_POST['detalle'];
+						$comprobante->tipo		= $tipo;			
+						$comprobante->detalle	= $_POST['detalle'];
 						$comprobante->takenby 	= $H_USER->get_property('id');
 						$comprobante->nrocheque = $nrocheque;
 						$comprobante->pendiente = $pendiente;
-
+						$comprobante->bancoid 	= $banco;
+						$comprobante->tarjetaid = $tarjeta;
+						
 						if ($tipo==1){ $comprobante->puntodeventa="0001";}	
 
 						if(!$comprobante->id = $H_DB->insert("h_comprobantes",$comprobante)){
@@ -226,16 +233,17 @@ switch($v){
 					}
 
 					if($importe==0 && $becado==100){
+
 						//Es un alumno becado al 100%
 						//Creo un comprobante por 0 pesos y las cuotas y las pongo como pagas
 
-						$comprobante->userid		= $id;
-						$comprobante->grupoid		= $_POST['grupoid'];
-						$comprobante->date			= time();
-						$comprobante->importe		= 0;
+						$comprobante->userid	= $id;
+						$comprobante->grupoid	= $_POST['grupoid'];
+						$comprobante->date		= time();
+						$comprobante->importe	= 0;
 						$comprobante->concepto	= $concepto;
-						$comprobante->tipo			= $tipo;
-						$comprobante->detalle		= "";
+						$comprobante->tipo		= $tipo;
+						$comprobante->detalle	= "";
 						$comprobante->takenby 	= $H_USER->get_property('id');
 						$comprobante->nrocheque = $nrocheque;
 						$comprobante->pendiente = $pendiente;
@@ -244,18 +252,20 @@ switch($v){
 						if(!$comprobante->id = $H_DB->insert("h_comprobantes",$comprobante)){
 							show_error("Pagos","Error al insertar en la base de datos");
 						}
-
 						if($cuotas2){
+
 							// Crear cobrar cuota
 							foreach($cuotas2 as $indice=>$cuota){
 								//if($cuota>0){
+									echo 'entro recorro cuota ';
+
 									unset($c_insert);
-									$c_insert->userid				= $id;
-									$c_insert->courseid			= $modelo;
-									$c_insert->cuota				= $indice;
+									$c_insert->userid		= $id;
+									$c_insert->courseid		= $modelo;
+									$c_insert->cuota		= $indice;
 									$c_insert->valor_cuota	= $cuota;
-									$c_insert->grupoid			= $_POST['grupoid'];
-									$c_insert->insc_id			= $insc_id;
+									$c_insert->grupoid		= $_POST['grupoid'];
+									$c_insert->insc_id		= $insc_id;
 									// Si es plan especial
 									if($p_especial){
 										$c_insert->p_especial = 1;
@@ -366,7 +376,28 @@ switch($v){
 									unset($c_insert);
 									$c_insert->userid				= $id;
 									$c_insert->courseid			= $modelo;
+									$c_insert->periodo			= $LMS->GetField("mdl_course","periodo",$comision);
+									$fechaInicio                = $LMS->GetField("mdl_course","startdate",$comision);
+									$mesIncio = date ('n',$fechaInicio);
+									/*if (count($cuotas2)==2 && $indice!=0 ){
+										switch (substr($c_insert->periodo,-1)){
+											case '1':
+											$nrocuota= $mesIncio -1  + $indice;
+											break;
+											case '2':
+											$nrocuota= $mesIncio -2 - 1  + $indice;
+											break;
+											case '3':
+											$nrocuota= $mesIncio -7 - 1  + $indice;
+											break;
+										}
+									}else{
+										$nrocuota=$indice;
+									}
+									$c_insert->cuota				= $nrocuota;
+									*/
 									$c_insert->cuota				= $indice;
+
 									$c_insert->valor_cuota	= $cuota;
 									$c_insert->grupoid			= $_POST['grupoid'];
 									$c_insert->insc_id			= $insc_id;
@@ -401,7 +432,6 @@ switch($v){
 									$c_insert->date					= time();
 									$c_insert->takenby			= $H_USER->get_property('id');
 								//	$c_insert->periodo			= $HULK->periodo_insc;
-									$c_insert->periodo			= $LMS->GetField("mdl_course","periodo",$comision);
 
 									// Si no tiene valor entonces ese curso no tiene libro asociado.
 									if($indice == 0 && $c_insert->valor_cuota == 0){
@@ -417,7 +447,6 @@ switch($v){
 									}
 								}
 							}
-
 							$view->Load('header',$data);
 							if($importe2>0){
 								$param = "&t=insc";
@@ -740,6 +769,7 @@ switch($v){
 		}
 
 		$data['row'] = $LMS->getUser($id);
+		
 		$menuroot['ruta'] = array("Contactos"=>"contactos.php?v=list","{$data['row']['firstname']} {$data['row']['lastname']}"=>"contactos.php?v=view&id={$data['row']['id']}");
 
 		// 29/08/2018 creacion de variable con url definida para los diferentes ambientes
@@ -1069,6 +1099,7 @@ switch($v){
 
 			//TODO: Creo recibo de pago
 			$comprobante = $_POST;
+			
 			if($comprobante['importe']>0){
 				$comprobante['userid']		= $id;
 				$comprobante['date']			= time();
@@ -1093,7 +1124,7 @@ switch($v){
 								$cuota['valor_cuota'] = $cuota['valor_cuota'] - ceil($cuota['valor_cuota']*$beca/100);
 							}
 						}
-						
+
 						if($importe>=($cuota['valor_cuota']-$cuota['valor_pagado'])){
 							$c_update['valor_pagado']	= $cuota['valor_cuota'];
 							$importe = $importe-($cuota['valor_cuota']-$cuota['valor_pagado']);
@@ -1103,16 +1134,14 @@ switch($v){
 							$pagado_parcial=$importe;
 							$importe = 0;
 						}
-						//solo modifica la fecha y quien lo hizo si hay algo por pagar
-						if ($cuota['valor_cuota']-$cuota['valor_pagado']!=0){
-							$c_update['date']					= time();
-						    $c_update['takenby']			= $H_USER->get_property('id');
-						}
+						$c_update['date']					= time();
+						$c_update['takenby']			= $H_USER->get_property('id');
+
 						if(!$H_DB->update("h_cuotas",$c_update,"id = ".$cuota['id'])){
 							$errors = show_error("Cuotas","Error al actualizar la base de datos");
 						}
 						if ($pagado_parcial> 0){
-							if(!$H_DB->insert("h_comprobantes_cuotas",array('comprobanteid'=>$comprobante['id'],'cuotaid'=>$cuota['id'],'importe'=>$pagado_parcial))){
+							if(!$H_DB->insert("h_comprobantes_cuotas",array('comprobanteid'=>$comprobante['id'],'cuotaid'=>$cuota['id'],'importe'=>$pagado_parcial,'tarjetaid'=>$comprobante['tarjetaid'],'bancoid'=>$comprobante['bancoid']))){
 								$errors = show_error("Cuotas","Error al insertar h_comprobantes_cuotas en la base de datos");
 							}
 						}
@@ -1233,9 +1262,17 @@ switch($v){
 																															WHERE b.cancel=0 AND b.userid={$id}
 																															AND b.courseid=c.courseid AND periodo={$HULK->periodo});");
 
-		$data['comprobantes'] = $H_DB->GetAll("SELECT * FROM h_comprobantes h WHERE userid={$id} ORDER BY date DESC,numero DESC;");
+		$data['comprobantes'] = $H_DB->GetAll(" SELECT h.*, CONCAT(t.name,' DE BANCO ',b.name) tarjeta
+												FROM h_comprobantes h
+												LEFT JOIN h_bancos b ON h.bancoid=b.id
+												LEFT JOIN h_tarjetas t ON h.tarjetaid=t.id
+												WHERE h.userid={$id} ORDER BY h.date DESC,h.numero DESC;");
 
-
+		$data['tarjetas'] = $H_DB->GetAll("SELECT * FROM h_tarjetas WHERE cod_estado='A';");
+		
+		$data['bancos'] = $H_DB->GetAll("SELECT * FROM h_bancos WHERE cod_estado='A' ORDER BY name;");
+		
+		
 		break;
 
 	case 'pagos-print':
@@ -1308,7 +1345,7 @@ switch($v){
 			}
 		}
 		//alan
-		//show_array($data);
+		
 		if(!$data['cobro'])	{
 			if($data['comprobante']['tipo']==1){
 				$view->Load('print/recibo',$data);
@@ -1319,6 +1356,7 @@ switch($v){
 			}
 			die();
 		}
+		
 		if($data['cobro']){
 			if($data['comprobante']['tipo']==1){
 				$view->Load('print/recibocobro',$data);

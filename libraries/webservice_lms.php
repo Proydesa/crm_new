@@ -561,7 +561,20 @@ class H_LMS extends H_LMS_CONN {
 		if($bajas){
 			$WHERE .= " AND u.id NOT IN({$bajas})";
 		}
-		$result = $this->GetAll("SELECT u.id, u.username, CONCAT(u.lastname, ', ', u.firstname) AS fullname, CONCAT(u.firstname, ' ', u.lastname) AS namefull, e.timestart, u.email, u.phone2 as phone, u.obs
+		$result = $this->GetAll("SELECT 
+									u.id, 
+									u.username, 
+									CONCAT(u.lastname, ', ', u.firstname) AS fullname, 
+									CONCAT(u.firstname, ' ', u.lastname) AS namefull, 
+									e.timestart, 
+									u.email, 
+									u.phone2 as phone, 
+									u.obs, 
+									case 
+									  when u.autorizousoimg is null then 'N'
+									  when u.autorizousoimg = 0 then 'N'
+									  when u.autorizousoimg = 1 then 'S'
+									end as autorizousoimg
 								FROM {$HULK->dbname}.vw_enrolados e
 								INNER JOIN mdl_user u ON e.userid = u.id
 								WHERE e.roleid = 5 AND e.id = {$id}
@@ -789,15 +802,16 @@ class H_LMS extends H_LMS_CONN {
 		$id = $this->insert('mdl_user',$user);
 		return $id;
 	}
+	
 	/* cambiar estatus de usuario en una comisión */
 	function user_status($userid,$courseid,$status="GET"){
 		global $HULK;
 
 		$gradebook 	= array ('E'=>0.00000,'I'=>1.00000,'F'=>2.00000,'P'=>3.00000);
 		$estados	= array ('0.00000'=>'E','1.00000'=>'I','2.00000'=>'F','3.00000'=>'P');
-		
+
 		if (!$itemid = $this->GetField_sql("SELECT id FROM mdl_grade_items WHERE itemname LIKE '%Graduaci%' AND courseid={$courseid}")){
-			return false;
+			//return false;
 		}
 
 		if ($status=="GET"){
@@ -847,6 +861,7 @@ class H_LMS extends H_LMS_CONN {
 			}
 		}
 	}
+	
 	/* cambiar nota final */
 	function user_final($userid,$courseid,$status){
 		global $HULK;
@@ -1310,7 +1325,7 @@ class H_LMS extends H_LMS_CONN {
 	function getCursosEnAcademiaQueSeDictanEnDia($idAcademia,$fecha){
 		global $HULK;
 		$fechaReverse = substr($fecha,-4).'-'.substr($fecha,3,2).'-'.substr($fecha,0,2);
-		$fecha = strtotime($fechaReverse)+3600;
+		$fecha = strtotime($fechaReverse);
 		$dayletter = date('D',$fecha);
 		$dayletter = str_replace(['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], ['L','M','W','J','V','S','D'], $dayletter);
 

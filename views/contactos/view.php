@@ -18,7 +18,6 @@
 		$('#fnacimiento').datepicker({	changeMonth: true,	changeYear: true, yearRange: '1950:2000', dateFormat: 'dd-mm-yy'});
 	});
 </script>
-
 <div class="ui-widget" align="left">
 	<div class="column" style="width:100%">
 		<div class="portlet">
@@ -28,46 +27,46 @@
 					<table class="ui-widget" align="center" style="width:100%;">
 						<tbody class="ui-widget-content">
 							<tr style="height: 20px;">
-								<td class="ui-widget-content" align="right"><b>DNI:</b></td>
-								<td class="ui-widget-content">
+								<td width="25%" align="right" class="ui-widget-content"><b>DNI:</b></td>
+								<td width="25%" class="ui-widget-content">
 									<input readonly name="username" type="text" value="<?= $row['username'];?>" class="required"/>
 								</td>
-								<td align="center" class="ui-widget-content"><b>LMSID:</b> <a href="<?= $urlLMS;?>" target="_blank">
+								<td width="20%" align="center" class="ui-widget-content"><b>LMSID:</b> <a href="<?= $urlLMS;?>" target="_blank">
 								<span class="ui-icon ui-icon-newwin" style="float:right;"></span></a><?= $row['id'];?></td>
-								<td align="center" class="ui-widget-content">
+								<td width="30%" align="center" class="ui-widget-content">
 									 <b>ACID / Username:</b> <?= $row['acid'];?> / <?= $row['user_cisco'];?>
 								</td>
 							</tr>
 							<tr style="height: 20px;">
-								<td align="right" class="ui-widget-content"><b>Apellido:</b></td>
-								<td class="ui-widget-content">
+								<td width="25%" align="right" class="ui-widget-content"><b>Apellido:</b></td>
+								<td width="25%" class="ui-widget-content">
 									<input readonly name="lastname" type="text" value="<?= $row['lastname'];?>"/>
 								</td>
 								<td align="center" colspan="2"><b>Información de contacto</b></td>
 							</tr>
 							<tr style="height: 20px;">
-								<td align="right" class="ui-widget-content"><b>Nombre:</b></td>
-								<td class="ui-widget-content">
+								<td width="25%" align="right" class="ui-widget-content"><b>Nombre:</b></td>
+								<td width="25%" class="ui-widget-content">
 									<input readonly name="firstname" type="text" value="<?= $row['firstname'];?>"/>
 								</td>
-								<td align="right" class="ui-widget-content"><b>E-Mail:</b></td>
+								<td width="400" align="right" class="ui-widget-content"><b>E-Mail:</b></td>
 								<td class="ui-widget-content">
 									<input readonly name="email" type="text" value="<?= $row['email'];?>" class="required email"/>
 								</td>
 							</tr>
 							<tr style="height: 20px;">
-								<td align="right" class="ui-widget-content"><b>Fecha de Nacimiento:</b></td>
-								<td class="ui-widget-content">
+								<td width="25%" align="right" class="ui-widget-content"><b>Fecha de Nacimiento:</b></td>
+								<td width="25%" class="ui-widget-content">
 									<input readonly name="fnacimiento" id="fnacimiento" type="text" value="<?= date('d-m-Y',$row['fnacimiento']);?>"/>
 								</td>
-								<td align="right" class="ui-widget-content"><b>Tel&eacute;fono:</b></td>
+								<td width="400" align="right" class="ui-widget-content"><b>Tel&eacute;fono:</b></td>
 								<td class="ui-widget-content">
 									<input readonly name="phone1" type="text" class="digits" value="<?= $row['phone1'];?>"/>
 								</td>
 							</tr>
 							<tr style="height: 20px;">
-								<td align="right" class="ui-widget-content"><b>Pa&iacute;s:</b></td>
-								<td class="ui-widget-content">
+								<td width="25%" align="right" class="ui-widget-content"><b>Pa&iacute;s:</b></td>
+								<td width="25%" class="ui-widget-content">
 									<select name="country" class="required" disabled>
 										<option value="">Seleccione pa&iacute;s</option>
 										<?php foreach($HULK->countrys as $count => $country):?>
@@ -76,39 +75,36 @@
 										<?php endforeach;?>
 									</select>
 								</td>
-								<td align="right" class="ui-widget-content"><b>Celular:</b></td>
+								<td width="400" align="right" class="ui-widget-content"><b>Celular:</b></td>
 								<td class="ui-widget-content">
 									<input readonly name="phone2" type="text" class="digits" value="<?= $row['phone2'];?>"/>
 								</td>
 							</tr>
 							<tr style="height: 20px;">
-								<td align="right" class="ui-widget-content"><b>Localidad:</b></td>
-								<td class="ui-widget-content">
+								<td width="25%" align="right" class="ui-widget-content"><b>Localidad:</b></td>
+								<td width="25%" class="ui-widget-content">
 									<input readonly name="city" type="text" value="<?= $row['city'];?>"/>
 								</td>
-									<td align="right" class="ui-widget-content"><b>No mandar spam:</b></td>
-									<td class="ui-widget-content"><input readonly type="checkbox" name="noquierospam" value="1" <?php echo ($row['noquierospam']>0)? "checked" : "";?> /></td>
+									<td width="400" align="right" class="ui-widget-content"><b>No mandar spam:</b></td>
+							  <td class="ui-widget-content"><input readonly type="checkbox" name="noquierospam" value="1" <?php echo ($row['noquierospam']>0)? "checked" : "";?> /></td>
 							</tr>
 							<tr style="height: 20px;">
-								<td align="right" class="ui-widget-content"><b>Direcci&oacute;n:</b></td>
-									<td class="ui-widget-content">
+								<td width="25%" align="right" class="ui-widget-content"><b>Direcci&oacute;n:</b></td>
+									<td width="25%" class="ui-widget-content">
 										<input readonly name="address" type="text" value="<?= $row['address'];?>"/>
 									</td>
-									<td align="right" class="ui-widget-content"><b>Primer acceso:</b></td>
-									<td class="ui-widget-content"><?php echo ($row['firstaccess']>0)? show_fecha($row['firstaccess'],"") : "Nunca";?></td>
-									</tr>
-								</td>
-							</tr>
-
-							<tr style="height: 20px;">
-								<td align="right" class="ui-widget-content"><b>C&oacute;digo Postal:</b></td>
-										<td class="ui-widget-content"><input readonly name="cp" type="text" value="<?= $row['cp'];?>"/></td>
-								<td align="right" class="ui-widget-content"><b>&Uacute;ltimo acceso:</b></td>
-								<td class="ui-widget-content"><?php echo ($row['lastaccess']>0)? show_fecha($row['lastaccess'],"") : "Nunca";?></td>
+									<td width="400" align="right" class="ui-widget-content"><strong>Autorización para uso de Imagen:</strong></td>
+							  <td class="ui-widget-content"><input readonly type="checkbox" name="autorizousoimg" value="1" <?php echo ($row['autorizousoimg']>0)? "checked" : "";?> /></td>
 							</tr>
 							<tr style="height: 20px;">
-								<td align="right" class="ui-widget-content"><b>Sexo:</b></td>
-								<td class="ui-widget-content">
+								<td width="25%" align="right" class="ui-widget-content"><b>C&oacute;digo Postal:</b></td>
+										<td width="25%" class="ui-widget-content"><input readonly name="cp" type="text" value="<?= $row['cp'];?>"/></td>
+								<td width="400" align="right" class="ui-widget-content"><b>Accesos:</b></td>
+								<td class="ui-widget-content"><strong>Primero:</strong> <?php echo ($row['firstaccess']>0)? show_fecha($row['firstaccess'],"") : "Nunca";?> <strong>Ultimo:</strong> <?php echo ($row['lastaccess']>0)? show_fecha($row['lastaccess'],"") : "Nunca";?></td>
+							</tr>
+							<tr style="height: 20px;">
+								<td width="25%" align="right" class="ui-widget-content"><b>Sexo:</b></td>
+								<td width="25%" class="ui-widget-content">
 									<select name="sexo" disabled>
 										<option value="M" <?php if($row['sexo']=='M') echo "selected" ?>>Masculino</option>
 										<option value="F" <?php if($row['sexo']=='F') echo "selected" ?>>Femenino</option>
@@ -116,7 +112,7 @@
 									</select>
 								</td>
 								<?php if($H_USER->has_capability('role/edit')):?>
-								<td align="right" class="ui-widget-content"><b>Role (dentro del CRM):</b></td>
+								<td width="400" align="right" class="ui-widget-content"><b>Role (dentro del CRM):</b></td>
 								<td class="ui-widget-content">
 									<select name="role" disabled>
 										<option value="">Sin role</option>
@@ -130,13 +126,12 @@
 									</select>
 								</td>
 							<?php else:?>
-								<td colspan="2"></td>
 						<?php endif;?>
 							</tr>
 							<tr>
-								<td align="right" class="ui-widget-content"><b>Observaciones:</b></td>
+								<td width="25%" align="right" class="ui-widget-content"><b>Observaciones:</b></td>
 								<td class="ui-widget-content" colspan="3" style="padding:5px;" >
-								<textarea readonly="readonly" id="obs" name="obs" style="width:100%; overflow: auto;"><?= $row['obs'];?></textarea></td>
+							  <textarea readonly id="obs" name="obs" style="width:100%; overflow: auto;"><?= $row['obs'];?></textarea></td>
 							</tr>
 						</tbody>
 					</table>
