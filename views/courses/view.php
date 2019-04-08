@@ -247,10 +247,8 @@
 							foreach($cuotas as $kc=>$cuota):
 								$difcuota = $LMS->getValorCuota($row['id'],$estudiante['id'],$cuota['cuota']);
 						?>
-						<td data-cuota="<?= $difcuota ?>" class="<?= $difcuota == '' ? '' : ($difcuota >= 0 ? 'bg-success' : 'bg-danger') ?> textCenter"><?= $difcuota." - " ?>se
-						
-						<?= $difcuota == '' ? '-' : ($difcuota >= 0 ? 'ok' : '$'.number_format($difcuota,0,',','.')) ?>
-						
+						<td data-cuota="<?= $difcuota ?>" class="<?= $difcuota == '' ? '' : ($difcuota >= 0 ? 'bg-success' : 'bg-danger') ?> textCenter">
+							<?= $difcuota == '' ? '-' : ($difcuota >= 0 ? 'ok' : '$'.number_format($difcuota,0,',','.')) ?>
 						</td>
 						<?php
 							endforeach;
