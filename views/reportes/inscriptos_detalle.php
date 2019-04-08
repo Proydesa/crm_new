@@ -175,24 +175,34 @@
 					<td colspan="2">
 						<table style='font-family:Arial;font-size:12px;' align='center' class="ui-widget" width="100%">
 							<?php foreach($rows as $comision):?>
-								<tr>
-									<td align="left" colspan="4"> <b>- <?= $comision['shortname']."</b> (Total: ".count($comision['alumnos']).")"; ?> - Instructor: <?= $comision['instructor']; ?></td>
+								<tr class="portlet-header">
+									<td align="left" colspan="7"> <b>- <?= $comision['shortname']."</b> (Total: ".count($comision['alumnos']).")"; ?> - Instructor: <?= $comision['instructor']; ?></td>
 								</tr>
 								<?php //alan// ?>
 								<?php $e=1; ?>
+									<tr class="portlet-header">
+										<td width="20px">Nº</td>
+										<td>Alumno</td>
+										<td>DNI</td>
+										<td>Telefonos</td>
+										<td>Email</td>
+										<td>Inscripcion</td>
+										<td>Detalle</td>
+									</tr>
 								<?php foreach($comision['alumnos'] as $alumno): ?>
 									<tr class="ui-widget-content">
-										<td width="20px"><?= $e; ?>
-										<td><?= $alumno['alumno']; ?> - DNI: <?= $alumno['username']; ?></td>
-										<td>- Tel&eacute;fonos: <?= $alumno['phone1']." / ".$alumno['phone2']; ?> </td>
-										<td>- Email: <?= $alumno['email']; ?> </td>
-										<td>- Inscr: <?= date('d',$alumno['timestart']).'/'.ConvertMonth(date('M',$alumno['timestart'])).'/'.date('Y',$alumno['timestart']); ?> </td>
-										<td>- Detalle: <?= $alumno['detalle']; ?> </td>
+										<td width="20px"><?= $e; ?></td>
+										<td><?= $alumno['alumno']; ?></td>
+										<td><?= $alumno['username']; ?></td>
+										<td><?= $alumno['phone1']." / ".$alumno['phone2']; ?> </td>
+										<td><?= $alumno['email']; ?> </td>
+										<td><?= date('d',$alumno['timestart']).'/'.ConvertMonth(date('M',$alumno['timestart'])).'/'.date('Y',$alumno['timestart']); ?> </td>
+										<td><?= $alumno['detalle']; ?> </td>
 									</tr>
 									<?php $e++; ?>
 								<?php endforeach;?>
 								<?php //alan// ?>
-								<tr><td colspan="4">&nbsp;</td></tr>
+								<tr><td colspan="7">&nbsp;</td></tr>
 							<?php endforeach;?>
 						</table>
 					</td>
