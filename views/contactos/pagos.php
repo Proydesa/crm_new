@@ -216,6 +216,24 @@
 		$('#maxValue').html(add);
 
 	}
+	
+	function mostrarbancos(tipo_pago){
+		if(tipo_pago==5){
+			document.getElementById('tarjetas').style.display = 'block';
+			document.getElementById('bancos').style.display = 'block';
+		}else{
+			document.getElementById('tarjetas').style.display = 'none';
+			document.getElementById('bancos').style.display = 'none';
+		}
+	}
+	
+	function evaluarBanco(id){
+		if(id==49){
+			document.getElementById('detalle').value = "Pago con tarjeta de: Banco ";
+		}else{
+			document.getElementById('detalle').value = "";
+		}
+	}
 </script>
 <div class="column-c" style="width:93%" align="center">
 	<?php if($no_pagos):?>
@@ -239,19 +257,49 @@
 									<b>Registro de pagos:</b>
 								</td>
 								<td align="right">
-									<div class="radio">
-										$
-										<input type="text" id="importe" name="importe" value="<?= abs($pendiente);?>" class="required digits" style="width:80px; margin-top:4px;" align="right">
-									<select name="concepto" id="concepto" style="width:150px;">
-											<?php foreach($HULK->conceptos as $value=>$concepto):?>
-												<option value="<?= $value;?>" class="required fpago" id="<?= $concepto;?>"><?= $concepto;?></option>
-											<?php endforeach;?>
-									</select>
-									</div>
-									<div>
-										<span><b>Detalle de pago:</b> (Ej: N° de cheque)</span>
-										<input type="text" name="nrocheque" id="nrocheque" value="" style="width:50%;" />
-									</div>
+									<table class="ui-widget" width="100%" >
+										<tr>
+											<td align="right">
+												<div class="radio">
+													$
+													<input type="text" id="importe" name="importe" value="<?= abs($pendiente);?>" class="required digits" style="width:80px; margin-top:4px;" align="right">
+												<select name="concepto" id="concepto" style="width:150px;" onChange="mostrarbancos(this.value)">
+														<?php foreach($HULK->conceptos as $value=>$concepto):?>
+															<option value="<?= $value;?>" class="required fpago" id="<?= $concepto;?>"><?= $concepto;?></option>
+														<?php endforeach;?>
+												</select>
+												</div>
+											</td>
+											<td>
+												<div id="tarjetas" style="display: none" class="radio">
+													<select name="tarjetaid" id="tarjetaid">
+															<option value="0">Elija Tarjeta</option>
+															<?php foreach($tarjetas as $tarjeta): ?>
+																<option value="<?= $tarjeta['id'] ?>"><?= $tarjeta['name']; ?></option>
+															<?php endforeach;?>
+													</select>
+												</div>
+											</td>
+											<td>
+												<div id="bancos" style="display: none">
+													<select name="bancoid" id="bancoid" onChange="evaluarBanco(this.value)">
+															<option value="0">Elija Banco</option>
+															<?php foreach($bancos as $banco): ?>
+																<option value="<?= $banco['id'] ?>"><?= $banco['name']; ?></option>
+															<?php endforeach;?>
+													</select>
+												</div>
+											</td>
+										<tr>
+										</tr>
+											<td align="right" colspan="3">
+												<div>
+													<span><b>Detalle de pago:</b> (Ej: N° de cheque)</span>
+													<input type="text" name="nrocheque" id="nrocheque" value="" style="width:50%;" />
+												</div>
+											</td>
+										</tr>
+									</table>
 								</td>
 							</tr>
 							<tr style="height: 20px;" class="ui-widget-content">
@@ -520,7 +568,7 @@
 								</td>
 								<td align="center"><span class="fecha" id="<?=$comprobante['id']?>"><?= date("d-m-Y", $comprobante['date']) ;?></span></td>
 								<td class="ui-widget-content" align="center">$ <?= number_format($comprobante['importe'], 2, ',', '.') ;?></td>
-								<td align="right"><span class="concepto" id="<?=$comprobante['id']?>"><?= $HULK->conceptos[$comprobante['concepto']] ;?></span></td>
+								<td align="right"><span class="concepto" id="<?=$comprobante['id']?>" title="<?= $comprobante['tarjeta'] ;?>"><?= $HULK->conceptos[$comprobante['concepto']] ;?></span></td>
 								<td align="right"><span class="tipo" id="<?=$comprobante['id']?>"><?= $HULK->tipos[$comprobante['tipo']] ;?></span></td>
 								<td align="left"><?= $comprobante['detalle'] ;?></td>
 								<td align="center">

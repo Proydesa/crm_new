@@ -7,7 +7,19 @@ $H_USER->require_login();
 
 $f 	= $_REQUEST['f'];
 
-$f();
+$f(); 
+
+function enviarMail(){
+	$para=$_REQUEST['para'];
+	$asunto=$_REQUEST['asunto'];
+	$mensaje=$_REQUEST['mensaje'];
+$mail = new H_Mail();
+$mail->Subject(utf8_decode($asunto));
+$mail->Body(utf8_decode($mensaje));
+$mail->AddAddress($para, "");
+$mail->CharSet = 'UTF-8';
+$mail->Send();
+}
 
 function carrerasList(){
 	global $HULK,$LMS,$H_DB,$H_USER;
@@ -221,7 +233,7 @@ function noPagos(){
 	foreach ($nopagos as $pago){
 		$pago['valor'] = $pago['valor_cuota'] - $pago['valor_pagado'];
 		$grupo = $pago['grupoid'];
-
+		$pago['valor_original']= $pago['valor_cuota'];
 		if ($pago['cuota']>0){
 			$beca = $H_DB->GetField("h_inscripcion", "becado", $pago['insc_id']);
 			if($beca>0){
@@ -230,7 +242,7 @@ function noPagos(){
 			$pago['valor'] = $pago['valor_cuota'] - $pago['valor_pagado'];
 		}
 
-		if($pago['valor'] > 0){
+		
 			if ($pago['cuota']==0){
 				echo "<tr><td>".$H_DB->GetField('h_libros','name',$carrera, 'modelid')."</td>";
 				echo "<td class='bg-danger' align='center'>
@@ -239,14 +251,14 @@ function noPagos(){
 			}else{
 				echo "<tr><td>Cuota ".$pago['cuota']."</td>";
 				echo "<td class='bg-danger' align='center'>
-							$ <span id='{$pago['id']}'>{$pago['valor']}</span>
+							$ <span id='{$pago['id']}'>{$pago['valor']} ({$pago['valor_original']})</span>
 							</td></tr>";
 
 				$total += $pago['valor'];
 				echo "<input type='hidden' name='cuotas[]' value='{$pago['id']}' />";
 
 			}
-		}
+		
 	}
 	echo "<tr><td><b>Total: </b></td><td align='center'>$ <input type='text' name='total' id='total' value='{$total}' style='width:70px;' align='right' readonly /></td></tr>";
 	echo "</tbody></table>";
@@ -433,15 +445,29 @@ function RecordExists(){
 
 function Bancos(){
 
-
   global $H_DB;
 
 	$bancos = $H_DB->GetAll("SELECT * FROM h_bancos ORDER BY name;");
 
-	echo "<select name='banco' style='width:200px;'>";
-	echo "<option value='0'>Otro...</option>";
+	echo "<select name='banco' style='width:200px;' onChange='evaluarBanco(this.value)' class='required'>";
+	echo "<option value='0'>Elija Banco</option>";
 	foreach($bancos as $banco){
 		echo "<option value='{$banco['id']}'>{$banco['name']}</option>";
+	}
+	echo "</select>";
+
+	return true;
+}
+
+function CreditCards(){
+  global $H_DB;
+
+	$creditcards = $H_DB->GetAll("SELECT * FROM h_tarjetas ORDER BY name;");
+
+	echo "<select name='tarjeta' style='width:200px;' class='required'>";
+	echo "<option value='0'>Elija Tarjeta</option>";
+	foreach($creditcards as $creditcard){
+		echo "<option value='{$creditcard['id']}'>{$creditcard['name']}</option>";
 	}
 	echo "</select>";
 

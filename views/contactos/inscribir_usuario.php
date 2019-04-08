@@ -26,6 +26,14 @@
 		});
 	}
 
+	function evaluarBanco(id){
+		if(id==49){
+			document.getElementById('detalle').value = "Pago con tarjeta de: Banco ";
+		}else{
+			document.getElementById('detalle').value = "";
+		}
+	}
+	
 	$(document).ready(function() {
 		//alan
 		$.validator.addClassRules({	'required': { required: true },		});
@@ -41,26 +49,42 @@
 		$("#frmSuscripcion").validate();
 
 		$('#concepto').change(function(){
-			if($('#concepto').val()=="2"){
-				$('#recibo').attr('disabled', false).button("refresh");
-				$('#recibo').attr('checked', 'checked').button("refresh");
-				$('#titulo').html("<b>Nro. de Cheque:</b>");
-				$('#contenido').empty().html('<input type="text" name="nrocheque" id="nrocheque" value="" class="required" style="width:94%;" />');
-				$('#nrocheque').focus();
-			}else{
-				if($('#concepto').val()=="3"){
+			switch($('#concepto').val()){
+				case '2':
+					$('#recibo').attr('disabled', false).button("refresh");
+					$('#recibo').attr('checked', 'checked').button("refresh");
+					$('#titulo').html("<b>Nro. de Cheque:</b>");
+					$('#contenido').empty().html('<input type="text" name="nrocheque" id="nrocheque" value="" class="required" style="width:94%;" />');
+					$('#nrocheque').focus();
+					$('#titulo_tarjeta').empty();
+					$('#tarjetas').empty();
+					break;
+				case '5':
 					$('#recibo').attr('disabled', true).button("refresh");
 					$('#factura').attr('checked', 'checked').button("refresh");
 					$('#nrocheque').attr('disabled', true);
 					$('#titulo').html("<b>Banco:</b>");
 					$('#contenido').empty().load('ajax.php?f=Bancos');
-				}else{
+					$('#titulo_tarjeta').html("<b>Tarjeta:</b>");
+					$('#tarjetas').empty().load('ajax.php?f=CreditCards');
+				case '3':
+					$('#recibo').attr('disabled', true).button("refresh");
+					$('#factura').attr('checked', 'checked').button("refresh");
+					$('#nrocheque').attr('disabled', true);
+					$('#titulo').html("<b>Banco:</b>");
+					$('#contenido').empty().load('ajax.php?f=Bancos');
+					$('#titulo_tarjeta').empty();
+					$('#tarjetas').empty();
+					break;
+				default:
 					$('#recibo').attr('disabled', false).button("refresh");
 					$('#recibo').attr('checked', 'checked').button("refresh");
 					$('#nrocheque').attr('disabled', true);
 					$('#titulo').empty();
 					$('#contenido').empty();
-				}
+					$('#titulo_tarjeta').empty();
+					$('#tarjetas').empty();
+					break;
 			}
 		});
 
@@ -311,7 +335,7 @@
 											</td>
 										</tr>
 										<?php else:?>
-										<tr><td><input type="hidden" name="periodo_insc" id="periodo_insc" value="<?= $HULK->periodo_insc;?>" /></td></tr>
+										<tr><td colspan="2"><input type="hidden" name="periodo_insc" id="periodo_insc" value="<?= $HULK->periodo_insc;?>" /></td></tr>
 										<?php endif;?>
 										<tr style="height: 30px;">
 											<td><b>Curso</b></td>
@@ -451,13 +475,14 @@
 											<?php endforeach;?>
 									</select>
 								</td>
-								<td id="titulo"></td>
-								<td id="contenido" align="left"></td>
+								<td colspan="2">
+									<table class="ui-widget"><tr><td id="titulo"></td><td id="contenido" align="left"></td><td></td><td id="titulo_tarjeta"></td><td id="tarjetas"></td></tr></table>
+								</td>
 							</tr>
 							<?php if($row['saldo']>0): ?>
 								<tr style="height: 30px;">
 									<td colspan="2" style="font-size:13px; color:red">El alumno tiene un saldo a favor de <b>$ <?= number_format($row['saldo'], 2, ',', '.'); ?></b></td>
-									<td colspan="2">&nbsp;</td>
+									<td colspan="2"></td>
 								</tr>
 								<input type="hidden" name="saldo" value="<?= $row['saldo']; ?>" />
 							<?php endif; ?>
