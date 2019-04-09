@@ -89,10 +89,11 @@ switch($v){
 			$menuroot['ruta'] = array("Asistencia Instructores"=>"asistencia.php?v=view",$data['row']['name']=>"#");
 	break;
 	case 'reporte':
-		$data['academies']		= $LMS->getAcademys();
+		$data['instructores']= $LMS->getAcademyInstructor(1);
+	
 		$data['ejecuto']=0;
 		
-		if (isset($_POST['startdate']) && isset($_POST['enddate']) &&  isset($_POST['idAcademia'])){
+		if (isset($_POST['startdate']) && isset($_POST['enddate'])){
 			$data['ejecuto']=1;
 			$data['diaInicio']= $_POST['startdate'];
 			$data['diaFin']= $_POST['enddate'];
@@ -100,8 +101,9 @@ switch($v){
 			$fechaInicio = strtotime($fechaInicioReverse);
 			$fechaFinReverse = substr($data['diaFin'],-4).'-'.substr($data['diaFin'],3,2).'-'.substr($data['diaFin'],0,2);
 			$fechaFin = strtotime($fechaFinReverse);
-			$idAcademia = $_POST['idAcademia'];
-			$asistenciaInstructores=$H_DB->GetAll("SELECT a.id,date_format(FROM_UNIXTIME(a.fecha),'%d-%m-%Y') fecha,c.id id_comision, c.fullname nombre_comision, 
+			$idInstructor = $_POST['idInstructor'];
+			
+			$asistenciaInstructores=$H_DB->GetAll("SELECT a.id,date_format(FROM_UNIXTIME(a.fecha),'%d-%m-%Y') fecha,c.id id_comision, c.fullname nombre_comision, a.idInstructor,
 		(SELECT concat(lastname,' ',firstname) nombre FROM {$HULK->lms_dbname}.mdl_user where id=IFNULL(a.idInstructorReemplazo,a.idInstructor) ) nombre_instructor,
 		date_format(FROM_UNIXTIME(a.Inicio),'%H:%i') inicio,
 		(select inicio from {$HULK->dbname}.h_course_config cconfig, {$HULK->dbname}.h_horarios h where cconfig.horarioid= h.id and cconfig.courseid=c.id AND
@@ -129,17 +131,20 @@ switch($v){
 		END) ) deberia_finalizar,
 		a.Observacion,
 		a.Asistencia
-		FROM {$HULK->dbname}.h_asistencia_instructor a, {$HULK->lms_dbname}.mdl_course c WHERE a.idComision= c.id and a.fecha>=".$fechaInicio." and a.fecha<= ".$fechaFin);
+		FROM {$HULK->dbname}.h_asistencia_instructor a, {$HULK->lms_dbname}.mdl_course c WHERE a.idComision= c.id and a.fecha>=".$fechaInicio." and a.fecha<= ".$fechaFin." and ((a.idinstructor = $idInstructor and $idInstructor != 0 ) or $idInstructor = 0 )");
+			
+			//show_array($asistenciaInstructores);
+			
 		$data['asistenciaInstructores']=$asistenciaInstructores;
 			
 		}
 			$menuroot['ruta'] = array("Asistencia Instructores"=>"asistencia.php?v=view",$data['row']['name']=>"#");
 	break;
 	case 'reporteXLS':
-	$data['academies']		= $LMS->getAcademys();
+	$data['instructores']= $LMS->getAcademyInstructor(1);
 	$data['ejecuto']=0;
 	
-	if (isset($_POST['startdate']) && isset($_POST['enddate']) &&  isset($_POST['idAcademia'])){
+	if (isset($_POST['startdate']) && isset($_POST['enddate'])){
 		$data['ejecuto']=1;
 		$data['diaInicio']= $_POST['startdate'];
 		$data['diaFin']= $_POST['enddate'];
@@ -147,7 +152,7 @@ switch($v){
 		$fechaInicio = strtotime($fechaInicioReverse);
 		$fechaFinReverse = substr($data['diaFin'],-4).'-'.substr($data['diaFin'],3,2).'-'.substr($data['diaFin'],0,2);
 		$fechaFin = strtotime($fechaFinReverse);
-		$idAcademia = $_POST['idAcademia'];
+		$idInstructor = $_POST['idInstructor'];
 		$asistenciaInstructores=$H_DB->GetAll("SELECT a.id,date_format(FROM_UNIXTIME(a.fecha),'%d-%m-%Y') fecha,c.id id_comision, c.fullname nombre_comision, 
 	(SELECT concat(lastname,' ',firstname) nombre FROM {$HULK->lms_dbname}.mdl_user where id=IFNULL(a.idInstructorReemplazo,a.idInstructor) ) nombre_instructor,
 	date_format(FROM_UNIXTIME(a.Inicio),'%H:%i') inicio,
@@ -176,7 +181,7 @@ cconfig.dias like (SELECT  case
 	END) ) deberia_finalizar,
 	a.Asistencia,
 	a.Observacion
-	FROM {$HULK->dbname}.h_asistencia_instructor a, {$HULK->lms_dbname}.mdl_course c WHERE a.idComision= c.id and a.fecha>=".$fechaInicio." and a.fecha<= ".$fechaFin);
+	FROM {$HULK->dbname}.h_asistencia_instructor a, {$HULK->lms_dbname}.mdl_course c WHERE a.idComision= c.id and a.fecha>=".$fechaInicio." and a.fecha<= ".$fechaFin." and ((a.idinstructor = $idInstructor and $idInstructor != 0 ) or $idInstructor = 0 )");
 	$data['asistenciaInstructores']=$asistenciaInstructores;
 		
 	}

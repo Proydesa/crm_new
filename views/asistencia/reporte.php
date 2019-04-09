@@ -20,12 +20,12 @@ function enabledAllSelect(){
 						</td>
 					</tr>
 					<tr>
-							<td><b>Academias</b></td>
+							<td><b>Instructores:</b></td>
 							<td class="ui-widget-content">
-								<select name="idAcademia"  style="width:500px;">
+								<select name="idInstructor"  style="width:500px;">
 									<option value="0">Todos...</option>
-									<?php foreach($academies as $academia): ?>
-										<option value="<?= $academia['id']; ?>" <?=$academia['id']== (isset($_POST['idAcademia']) ? $_POST['idAcademia']:1) ? 'selected': '' ?> ><?= $academia['name']; ?></option>
+									<?php foreach($instructores as $instructor): ?>
+										<option value="<?= $instructor['id']; ?>" <?=$instructor['id']== (isset($_POST['idInstructor']) ? $_POST['idInstructor']:1) ? 'selected': '' ?> ><?= $instructor['fullname']; ?></option>
 									<?php endforeach; ?>
 								</select>
 							</td>
