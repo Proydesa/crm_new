@@ -11,6 +11,8 @@ $HULK->countrys  = array(
 		'PY'=>'PARAGUAY',
 		'PE'=>'PERU',
 		'UY'=>'URUGUAY',
-		'VE'=>'VENEZUELA'
+		'VE'=>'VENEZUELA',
+		'CI'=>'Capacitacion Instructores'
+		
 	);
 ?>

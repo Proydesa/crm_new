@@ -31,7 +31,9 @@ function getMeses($periodo){
 			deseleccionarPaises();
 			 if($("#selecall").is(':checked')) {
 				$('.academy').each( function() {
+					if($(this).attr('value')!=200){ 
 					$(this).attr("checked","checked");
+				}
 				});
 				mostrarTodosLi();
 
