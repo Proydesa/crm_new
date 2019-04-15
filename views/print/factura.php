@@ -1,5 +1,6 @@
-<?php $border=0; ?>
 <?php
+//$disenio=1; 
+//$comprobante['concepto']==1;
 	foreach($cuotas as $cuota):
 		if($cuota['libroid']==0){
 
@@ -12,9 +13,9 @@
 
 			//Busco si hay otro comprobante para esa cuota
 			if($cuota['importe']<$cuota_beca){
-				$comps = $H_DB->GetAll("SELECT *
-																FROM h_comprobantes_cuotas
-																WHERE cuotaid={$cuota['cuotaid']} AND comprobanteid<={$cuota['comprobanteid']};");
+				$comps = $H_DB->GetAll("SELECT * 
+										FROM h_comprobantes_cuotas
+										WHERE cuotaid={$cuota['cuotaid']} AND comprobanteid<={$cuota['comprobanteid']};");
 				if($comps){
 					foreach($comps as $comp):
 						$sum += $comp['importe'];
@@ -58,220 +59,115 @@ pre { white-space: pre; white-space: -moz-pre-wrap; white-space: -o-pre-wrap; wh
 </head>
 <body onload="Print()" style="width:19.7cm;">
 
-	<div style="height:0.1cm;"></div>
+	<div style="position:absolute; top:2.3cm; left:13cm;"><?= date("d/m/y",$comprobante['date']);?></div>
 
-	<table width="100%" border="<?= $border;?>" style="height:3.5cm">
-		<tr>
-			<td style="width:68%;">&nbsp;</td>
-			<td style="font-size:13px;padding-top:2.4cm;vertical-align:top;"><?= date("d / m / y",$comprobante['date']);?></td>
-		</tr>
-	</table>
+	<div style="position:absolute; top:4.6cm; left:2cm;"><i><?= $nombre;?></i></div>
+	<div style="position:absolute; top:4.6cm; left:13.5cm;"><i><?=$comprobante['domicilio'];?></i></div>
+	<div style="position:absolute; top:5.6cm; left:1cm;"><i><?= $comprobante['tel']; ?></i></div>
+	<div style="position:absolute; top:5.6cm; left:13.5cm;"><i><?= $comprobante['localidad']; ?></i></div>
+	<div style="position:absolute; top:5.6cm; left:18cm;"><i><?=$comprobante['cp'];?></i></div>
 
-	<div style="height:1cm;"></div>
+	<div style="position:absolute; top:6.3cm; left:2.65cm;"><?= $comprobante['iva0'];?></div>
+	<div style="position:absolute; top:6.3cm; left:5.5cm;"><?= $comprobante['iva1'];?></div>
+	<div style="position:absolute; top:6.3cm; left:7.38cm;"><?= $comprobante['iva2'];?></div>
+	<div style="position:absolute; top:6.3cm; left:9.07cm;"><?= $comprobante['iva3'];?></div>
+	<div style="position:absolute; top:6.3cm; left:11.7cm;"><?= $comprobante['iva4'];?></div>
+	<div style="position:absolute; top:6.3cm; left:15.5cm;"><?= $comprobante['cuit'];?></div>
 
-	<table width="100%" style="vertical-align:top;" border="<?= $border;?>">
-		<tr height="32px">
-			<td style="width:1.4cm;vertical-align:top;">&nbsp;</td>
-			<td style="vertical-align:top;width:11cm;"><i><?= $nombre; ?></i></td>
-			<td colspan="4" style="vertical-align:top;padding-left:0.2cm;">&nbsp;&nbsp;&nbsp;&nbsp;<i><?= $comprobante['domicilio']; ?></i></td>
-		</tr>
-		<tr height="20px">
-			<td style="vertical-align:top;">&nbsp;</td>
-			<td style="vertical-align:top;"><i><?= $comprobante['tel']; ?></i></td>
-			<td colspan="2" style="vertical-align:top;width:2.3cm;padding-left:0.2cm;">&nbsp;&nbsp;&nbsp;<i><?= $comprobante['localidad']; ?></i></td>
-			<td colspan="2" style="vertical-align:top;padding-left:0.1cm;" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<i><?= $comprobante['cp']; ?></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-		</tr>
-		<tr height="20px">
-			<td>&nbsp;</td>
-			<td style="width:10cm;padding-top:3px;">
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $comprobante['iva0']; ?>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $comprobante['iva1']; ?>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $comprobante['iva2']; ?>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $comprobante['iva3']; ?>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $comprobante['iva4']; ?>
-			</td>
-			<td style="width:4cm;"></td>
-			<td colspan="3"><?= $comprobante['cuit']; ?></td>
-		</tr>
-	</table>
+	<?php if($cuotas_str){ ?>
+		<?php 
+			if($becado > 0){
+				if($becado < 100){
+					$importe_beca = $importe - $comprobante['importe'];
+				}else{
+					$importe_beca = 0;
+					$importe_beca2 = $importe;
+				}
+			}
+		?>
+		<div style="position:absolute; top:8.5cm;left:1.5cm;"> - <?= $cuotas_str; ?> de un total de <?= $total_cuotas; ?> del Curso de <?= $curso_str; ?><?= $comprobante['leyenda']?>, <?= $periodo_str;?></div>
+		<div style="position:absolute; top:8.5cm;left:17.5cm;"> $ <?= number_format($importe+$dfct,2,',','.');?></div>
 
-	<div style="height:0.9cm;"></div>
+		<div style="position:absolute; top:9.1cm;left:1.5cm;"> - Donaci&oacute;n al Favorecimiento de la Capacitaci&oacute;n Tecnol&oacute;gica</div>
+		<div style="position:absolute; top:9.1cm;left:17.5cm;"> $ -<?= number_format($dfct,2,',','.');?></div>
+	<?php } ?>
+	<?php if($becado>0){?>
+		<div style="position:absolute; top:9.7cm;left:1.5cm;">  - Donaci&oacute;n Beca <?= $becado; ?> %</div>
+		<div style="position:absolute; top:9.7cm;left:17.5cm;"> $ -<?= number_format($importe_beca + $importe_beca2,2,',','.');?></div>
+	<?php } ?>
+	<?php if($libroid){ ?>
+		<div style="position:absolute; top:10.3cm;left:1.5cm;"> - <?= $H_DB->GetField('h_libros', 'name', $libroid); ?></div>
+		<div style="position:absolute; top:10.3cm;left:17.5cm;"> $ <?= number_format($libro_valor,2,',','.');?></div>
+	<?php } ?>	
+	<?php if($comision>0){ ?>
+			<div style="position:absolute; top:10.9cm;left:4.5cm;"><b>Comisión:</b> <?= $LMS->GetField("mdl_course", "fullname", $comision); ?> <b>Aula:</b> <?= $H_DB->GetField("h_academy_aulas", "name", $H_DB->GetField("h_course_config", "aulaid", $comision, "courseid")); ?></div>
+			<div style="position:absolute; top:11.3cm;left:4.5cm;"><b>Fecha Inicio:</b> <?= date("d-m-Y", $LMS->GetField("mdl_course", "startdate", $comision)); ?> <b>Horario:</b> <?= $H_DB->GetField("h_horarios", "name", $H_DB->GetField("h_course_config", "horarioid", $comision, "courseid")); ?></div>
+	<?php } ?>	
 
-	<table width="100%" border="<?= $border;?>">
-		<tbody style="vertical-align:top;">
-			<tr style="height:20px; vertical-align:top;">
-				<td>&nbsp;</td>
-				<td>&nbsp;</td>
-			</tr>
-			<?php $alto = 110; ?>
-			<?php if($cuotas_str): ?>
-				<?php $alto -= 50; ?>
-				<?php
-					if($becado > 0){
-						if($becado < 100){
-							$importe_beca = $importe - $comprobante['importe'];
-						}else{
-							$importe_beca = 0;
-							$importe_beca2 = $importe;
-						}
-					}
-				?>
-				<tr style="height:35px; vertical-align:top;">
-					<td width="75%" style="padding-left:0.2cm;"> - <?= $cuotas_str; ?> de un total de <?= $total_cuotas; ?> del Curso de <?= $curso_str; ?><?= $comprobante['leyenda']?>, <?= $periodo_str;?></td>
-					<td width="25%" align="right" style="padding-right:0.8cm;">$ <?= number_format($importe+$dfct,2,',','.');?></td>
-				</tr>
-				<tr style="height:15px; vertical-align:top;">
-					<td width="75%" style="padding-left:0.2cm;"> - Donaci&oacute;n al Favorecimiento de la Capacitaci&oacute;n Tecnol&oacute;gica</td>
-					<td width="25%" align="right" style="padding-right:0.8cm;">$ -<?= number_format($dfct,2,',','.');?></td>
-				</tr>
-			<?php endif; ?>
-			<?php if($becado>0):?>
-				<?php $alto -= 15; ?>
-				<tr style="height:15px; vertical-align:top;">
-					<td width="75%" style="padding-left:0.2cm;"> - Donaci&oacute;n Beca <?= $becado; ?> %</td>
-					<td width="25%" align="right" style="padding-right:0.8cm;">$ -<?= number_format($importe_beca + $importe_beca2,2,',','.');?></td>
-				</tr>
-			<?php endif; ?>
-			<?php if($libroid): ?>
-				<?php $alto -= 15; ?>
-				<tr style="height:15px; vertical-align:top;">
-					<td width="75%" style="padding-left:0.2cm;"> - <?= $H_DB->GetField('h_libros', 'name', $libroid); ?></td>
-					<td width="25%" align="right" style="padding-right:0.8cm;">$ <?= number_format($libro_valor,2,',','.');?></td>
-				</tr>
-			<?php endif; ?>
-			<tr height="<?= $alto; ?>px" style="vertical-align:bottom;">
-				<?php if($comision > 0): ?>
-					<td width="75%" style="padding-left:0.4cm;">
-						<b>Comisión:</b> <?= $LMS->GetField("mdl_course", "fullname", $comision); ?> <b>Aula:</b> <?= $H_DB->GetField("h_academy_aulas", "name", $H_DB->GetField("h_course_config", "aulaid", $comision, "courseid")); ?><br />
-						<b>Fecha Inicio:</b> <?= date("d-m-Y", $LMS->GetField("mdl_course", "startdate", $comision)); ?> <b>Horario:</b> <?= $H_DB->GetField("h_horarios", "name", $H_DB->GetField("h_course_config", "horarioid", $comision, "courseid")); ?><br />
-						<b>Usuario:</b> <?= $comprobante['username']; ?><?php if($newpass) echo " - <b>Contraseña:</b> ".$newpass; ?>
-					</td>
-					<td>&nbsp;</td>
-				<?php else: ?>
-					<td colspan="2">&nbsp;</td>
-				<?php endif; ?>
-			</tr>
-			<tr style="height:15px;">
-				<td align="left" style="padding-left: 0cm;"><?php if($comprobante['concepto']==1) echo "X"; ?></td>
-				<td>&nbsp;</td>
-			</tr>
-			<tr style="height:28px;">
-				<td align="left" style="padding-top:0.3cm;padding-left: 0cm"><?php if($comprobante['concepto']==2) echo "X"; ?></td>
-				<td>&nbsp;</td>
-			</tr>
-			<tr style="height:20px;">
-				<td align="left" style="padding-left: 1.8cm;padding-top:2px;"><i>
-					<?php if($comprobante['concepto']==2){
-						echo $comprobante['nrocheque'];
-					}elseif($comprobante['concepto']!=1){
-						echo $HULK->conceptos[$comprobante['concepto']];
-					} ?></i></td>
-				<th align="right" style="padding-right:0.8cm;">$ <?= number_format($comprobante['importe'],2,',','.');?></th>
-			</tr>
-		</tbody>
-	</table>
+	<div style="position:absolute; top:11.5cm;left:0.1cm;"><?php if($comprobante['concepto']==1) echo "X"; ?></div>
+	<div style="position:absolute; top:12.3cm;left:0.1cm;"><?php if($comprobante['concepto']==2) echo "X"; ?></div>
 
-	<!-- Duplicado -->
-	<div style="height:0.9cm;"></div>
+	<div style="position:absolute; top:12.7cm;left:0.1cm;"><?php if($comprobante['concepto']>2) echo "X"; ?></div>
+	<div style="position:absolute; top:12.7cm;left:1cm;"><?php if($comprobante['concepto']>2) echo $HULK->conceptos[$comprobante['concepto']]; ?></div>
 
-	<table width="100%" border="<?= $border;?>" style="height:3.5cm">
-		<tr>
-			<td style="width:68%;">&nbsp;</td>
-			<td style="font-size:13px;padding-top:1.8cm;vertical-align:top;"><?= date("d / m / y",$comprobante['date']);?></td>
-		</tr>
-	</table>
+	<div style="position:absolute; top:12.9cm;left:17.8cm; font-size:14px;"><b>$ <?= number_format($comprobante['importe'],2,',','.');?></b></div>
+	<div style="position:absolute; top:13.1cm;left:2cm;"><i><?php if($comprobante['concepto']==2) echo $comprobante['nrocheque']; ?></i></div>
 
-	<div style="height:0.4cm;"></div>
+<!-- Duplicado -->
 
-	<table width="100%" style="vertical-align:top;" border="<?= $border;?>">
-		<tr height="32px">
-			<td style="width:1.4cm;vertical-align:top;">&nbsp;</td>
-			<td style="vertical-align:top;width:11cm;"><i><?= $nombre; ?></i></td>
-			<td colspan="4" style="vertical-align:top;padding-right:0.2cm;">&nbsp;&nbsp;&nbsp;&nbsp;<i><?= $comprobante['domicilio']; ?></i></td>
-		</tr>
-		<tr height="20px">
-			<td style="vertical-align:top;">&nbsp;</td>
-			<td style="vertical-align:top;"><i><?= $comprobante['tel']; ?></i></td>
-			<td colspan="2" style="vertical-align:top;width:2.3cm;padding-right:0.2cm;">&nbsp;&nbsp;&nbsp;<i><?= $comprobante['localidad']; ?></i></td>
-			<td colspan="2" style="vertical-align:top;padding-right:0.1cm;" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<i><?= $comprobante['cp']; ?></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-		</tr>
-		<tr height="20px">
-			<td>&nbsp;</td>
-			<td style="width:10cm;padding-top:3px;">
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $comprobante['iva0']; ?>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $comprobante['iva1']; ?>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $comprobante['iva2']; ?>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $comprobante['iva3']; ?>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $comprobante['iva4']; ?>
-			</td>
-			<td style="width:4cm;"></td>
-			<td colspan="3" align="left"><?= $comprobante['cuit']; ?></td>
-		</tr>
-	</table>
+	<div style="position:absolute; top:16.7cm; left:13cm;"><?= date("d/m/y",$comprobante['date']);?></div>
 
-	<div style="height:0.7cm;"></div>
+	<div style="position:absolute; top:19cm; left:2cm;"><i><?= $nombre;?></i></div>
+	<div style="position:absolute; top:19cm; left:13.5cm;"><i><?=$comprobante['domicilio'];?></i></div>
+	<div style="position:absolute; top:20cm; left:1cm;"><i><?= $comprobante['tel']; ?></i></div>
+	<div style="position:absolute; top:20cm; left:13.5cm;"><i><?= $comprobante['localidad']; ?></i></div>
+	<div style="position:absolute; top:20cm; left:18cm;"><i><?=$comprobante['cp'];?></i></div>
 
-	<table width="100%" border="<?= $border;?>">
-		<tbody style="vertical-align:top;">
-			<tr style="height:30px; vertical-align:top;">
-				<td>&nbsp;</td>
-				<td>&nbsp;</td>
-			</tr>
-			<?php $alto = 90; ?>
-			<?php if($cuotas_str): ?>
-				<?php $alto -= 50; ?>
-				<tr style="height:30px; vertical-align:top;">
-					<td width="75%" style="padding-left:0.2cm;"> - <?= $cuotas_str; ?> de un total de <?= $total_cuotas; ?> del Curso de <?= $curso_str; ?><?= $comprobante['leyenda']?>, <?= $periodo_str;?></td>
-					<td width="25%" align="right" style="padding-right:0.8cm;">$ <?= number_format($importe+$dfct,2,',','.');?></td>
-				</tr>
-				<tr style="height:15px; vertical-align:top;">
-					<td width="75%" style="padding-left:0.2cm;"> - Donaci&oacute;n al Favorecimiento de la Capacitaci&oacute;n Tecnol&oacute;gica</td>
-					<td width="25%" align="right" style="padding-right:0.8cm;">$ -<?= number_format($dfct,2,',','.');?></td>
-				</tr>
-			<?php endif; ?>
-			<?php if($becado>0):?>
-				<?php $alto -= 15; ?>
-				<tr style="height:15px; vertical-align:top;">
-					<td width="75%" style="padding-left:0.2cm;"> - Donaci&oacute;n Beca <?= $becado; ?> %</td>
-					<td width="25%" align="right" style="padding-right:0.8cm;">$ -<?= number_format($importe_beca + $importe_beca2,2,',','.');?></td>
-				</tr>
-			<?php endif; ?>
-			<?php if($libroid): ?>
-				<?php $alto -= 15; ?>
-				<tr style="height:15px; vertical-align:top;">
-					<td width="75%" style="padding-left:0.2cm;"> - <?= $H_DB->GetField('h_libros', 'name', $libroid); ?></td>
-					<td width="25%" align="right" style="padding-right:0.8cm;">$ <?= number_format($libro_valor,2,',','.');?></td>
-				</tr>
-			<?php endif; ?>
-			<?php if($comprobante['leyenda']): ?>
-				<?php $alto -= 15; ?>
-				<tr style="height:15px; vertical-align:top;">
-					<td width="75%" style="padding-left:0.2cm;"><?= $comprobante['leyenda'];?></td>
-					<td width="25%" align="right" style="padding-right:0.6cm;"></td>
-				</tr>
-			<?php endif; ?>
-			<tr height="<?= $alto;?>px" style="vertical-align:bottom;">
-				<td colspan="2">&nbsp;</td>
-			</tr>
-			<tr style="height:15px;">
-				<td align="left" style="padding-left: 0cm;"><?php if($comprobante['concepto']==1) echo "X"; ?></td>
-				<td>&nbsp;</td>
-			</tr>
-			<tr style="height:25px;">
-				<td align="left" style="padding-top:0.3cm;padding-left: 0cm"><?php if($comprobante['concepto']==2) echo "X"; ?></td>
-				<td>&nbsp;</td>
-			</tr>
-			<tr style="height:20px;">
-				<td align="left" style="padding-left: 1.8cm;padding-top:1px;"><i>
-					<?php if($comprobante['concepto']==2){
-						echo $comprobante['nrocheque'];
-					}elseif($comprobante['concepto']!=1){
-						echo $HULK->conceptos[$comprobante['concepto']];
-					} ?></i></td>
-				<th align="right" style="padding-right:0.8cm;">$ <?= number_format($comprobante['importe'],2,',','.');?></th>
-			</tr>
-		</tbody>
-	</table>
+	<div style="position:absolute; top:20.7cm; left:2.65cm;"><?= $comprobante['iva0'];?></div>
+	<div style="position:absolute; top:20.7cm; left:5.5cm;"><?= $comprobante['iva1'];?></div>
+	<div style="position:absolute; top:20.7cm; left:7.38cm;"><?= $comprobante['iva2'];?></div>
+	<div style="position:absolute; top:20.7cm; left:9.07cm;"><?= $comprobante['iva3'];?></div>
+	<div style="position:absolute; top:20.7cm; left:11.7cm;"><?= $comprobante['iva4'];?></div>
+	<div style="position:absolute; top:20.7cm; left:15.5cm;"><?= $comprobante['cuit'];?></div>
+
+	<?php if($cuotas_str){ ?>
+		<?php 
+			if($becado > 0){
+				if($becado < 100){
+					$importe_beca = $importe - $comprobante['importe'];
+				}else{
+					$importe_beca = 0;
+					$importe_beca2 = $importe;
+				}
+			}
+		?>
+		<div style="position:absolute; top:22.9cm;left:1.5cm;"> - <?= $cuotas_str; ?> de un total de <?= $total_cuotas; ?> del Curso de <?= $curso_str; ?><?= $comprobante['leyenda']?>, <?= $periodo_str;?></div>
+		<div style="position:absolute; top:22.9cm;left:17.5cm;"> $ <?= number_format($importe+$dfct,2,',','.');?></div>
+
+		<div style="position:absolute; top:23.5cm;left:1.5cm;"> - Donaci&oacute;n al Favorecimiento de la Capacitaci&oacute;n Tecnol&oacute;gica</div>
+		<div style="position:absolute; top:23.5cm;left:17.5cm;"> $ -<?= number_format($dfct,2,',','.');?></div>
+	<?php } ?>
+	<?php if($becado>0){?>
+		<div style="position:absolute; top:24.1cm;left:1.5cm;">  - Donaci&oacute;n Beca <?= $becado; ?> %</div>
+		<div style="position:absolute; top:24.1cm;left:17.5cm;"> $ -<?= number_format($importe_beca + $importe_beca2,2,',','.');?></div>
+	<?php } ?>
+	<?php if($libroid){ ?>
+		<div style="position:absolute; top:24.7cm;left:1.5cm;"> - <?= $H_DB->GetField('h_libros', 'name', $libroid); ?></div>
+		<div style="position:absolute; top:24.7cm;left:17.5cm;"> $ <?= number_format($libro_valor,2,',','.');?></div>
+	<?php } ?>	
+	<?php if($comision>0){ ?>
+			<div style="position:absolute; top:25.3cm;left:4.5cm;"><b>Comisión:</b> <?= $LMS->GetField("mdl_course", "fullname", $comision); ?> <b>Aula:</b> <?= $H_DB->GetField("h_academy_aulas", "name", $H_DB->GetField("h_course_config", "aulaid", $comision, "courseid")); ?></div>
+			<div style="position:absolute; top:25.7cm;left:4.5cm;"><b>Fecha Inicio:</b> <?= date("d-m-Y", $LMS->GetField("mdl_course", "startdate", $comision)); ?> <b>Horario:</b> <?= $H_DB->GetField("h_horarios", "name", $H_DB->GetField("h_course_config", "horarioid", $comision, "courseid")); ?></div>
+	<?php } ?>	
+
+	<div style="position:absolute; top:25.9cm;left:0.1cm;"><?php if($comprobante['concepto']==1) echo "X"; ?></div>
+	<div style="position:absolute; top:26.6cm;left:0.1cm;"><?php if($comprobante['concepto']==2) echo "X"; ?></div>
+
+	<div style="position:absolute; top:27.1cm;left:0.1cm;"><?php if($comprobante['concepto']>2) echo "X"; ?></div>
+	<div style="position:absolute; top:27.1cm;left:1cm;"><?php if($comprobante['concepto']>2) echo $HULK->conceptos[$comprobante['concepto']]; ?></div>
+
+	<div style="position:absolute; top:27.3cm;left:17.8cm; font-size:14px;"><b>$ <?= number_format($comprobante['importe'],2,',','.');?></b></div>
+	<div style="position:absolute; top:27.5cm;left:2cm;"><i><?php if($comprobante['concepto']==2) echo $comprobante['nrocheque']; ?></i></div>
 
 </body>
 </html>
