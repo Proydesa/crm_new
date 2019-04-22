@@ -17,7 +17,7 @@ function enrolados2(){
 
 
 		$data['periodo'] = $_REQUEST['periodo'];
-		$menuroot['ruta'] = array("Enrolados de la Red (Completo)"=>"reportes.php?v=enrolados2");
+		$menuroot['ruta'] = array("Reportes"=>"reportes.php?v=enrolados2","Alumnos por Academia de la Red"=>"reportes.php?v=enrolados2","Listado"=>"reportes.php?v=enrolados2");
 
 			if($_POST['pais']!=""){
 				$data['paisel']=$paisel=$_POST['pais'];
@@ -113,7 +113,7 @@ function academycourse(){
 			if($_REQUEST['encero']){
 				$data['encero'];
 			}
-			$menuroot['ruta'] = array("Alumnos por Academia de la Red"=>"reportes.php?v=academycourse");
+			$menuroot['ruta'] = array("Reportes"=>"reportes.php?v=academycourse","Alumnos por Academia de la Red"=>"reportes.php?v=academycourse","Tabla"=>"reportes.php?v=academycourse");
 
 			if($_POST['pais']!=""){
 				$data['paisel']=$paisel=$_POST['pais'];
@@ -152,7 +152,7 @@ function academycourse(){
 				$data['acadsel']=array();
 			}
 
-		if($_POST['conbajas']==1){
+		if($_POST['selvertipo']==1){
 			$data['conbajassel']=1;
 			$sqlbajas=" AND e.userid NOT IN (select distinct b.userid from `veteran-crm`.h_bajas b WHERE b.userid=e.userid AND b.comisionid=c.id AND b.cancel=0 AND b.detalle LIKE '%tica por cambio de comisi%') ";
 		}else{
@@ -352,15 +352,14 @@ function deudores(){
 						}
 					}
 					// Solo para 1 comisión que empieza en abril y el plan se pasa de 5 a 4 cuotas.
-					if(in_array($comision['id'],array(100390,100459))){
-echo "entro?";
+					if(in_array($comision['id'],array(100390,100459,100736))){
 						$cuota_alum['cuota']=$cuota_alum['cuota']+1;
 					}
 					// Chequear que el comprobante al que está asociada la cuota no esté pendiente
 					$comprobantes = $H_DB->GetAll("SELECT c.*, cc.importe AS pagado
-																				 FROM h_comprobantes c
-																				 INNER JOIN h_comprobantes_cuotas cc ON cc.comprobanteid=c.id
-																				 WHERE cc.cuotaid={$cuota_alum['id']};");
+												 FROM h_comprobantes c
+												 INNER JOIN h_comprobantes_cuotas cc ON cc.comprobanteid=c.id
+												 WHERE cc.cuotaid={$cuota_alum['id']};");
 					if($comprobantes){
 						foreach($comprobantes as $comp){
 							if($comp['pendiente']==1){
@@ -395,6 +394,10 @@ echo "entro?";
 			}
 		}
 	}
+	
+	//show_array($data['deudores']);
+	
+	
 	$view->Load('header');
 	if(empty($print)) $view->Load('menu',$data);
 	if(empty($print)) $view->Load('menuroot',$menuroot);

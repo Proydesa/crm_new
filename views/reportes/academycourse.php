@@ -164,9 +164,9 @@ function mostrarLi(pais){
 						<?php endforeach;?>
 						</ul>
 						<p>Ver:
-						<select >
-						<option <?php if($conbajassel) echo "selected"; ?> onclick="document.getElementById('conbajas').checked=true" title="Son todas las personas que se inscribieron a los diferentes cursos sin importar si despues solicitaron la baja y no lo terminaron">Inscriptos</option>
-						<option <?php if(!$conbajassel) echo "selected"; ?> onclick="document.getElementById('conbajas').checked=false" title="Son todas las personas que se inscribieron a los diferentes cursos y abonaron todas las cuotas">Graduados</option>
+						<select name="selvertipo" id="selvertipo">
+						<option <?php if($conbajassel==1) echo "selected"; ?> value="1" onclick="document.getElementById('conbajas').checked=true" title="Son todas las personas que se inscribieron a los diferentes cursos sin importar si despues solicitaron la baja y no lo terminaron">Inscriptos</option>
+						<option <?php if($conbajassel==0) echo "selected"; ?> value="0" onclick="document.getElementById('conbajas').checked=false" title="Son todas las personas que se inscribieron a los diferentes cursos y abonaron todas las cuotas">Graduados</option>
 						</select>
 						</p>
 						<p style="display:none">Este informe solo incluye los enrolados activos. Para incluir todos los inscriptos (bajas)
