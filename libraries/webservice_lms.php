@@ -1331,12 +1331,13 @@ class H_LMS extends H_LMS_CONN {
 
 		$sql ="SELECT c.id,c.fullname
 		FROM {$HULK->lms_dbname}.mdl_course c,
-			 {$HULK->dbname}.h_course_config cc
-		 where c.startdate <= {$fecha}
-		   and c.enddate >= {$fecha}
-		   and c.id = cc.courseid
-		   and cc.dias like '%{$dayletter}%'
-		   and c.academyid={$idAcademia};";
+			 {$HULK->dbname}.h_course_config cc,
+             {$HULK->dbname}.h_asistencia_instructor a
+		 where a.idComision= c.id 
+		 	and a.fecha= {$fecha}
+		  	and c.id = cc.courseid
+		   	and cc.dias like '%{$dayletter}%'
+		   	and c.academyid={$idAcademia};";
 
 		return $this->GetAll($sql) ;
 	}

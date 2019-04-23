@@ -84,13 +84,25 @@ switch($v){
 					WHERE idComision={$idComision} AND idAcademia={$idAcademia} AND FROM_UNIXTIME(fecha,'%Y-%m-%d')='{$fechaReverse}';"
 				);
 			}
+			
 			$data['cursosDelDia']=$cursoQueseDictan;
+
 		}
 			$menuroot['ruta'] = array("Asistencia Instructores"=>"asistencia.php?v=view",$data['row']['name']=>"#");
 	break;
 	case 'reporte':
 		$data['instructores']= $LMS->getAcademyInstructor(1);
-	
+		if (isset($_POST['idInstructor'])){
+			$ids="";
+			$todos=false;
+			foreach ($_POST['idInstructor'] as $row) {
+				$ids.=$row.",";
+				if ($row == "0"){
+					$todos=true;
+				}
+			}
+			$ids= rtrim($ids,',');
+		}
 		$data['ejecuto']=0;
 		
 		if (isset($_POST['startdate']) && isset($_POST['enddate'])){
@@ -131,7 +143,7 @@ switch($v){
 		END) ) deberia_finalizar,
 		a.Observacion,
 		a.Asistencia
-		FROM {$HULK->dbname}.h_asistencia_instructor a, {$HULK->lms_dbname}.mdl_course c WHERE a.idComision= c.id and a.fecha>=".$fechaInicio." and a.fecha<= ".$fechaFin." and ((a.idinstructor = $idInstructor and $idInstructor != 0 ) or $idInstructor = 0 )");
+		FROM {$HULK->dbname}.h_asistencia_instructor a, {$HULK->lms_dbname}.mdl_course c WHERE a.idComision= c.id and a.fecha>=".$fechaInicio." and a.fecha<= ".$fechaFin." and  (a.idinstructor in ($ids) or 1=".($todos?1:0).")");
 			
 			//show_array($asistenciaInstructores);
 			
@@ -142,8 +154,18 @@ switch($v){
 	break;
 	case 'reporteXLS':
 	$data['instructores']= $LMS->getAcademyInstructor(1);
-	$data['ejecuto']=0;
-	
+		if (isset($_POST['idInstructor'])){
+			$ids="";
+			$todos=false;
+			foreach ($_POST['idInstructor'] as $row) {
+				$ids.=$row.",";
+				if ($row == "0"){
+					$todos=true;
+				}
+			}
+			$ids= rtrim($ids,',');
+		}
+		$data['ejecuto']=0;
 	if (isset($_POST['startdate']) && isset($_POST['enddate'])){
 		$data['ejecuto']=1;
 		$data['diaInicio']= $_POST['startdate'];
@@ -181,7 +203,7 @@ cconfig.dias like (SELECT  case
 	END) ) deberia_finalizar,
 	a.Asistencia,
 	a.Observacion
-	FROM {$HULK->dbname}.h_asistencia_instructor a, {$HULK->lms_dbname}.mdl_course c WHERE a.idComision= c.id and a.fecha>=".$fechaInicio." and a.fecha<= ".$fechaFin." and ((a.idinstructor = $idInstructor and $idInstructor != 0 ) or $idInstructor = 0 )");
+	FROM {$HULK->dbname}.h_asistencia_instructor a, {$HULK->lms_dbname}.mdl_course c WHERE a.idComision= c.id and a.fecha>=".$fechaInicio." and a.fecha<= ".$fechaFin." and  (a.idinstructor in ($ids) or 1=".($todos?1:0).")");
 	$data['asistenciaInstructores']=$asistenciaInstructores;
 		
 	}
