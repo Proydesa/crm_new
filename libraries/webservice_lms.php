@@ -1325,20 +1325,20 @@ class H_LMS extends H_LMS_CONN {
 	function getCursosEnAcademiaQueSeDictanEnDia($idAcademia,$fecha){
 		global $HULK;
 		$fechaReverse = substr($fecha,-4).'-'.substr($fecha,3,2).'-'.substr($fecha,0,2);
-		$fecha = strtotime($fechaReverse);
-		$dayletter = date('D',$fecha);
-		$dayletter = str_replace(['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], ['L','M','W','J','V','S','D'], $dayletter);
-
-		$sql ="SELECT c.id,c.fullname
-		FROM {$HULK->lms_dbname}.mdl_course c,
-			 {$HULK->dbname}.h_course_config cc,
-             {$HULK->dbname}.h_asistencia_instructor a
-		 where a.idComision= c.id 
-		 	and a.fecha= {$fecha}
-		  	and c.id = cc.courseid
-		   	and cc.dias like '%{$dayletter}%'
-		   	and c.academyid={$idAcademia};";
-
+		$fechacero = strtotime($fechaReverse."T00:00:00+00:00");
+		$fechafin = strtotime($fechaReverse."T23:59:59+00:00");
+	
+		$sql = "SELECT
+					c.id,
+					c.fullname
+				FROM {$HULK->lms_dbname}.mdl_course c
+					inner join {$HULK->lms_dbname}.mdl_attendance a ON c.id = a.course
+					inner join {$HULK->lms_dbname}.mdl_attendance_sessions sess ON a.id = sess.attendanceid
+				where  
+					sess.sessdate between {$fechacero} and {$fechafin}
+					and ( (c.academyid = {$idAcademia} and {$idAcademia} != 0 ) or {$idAcademia} = 0 )
+					order by c.id";
+		
 		return $this->GetAll($sql) ;
 	}
 	function getCoursesByRange($from='',$to=''){
