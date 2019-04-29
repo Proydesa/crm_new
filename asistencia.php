@@ -92,9 +92,11 @@ switch($v){
 	break;
 	case 'reporte':
 		$data['instructores']= $LMS->getAcademyInstructor(1);
+
 		if (isset($_POST['idInstructor'])){
 			$ids="";
 			$todos=false;
+
 			foreach ($_POST['idInstructor'] as $row) {
 				$ids.=$row.",";
 				if ($row == "0"){
@@ -102,8 +104,11 @@ switch($v){
 				}
 			}
 			$ids= rtrim($ids,',');
+		}else{
+			$ids=0;
+			$todos=true;
 		}
-		$data['ejecuto']=0;
+		$data['ejecuto']=1;
 		
 		if (isset($_POST['startdate']) && isset($_POST['enddate'])){
 			$data['ejecuto']=1;
@@ -143,7 +148,9 @@ switch($v){
 		END) ) deberia_finalizar,
 		a.Observacion,
 		a.Asistencia
-		FROM {$HULK->dbname}.h_asistencia_instructor a, {$HULK->lms_dbname}.mdl_course c WHERE a.idComision= c.id and a.fecha>=".$fechaInicio." and a.fecha<= ".$fechaFin." and  (a.idinstructor in ($ids) or 1=".($todos?1:0).")");
+		FROM {$HULK->dbname}.h_asistencia_instructor a, {$HULK->lms_dbname}.mdl_course c WHERE a.idComision= c.id and a.fecha>=".$fechaInicio." and a.fecha<= ".$fechaFin." and  (a.idinstructor in ($ids) or 1=".($todos?1:0).")
+		ORDER BY nombre_instructor
+		");
 			
 			//show_array($asistenciaInstructores);
 			
