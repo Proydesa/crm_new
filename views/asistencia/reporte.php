@@ -18,21 +18,24 @@ function enabledAllSelect(){
 						<input id="startdate" style="width:90px;" name="startdate" type="text" align="center" value="<?= isset($diaInicio) ? $diaInicio : date('d-m-Y') ; ?>" />
 						<input id="enddate" style="width:90px;" name="enddate" type="text" align="center" value="<?= isset($diaFin) ? $diaFin : date('d-m-Y') ; ?>" />
 						</td>
+						<td>&nbsp;</td>
 					</tr>
 					<tr>
 							<td><b>Instructores:</b></td>
 							<td class="ui-widget-content">
-								<select name="idInstructor"  style="width:500px;">
+								<select multiple name="idInstructor[]"  style="width:500px;">
 									<option value="0">Todos...</option>
 									<?php foreach($instructores as $instructor): ?>
 										<option value="<?= $instructor['id']; ?>" <?=$instructor['id']== (isset($_POST['idInstructor']) ? $_POST['idInstructor']:1) ? 'selected': '' ?> ><?= $instructor['fullname']; ?></option>
 									<?php endforeach; ?>
 								</select>
 							</td>
+							<td class="ui-widget-content">Para seleccionar varios instructores<br>tiene que mantener presionada la tecla Ctrl,<br>y hacer clic en el nombre de cada instructor.</td>
 					</tr>
 					<tr>
 						<td><b> </b></td>
-						<td><input type="submit" name="boton"  style="height: 30px; font-size:13px; width:25%; font-weight: bold;" onClick='this.form.action="asistencia.php?v=reporte";' class="button"  value="Buscar" /><input type="submit" name="boton"  style="height: 30px; font-size:13px; width:25%; font-weight: bold;" class="button"  value="Exportar" onClick='this.form.action="asistencia.php?v=reporteXLS";' /></td>			
+						<td><input type="submit" name="boton"  style="height: 30px; font-size:13px; width:25%; font-weight: bold;" onClick='this.form.action="asistencia.php?v=reporte";' class="button"  value="Buscar" /><input type="submit" name="boton"  style="height: 30px; font-size:13px; width:25%; font-weight: bold;" class="button"  value="Exportar" onClick='this.form.action="asistencia.php?v=reporteXLS";' /></td>
+						<td>&nbsp;</td>			
 					</tr>
 				</table>
 			</div>
@@ -54,7 +57,10 @@ if ($ejecuto==1):
 					</thead>
 					<tbody>
 						<?php $nro=1; ?>
-						<?php foreach($asistenciaInstructores as $row){
+						<?php 
+						$instructor = $asistenciaInstructores['nombre_instructor'];
+						
+						foreach($asistenciaInstructores as $row){
 							$colorFin ="";
 							$colorFila="";
 							$colorInicio="";
@@ -84,7 +90,15 @@ if ($ejecuto==1):
 								$row['inicio']="";
 								$row['fin']="";	
 							}
+							
+							if($instructor!=$row['nombre_instructor']){
+								echo "<tr><td colspan='7'><hr></td></tr>";
+								$instructor = $row['nombre_instructor'];
+								$nro = 1;
+							}
+							
 							?>
+							
 							<tr  data-userid="" class="ui-widget-content" data-username="" >
 								<td style="width:5%" class="ui-widget-content textCenter <?= $colorFila?>"><?=  $nro;$nro++; ?></td>
 								<td style="width:10%" class="ui-widget-content textCenter <?= $colorFila?>"><?=  $row['fecha']; ?></td>
@@ -94,6 +108,7 @@ if ($ejecuto==1):
 								<td style="width:5%" class="ui-widget-content textCenter <?= $colorFila?> <?= $colorFin?> "><?=  $row['fin']; ?></td>
 								<td style="width:30%" class="ui-widget-content textCenter <?= $colorFila?> "><?=  $row['Observacion']; ?></td>
 							</tr>
+							
 						<?php } ?>
 					</tbody>
 				</table>
