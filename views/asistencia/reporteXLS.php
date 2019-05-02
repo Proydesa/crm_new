@@ -40,6 +40,12 @@ header("Cache-Control: private",false);
 				$row['inicio']="";
 				$row['fin']="";	
 			}
+	
+			if($instructor!=$row['nombre_instructor']){
+				echo "<tr><td><hr></td></tr>";
+				$instructor = $row['nombre_instructor'];
+				$nro = 1;
+			}
 			?>
 			<tr  data-userid="" class="" data-username="" >
 				<td style="width:5%;<?= $colorFila?>"><?=  $nro;$nro++; ?></td>

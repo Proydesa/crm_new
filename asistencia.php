@@ -104,11 +104,12 @@ switch($v){
 				}
 			}
 			$ids= rtrim($ids,',');
+			$data['ejecuto']=1;
 		}else{
 			$ids=0;
 			$todos=true;
 		}
-		$data['ejecuto']=1;
+
 		
 		if (isset($_POST['startdate']) && isset($_POST['enddate'])){
 			$data['ejecuto']=1;
