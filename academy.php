@@ -248,8 +248,6 @@ switch($v){
 		$menuroot['ruta'] = array("Academias"=>"academy.php?v=list");
 
 		if($_POST['guardar']==1){
-			show_array($_POST);
-			die();
 			$_POST['startdate']= tounixtime($_POST['startdate']);
 			$_POST['enddate']= tounixtime($_POST['enddate']);
 
