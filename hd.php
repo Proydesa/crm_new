@@ -982,7 +982,8 @@ function lista_notification(){
 				$data['rowusers'][] = $LMS->getUser($vi);
 		}		
 	}else{
-		show_error("Array vacio","No hay usuarios para notificar.");die();
+		show_error("Array vacio","No hay usuarios para notificar.");
+		die();
 	}
 	$sent = false;
 
@@ -995,9 +996,10 @@ function lista_notification(){
 		$mail = new H_Mail();
 		$mail->Subject(utf8_decode("{$subject}"));
 		$mail->Body(utf8_decode("<p>{$summary}</p>"));
+		$mail->AddAddress('academia@fproydesa.com.ar', 'Fundación Proydesa');
 		if(count($data['rowusers'])){
 			foreach ($data['rowusers'] as $ki=>$vi){
-				$mail->AddAddress($vi['email'], $vi['firstname'].' '.$vi['lastname']);
+				$mail->AddCC($vi['email'], $vi['firstname'].' '.$vi['lastname']);
 			}
 		}
 		//$mail->AddAddress($LMS->GetField('mdl_user','email',$data['userid']), $LMS->GetField('mdl_user','CONCAT(firstname," ",lastname)',$data['userid']));

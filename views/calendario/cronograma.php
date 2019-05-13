@@ -34,8 +34,8 @@
 			<div class="schedule">
 				<div class="heading">
 					<div class="period">
-						<h1 class="title">Calendario Ciclo Lectivo</h1>
-						<h1 class="title"><?= $_periods[$_node]['period'].' '.$_year ?></h1>
+						<h1 class="title" data-toggle="editable" data-target="span" title="click para editar el texto"><span>Calendario Ciclo Lectivo</span></h1>
+						<h1 class="title" data-toggle="editable" data-target="span" title="click para editar el texto"><span><?= $_periods[$_node]['period'].' '.$_year ?></span></h1>
 					</div>
 					<div class="logo">
 						<img src="images/logo-proydesa.jpg" alt="">
@@ -99,7 +99,7 @@
 					</div>
 
 
-					<p id="description_text" title="click para editar el texto"><span>Todas las comisiones cumplen con la misma carga horaria, independientemente de los feriados que se presenten</span></p>
+					<p id="description_text" data-toggle="editable" data-target="span" title="click para editar el texto"><span>Todas las comisiones cumplen con la misma carga horaria, independientemente de los feriados que se presenten</span></p>
 				</div>
 
 				<div class="title-bar">
@@ -243,14 +243,18 @@ $(function(){
 		});
 	});
 
-	$('#description_text').on('click','span',function(){
-		var text = $(this).text();
-		$(this).parent().html('<textarea rows="5" style="width:100%">'+text+'</textarea>');
-		$('#description_text textarea').focus();
+	$('[data-toggle=editable]').on('click',function(){
+		var target = $(this).attr('data-target');
+		var text = $(this).find(target).text();
+		$(this).find(target).hide();
+		$(this).append('<textarea rows="5" style="width:100%">'+text+'</textarea>');
+		$(this).find('textarea').focus();
 	});
-	$('#description_text').on('focusout','textarea',function(){
+	$('[data-toggle=editable]').on('focusout','textarea',function(){
+		var target = $(this).parent().attr('data-target');
 		var text = $(this).val();
-		$(this).parent().html('<span>'+text+'</span>');
+		$(this).parent().find(target).show().html(text);
+		$(this).parent().find('textarea').remove();
 	});
 
 	$('.calendar .month-row').click(function(){
