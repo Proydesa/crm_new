@@ -996,7 +996,7 @@ function lista_notification(){
 		$mail = new H_Mail();
 		$mail->Subject(utf8_decode("{$subject}"));
 		$mail->Body(utf8_decode("<p>{$summary}</p>"));
-		$mail->AddAddress('academia@fproydesa.com.ar', 'Fundación Proydesa');
+		$mail->AddAddress('fundacion@fproydesa.org', 'Fundación Proydesa');
 		if(count($data['rowusers'])){
 			foreach ($data['rowusers'] as $ki=>$vi){
 				$mail->AddCC($vi['email'], $vi['firstname'].' '.$vi['lastname']);
