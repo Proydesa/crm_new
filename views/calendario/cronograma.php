@@ -1,14 +1,8 @@
-
-<div class="column-c" style="width:90%">
-
+<div class="column-c" style="width:90%; overflow: auto; height: 440px">
 	<div class="calendar">
-
-
-
 		<p><small><a href="#" onclick="start_tutorial()">(ver tutorial)</a></small></p>
 		<div class="calendar-block">
 			<div class="header-wrapper">
-				
 				<form class="years" onchange="this.submit()" method="post" style="display:inline-block">
 					<span>Elegir Año:</span> 
 					<select name="years">
@@ -22,14 +16,9 @@
 						<?php endforeach; endif; ?>
 					</select>
 				</form>
-				
 			</div>
 		</div>
-
-
 		<?php if($H_USER->has_capability('calendario/cronograma')): ?>
-	
-
 		<div class="calendar-block">
 			<div class="schedule">
 				<div class="heading">
@@ -48,10 +37,7 @@
 				<div class="logos-courses">
 					<img src="images/logos-cursos.jpg" alt="">
 				</div>
-
 				<div class="body">
-
-
 					<div class="schedule-body">
 						<?php $start = false; foreach($_schedules as $sch): ?>
 						<div class="month">
@@ -60,7 +46,6 @@
 									<div class="month-name"><?= $sch['dayname'] ?></div>
 								</div>
 								<div class="month-body">
-									
 									<?php 									 
 									if(!empty($sch['days'])): 
 										foreach($sch['days'] as $k=>$days): 
@@ -68,7 +53,6 @@
 												$start = true;
 											}
 									?>
-									
 									<div class="month-row<?= (preg_match('/Nacional/', $days) ? ' holiday' : '').(preg_match('/Técnico/', $days) ? ' tech' : '') ?>" title="(click para ocultar este día)">
 										<div class="day">
 											<div class="num"><?= date('d',strtotime($k)) ?></div>
@@ -76,8 +60,6 @@
 										</div>
 										<div class="caption"><?= $days ?></div>
 									</div>
-									
-
 									<?php 
 										endforeach; 
 									endif; 
@@ -91,17 +73,13 @@
 										<div class="caption">-</div>
 									</div>
 									<?php endfor; ?>
-
 								</div>
 							</div>
 						</div>
 						<?php endforeach; ?>					
 					</div>
-
-
 					<p id="description_text" title="click para editar el texto"><span>Todas las comisiones cumplen con la misma carga horaria, independientemente de los feriados que se presenten</span></p>
 				</div>
-
 				<div class="title-bar">
 					<div class="wrapper">
 						<div class="col">
@@ -127,18 +105,14 @@
 					</div>
 				</div>
 				<p>&nbsp;</p>
-
 				<div class="logos-courses">
 					<img src="images/logos-redes.jpg" alt="">
 				</div>
 				<div class="footer">
 					<p> academia@proydesa.org | [+54] 11 4327-1888 (líneas rotativas) | Suipacha 280 Entrepiso | Ciudad Autónoma de Buenos Aires | Argentina</p>
 				</div>
-
-
 			</div>
 		</div>
-
 		<div class="calendar-block">
 			<a id="btn_download" href="#" class="btn btn-success"><i class="fa fa-save fa-fw"></i> Generar Imagen</a>
 			<p class="status-image">
@@ -155,42 +129,28 @@
 				<?php endif; ?>
 			</p>
 		</div>
-
 		<?php else: ?>
-
 			<!--- --->
 			<?php if(!empty($_images)): ?>
-
 				<?php foreach($_images as $img): ?>
 				<div class="calendar-block" style="margin-bottom:26px">
-			
 					<div style="text-align: center"><img src="images/calendario/<?=$img['image'].'.jpg?id='.rand(1111,9999)?>" alt="" style="width:100%;max-width: 1660px;margin:4px auto"></div>		
 					<hr>
-
 					<a href="#" download="<?=$img['image']?>.jpg" class="btn btn-success"><i class="fa fa-download fa-fw"></i> Descargar Imagen</a>
 				</div>
-
 				<?php endforeach; ?>
-
-
 			<?php else: ?>
 				<div class="calendar-block">
 					<p>No se encontró ninguna calendario para el ciclo lectivo seleccionado</p>
 				</div>
 			<?php endif; ?>
-
 		<?php endif; ?>
-
-
 	</div>
 </div>
-
-
 <?php if($H_USER->has_capability('calendario/cronograma')): ?>
 <script src="libraries/javascript/html2canvas.js"></script>
 <script src="libraries/javascript/canvas2image.js"></script>
 <script type="text/javascript" src="<?= $HULK->javascript.'/introjs.min.js'?>"></script>
-
 <script>
 $(function(){
 	var TheCanvas='';	

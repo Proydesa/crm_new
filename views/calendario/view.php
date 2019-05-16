@@ -1,5 +1,4 @@
-<div class="column-c" style="width:90%">
-
+<div class="column-c" style="width:90%; overflow: auto; height: 440px">
 	<div class="calendar">
 		<p><small><a href="#" onclick="start_tutorial()" >(ver tutorial)</a></small></p>
 		<div class="calendar-block">
@@ -19,16 +18,10 @@
 					</select>
 					<button class="btn"><i class="fa fa-refresh"></i></button>
 				</form>
-
 			</div>
-
 		</div>
-
-
 		<div class="calendar-block">
-			
 			<div class="courses-wrapper">
-				
 				<div class="block-course-edit">
 					<h4>Generar Curso</h4>
 					<div class="inner-block" id="course_generator">
@@ -51,22 +44,14 @@
 						<button data-btn="generate" class="btn btn-success btn-sm">Generar</button>
 					</div>		
 				</div>
-
 				<div class="block-courses">
 					<h4>Cursos generados </h4>
-
 					<div id="courses" class="well"></div>
-
 				</div>
-
 			</div>
-			
-			
 		</div>
-
 		<?php if($H_USER->has_capability('calendario/edit')): ?>
 		<div class="calendar-block filters">
-
 			<div class="item" id="holidays_buttons" style="width:auto">
 				<div data-btn-group="holiday-group" class="btn-group">
 					<?php if($H_USER->has_capability('calendario/edit/holidays')): ?>
@@ -76,13 +61,9 @@
 					<button data-btn="erase" class="btn btn-primary btn-erase" title="reestablecer día"><i class="fa fa-eraser"></i></button>
 				</div>
 			</div>
-
 		</div>
-
 		<?php endif; ?>
-
 		<div class="calendar-wrapper">
-
 			<?php 
 			$arrMonthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 			$arrDaysNames = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
@@ -98,11 +79,9 @@
 					$period=3;
 				}
 			?>
-
 			<?php if(($mth-1)%4 == 0 ): ?>
 			<div class="calendar-row">
 			<?php endif; ?>
-
 			<div class="month-outer" >
 				<div class="month-wrapper" data-month="<?= $mth ?>" data-period="<?= $period ?>" >
 					<?php 
@@ -110,9 +89,7 @@
 					$calendar->currentYear = $_year;
 					$calendar->currentMonth = $mth;
 					?>
-					
 					<div class="month-title"><?= $arrMonthNames[$mth-1] ?></div>
-					
 					<div class="days-wrapper">
 					<?php
 					for($dd=1;$dd<=7;$dd++){
@@ -120,7 +97,6 @@
 					}
 					?>
 					</div>
-
 					<?php
 					for( $i=0; $i<$calendar->weeksInMonth(); $i++ ){
 						echo '<div class="days-wrapper" data-week="'.$week.'" >';
@@ -137,17 +113,11 @@
 					?>
 				</div>
 			</div>
-
 			<?php if($mth%4 == 0 ): ?>
 			</div>
 			<?php endif; ?>
-
 			<?php endfor; ?>
-
 		</div>
-
-
-
 		<div class="calendar-block">
 			<h4>Referencias:</h4>
 			<div class="ref-wrapper">				
@@ -155,16 +125,11 @@
 				<div class="mod mod-course">Inicio de Clases</div>
 				<div class="mod mod-tech">Feriado Técnico</div>
 			</div>
-
 		</div>
-
 	</div>
-
 </div>
 
-
 <script type="text/javascript" src="<?= $HULK->javascript.'/introjs.min.js'?>"></script>
-
 <script>
 var hascapability = '<?=$H_USER->has_capability('calendario/edit')?>';
 var Calendar = {

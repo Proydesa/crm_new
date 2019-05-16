@@ -1,26 +1,18 @@
-
-<div class="column-c" style="width:100%">
-
+<div class="column-c" style="width:100%; overflow: auto; height: 440px">
 	<div class="calendar">
 		<p><small><a href="#" onclick="start_tutorial()">(ver tutorial)</a></small></p>
 		<div class="calendar-block no-print">
 			<div class="header-wrapper">
 				<h2>Grilla de Aulas</h2>
-				
 				<form class="years" method="post" autocomplete="off" style="display:inline-block;">
 					<span>Elegir Rango de Fechas:</span> 
-
 					<input name="startdate" id="date_start" type="text" placeholder="Inicio" value="<?= isset($_POST['startdate']) ? $_POST['startdate'] : date('d/m/Y') ?>" required >
 					<input name="finishdate" id="date_finish" type="text" placeholder="Fin" value="<?= isset($_POST['finishdate']) ? $_POST['finishdate'] : date('d/m/Y',time()+604800) ?>" required >
 					<button class="btn btn-success" type="submit">Obtener</button>
 				</form>
-
 			</div>
-
 		</div>
-
 		<?php if(!empty($_POST)): ?>
-
 		<div class="calendar-block no-print">
 			<h4>Crear Evento Especial</h4>
 			<form id="form_special" class="special-events" >
