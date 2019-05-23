@@ -78,13 +78,10 @@
 						</div>
 						<?php endforeach; ?>					
 					</div>
-<<<<<<< HEAD
-					<p id="description_text" title="click para editar el texto"><span>Todas las comisiones cumplen con la misma carga horaria, independientemente de los feriados que se presenten</span></p>
-=======
 
 
 					<p id="description_text" data-toggle="editable" data-target="span" title="click para editar el texto"><span>Todas las comisiones cumplen con la misma carga horaria, independientemente de los feriados que se presenten</span></p>
->>>>>>> da041d851db8d8fe38d3cee0c2ba32279619dc87
+
 				</div>
 				<div class="title-bar">
 					<div class="wrapper">
