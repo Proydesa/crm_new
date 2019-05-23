@@ -34,7 +34,7 @@
 </script>
 
 <br/>
-<div class="ui-widget">
+<div class="ui-widget" style="margin-top: 60px">
 	<div align="center">
 		<b>Curso:</b> <select name="courseid" id="models">
 			<option value=""></option>

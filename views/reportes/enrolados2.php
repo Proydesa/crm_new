@@ -1,11 +1,10 @@
 <?php
-function obtenerNombre($nombre){
-	if (strpos($nombre,"(")===false){
-		return $nombre;}else{
-	return substr($nombre,strpos($nombre,"(")+1,strlen($nombre)-strpos($nombre,"(")-2);
-}
-}
-
+	function obtenerNombre($nombre){
+		if (strpos($nombre,"(")===false){
+			return $nombre;}else{
+		return substr($nombre,strpos($nombre,"(")+1,strlen($nombre)-strpos($nombre,"(")-2);
+		}
+	}
 ?>
 <style style="text/css">
   	.hoverTable{
@@ -125,17 +124,25 @@ function mostrarLi(pais){
 }
 
 </script>
-<div class="ui-widget noprint" align="right">
-<table  align="right" class="noprint">
-	<tr>
-		<td>
-			<span class="button-print" onClick="document.body.offsetHeight;window.print();" style="font-size: 9px;"><b>Imprimir</b></span>
-		</td>
-	</tr>
-</table>
-</div>
+<?php
+	if ($H_USER->has_capability('menu/fixed')){
+		$menufixed = " style='overflow: auto; height: 510px'";
+	}else{
+		$menufixed = "";
+	}
+?>
+<div<?= $menufixed ?>>
+	<div class="ui-widget noprint" align="right">
+		<table  align="right" class="noprint">
+			<tr>
+				<td>
+					<span class="button-print" onClick="document.body.offsetHeight;window.print();" style="font-size: 9px;"><b>Imprimir</b></span>
+				</td>
+			</tr>
+		</table>
+	</div>
 
-<div id="esconder" class="noprint">
+	<div id="esconder" class="noprint">
 		<form action="reportes.php?v=enrolados2" name="form" method="post">
 			<div class="column" style="width:200px">
 				<div class="portlet">
@@ -223,171 +230,171 @@ function mostrarLi(pais){
 			</div>
 			<input type="submit" name="boton"  style="height: 30px; font-size:13px; width:100%; font-weight: bold;" class="button"  value="Consultar" />
 		</form>
-</div>
-
-<div class="column" style="width:100%">
-	<div class="portlet">
-		<div class="portlet-header">Enrolados</div>
-		<table class="listado ui-widget" id="detalle-export" align="center" width="100%">
-			<thead>
-			<tr class="ui-widget-header">
-				<th rowspan="2">Academia</th>
-				<th rowspan="2">Carrera</th>
-				<?php if($persel3>0): ?><th colspan="2">Insc. <?= $persel3;?></th><?php endif;?>
-				<?php if($persel2>0): ?><th colspan="2">Insc. <?= $persel2;?></th><?php endif;?>
-				<th colspan="2">Insc. <?= $persel1;?></th>
-			</tr>
-			<tr class="ui-widget-header">
-<?php if($persel3>0): ?>
-				<th>Enrol.</th>
-				<th>Bajas</th>
-<?php endif;?>
-<?php if($persel2>0): ?>
-				<th>Enrol.</th>
-				<th>Bajas</th>
-<?php endif;?>
-				<th>Enrol.</th>
-				<th>Bajas</th>
-			</tr>
-			</thead>
-			<tbody class="">
-		<?php $acad = $result[0]['Academia'];?>
-		<?= $result[0]['Academia'];?>
-		<?php foreach($result as $row):?>
-			<?php if($acad != $row['Academia']):?>
-				<tr  class="ui-widget-content" style="height: 20px;" bgcolor='#F0F0F0'>
-					<td colspan='2' class="ui-widget-content "  align='right'><b>Total <?= obtenerNombre($acad);?>:</b></td>
-					<?php if($persel3>0): ?>
-					<td class="ui-widget-content ui-state-highlight" align='right'><b><?= $total_acad_e3;?></b></td>
-					<td class="ui-widget-content ui-state-error" align='right'><b><?= $total_acad_b3;?></b></td>
-				<?php endif;?>
-					<?php if($persel2>0): ?>
-					<td class="ui-widget-content ui-state-highlight" align='right'><b><?= $total_acad_e2;?></b></td>
-					<td class="ui-widget-content ui-state-error" align='right'><b><?= $total_acad_b2;?></b></td>
-				<?php endif;?>
-					<td class="ui-widget-content ui-state-highlight" align='right'><b><?= $total_acad_e1;?></b></td>
-					<td class="ui-widget-content ui-state-error" align='right'><b><?= $total_acad_b1;?></b></td>
-				</tr>
-				<?php $total_acad_e1=0; $total_acad_b1=0;$total_acad_e2=0;$total_acad_b2=0;$total_acad_e3=0;$total_acad_b3=0;?>
-				<tr><td>&nbsp;</td></tr>
-			<?php endif;?>
-
-				<tr class="notfirst" style="height: 20px;">
-					<td style="background:; border-style:solid; border-width:1px;" >
-						<a href="academy.php?v=view&id=<?= $row['academyid'];?>" target="_blank">
-							<span class="ui-icon ui-icon-newwin" style="float:left;"></span>
-						</a>
-						<?= obtenerNombre($row['Academia']);?></td>
-					<td style="background:; border-style:solid; border-width:1px;" ><?= $row['Course'];?></td>
-					<?php if($persel3>0): ?>
-					<td  class="ui-widget-content ui-state-highlight" align='right'><?= $row['enrol3'];?></td>
-					<td  class="ui-widget-content ui-state-error" align='right'><?= $row['bajas3'];?></td>
-				<?php endif;?>
-					<?php if($persel2>0): ?>
-					<td  class="ui-widget-content ui-state-highlight" align='right'><?= $row['enrol2'];?></td>
-					<td  class="ui-widget-content ui-state-error" align='right'><?= $row['bajas2'];?></td>
-				<?php endif;?>
-					<td  class="ui-widget-content ui-state-highlight" align='right'><?= $row['enrol1'];?></td>
-					<td  class="ui-widget-content ui-state-error" align='right'><?= $row['bajas1'];?></td>
-				</tr>
-				<?php if($persel3>0): ?>
-				<?php $total_acad_e3 += $row['enrol3'];?>
-				<?php $total_acad_b3 += $row['bajas3'];?>
-			<?php endif;?>
-				<?php if($persel2>0): ?>
-				<?php $total_acad_e2 += $row['enrol2'];?>
-				<?php $total_acad_b2 += $row['bajas2'];?>
-			<?php endif;?>
-				<?php $total_acad_e1 += $row['enrol1'];?>
-				<?php $total_acad_b1 += $row['bajas1'];?>
-
-				<?php $acad = $row['Academia'];?>
-			<?php endforeach;?>
-				<tr  class="ui-widget-content" style="height: 20px;" bgcolor='#F0F0F0'>
-					<td colspan='2' class="ui-widget-content "  align='right'><b>Total <?= obtenerNombre($acad);?>:</b></td>
-					<?php if($persel3>0): ?>
-					<td class="ui-widget-content ui-state-highlight" align='right'><b><?= $total_acad_e3;?></b></td>
-					<td class="ui-widget-content ui-state-error" align='right'><b><?= $total_acad_b3;?></b></td>
-				<?php endif;?>
-					<?php if($persel2>0): ?>
-					<td class="ui-widget-content ui-state-highlight" align='right'><b><?= $total_acad_e2;?></b></td>
-					<td class="ui-widget-content ui-state-error" align='right'><b><?= $total_acad_b2;?></b></td>
-				<?php endif;?>
-					<td class="ui-widget-content ui-state-highlight" align='right'><b><?= $total_acad_e1;?></b></td>
-					<td class="ui-widget-content ui-state-error" align='right'><b><?= $total_acad_b1;?></b></td>
-				</tr>
-				<tr><td>&nbsp;</td></tr>
-			</tbody>
-			</table>
-			<table class="listado ui-widget " id="detalle-export2" align="center" width="100%">
-			<tr class="ui-widget-header"><td colspan='8' align='center'><b>Alumnos por carrera</b></td></tr>
-			<tr class="ui-widget-header">
-				<th rowspan="2" colspan="2">Carrera</th>
-				<?php if($persel3>0): ?><th colspan="2">Insc. <?= $persel3;?></th><?php endif;?>
-				<?php if($persel2>0): ?><th colspan="2">Insc. <?= $persel2;?></th><?php endif;?>
-				<th colspan="2">Insc. <?= $persel1;?></th>
-			</tr>
-			<tr class="ui-widget-header">
-				<?php if($persel3>0): ?>
-								<th>Enrol.</th>
-								<th>Bajas</th>
-				<?php endif;?>
-				<?php if($persel2>0): ?>
-								<th>Enrol.</th>
-								<th>Bajas</th>
-				<?php endif;?>
-				<th>Enrol.</th>
-				<th>Bajas</th>
-			</tr>
-			<?php foreach($result2 as $row):?>
-				<tr class="notfirst " style="height: 20px;">
-					<td colspan='2' style="background:; border-style:solid; border-width:1px;" ><?= $row['Course'];?></td>
-					<?php if($persel3>0): ?>
-					<td  class="ui-widget-content ui-state-highlight" align='right'><?= $row['enrol3'];?></td>
-					<td  class="ui-widget-content ui-state-error" align='right'><?= $row['bajas3'];?></td>
-				<?php endif;?>
-					<?php if($persel2>0): ?>
-					<td  class="ui-widget-content ui-state-highlight" align='right'><?= $row['enrol2'];?></td>
-					<td  class="ui-widget-content ui-state-error" align='right'><?= $row['bajas2'];?></td>
-				<?php endif;?>
-					<td  class="ui-widget-content ui-state-highlight" align='right'><?= $row['enrol1'];?></td>
-					<td  class="ui-widget-content ui-state-error" align='right'><?= $row['bajas1'];?></td>
-				</tr>
-				<?php
-					if($persel3>0):
-						$total_alum_e3 += $row['enrol3'];
-						$total_alum_b3 += $row['bajas3'];
-					endif;
-					if($persel2>0):
-						$total_alum_e2 += $row['enrol2'];
-						$total_alum_b2 += $row['bajas2'];
-					endif;
-					$total_alum_e1 += $row['enrol1'];
-					$total_alum_b1 += $row['bajas1'];
-				?>
-			<?php endforeach;?>
-
-			<tr><td colspan='2' class="ui-widget-content" align='right'><b>Total de alumnos</b></td>
-				<?php if($persel3>0): ?>
-				<td class="ui-widget-content ui-state-highlight"  align='right'><b><?= $total_alum_e3;?></b></td>
-				<td class="ui-widget-content ui-state-error"  align='right'><b><?= $total_alum_b3;?></b></td>
-				<?php endif;?>
-				<?php if($persel2>0): ?>
-				<td class="ui-widget-content ui-state-highlight"  align='right'><b><?= $total_alum_e2;?></b></td>
-				<td class="ui-widget-content ui-state-error"  align='right'><b><?= $total_alum_b2;?></b></td>
-				<?php endif;?>
-				<td class="ui-widget-content ui-state-highlight"  align='right'><b><?= $total_alum_e1;?></b></td>
-				<td class="ui-widget-content ui-state-error"  align='right'><b><?= $total_alum_b1;?></b></td>
-			</tr>
-</tbody>
-		</table>
 	</div>
-</div>
-<div class="table-header-fixed column-c dp-none" style="width: 99%;" >
-	<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-		<div class="portlet-content">
-			<table id="table_fixed" class="ui-widget" align="center" style="width:100%;">
+	<div class="column" style="width:100%">
+		<div class="portlet">
+			<div class="portlet-header">Enrolados</div>
+			<table class="listado ui-widget" id="detalle-export" align="center" width="100%">
+				<thead>
+				<tr class="ui-widget-header">
+					<th rowspan="2">Academia</th>
+					<th rowspan="2">Carrera</th>
+					<?php if($persel3>0): ?><th colspan="2">Insc. <?= $persel3;?></th><?php endif;?>
+					<?php if($persel2>0): ?><th colspan="2">Insc. <?= $persel2;?></th><?php endif;?>
+					<th colspan="2">Insc. <?= $persel1;?></th>
+				</tr>
+				<tr class="ui-widget-header">
+	<?php if($persel3>0): ?>
+					<th>Enrol.</th>
+					<th>Bajas</th>
+	<?php endif;?>
+	<?php if($persel2>0): ?>
+					<th>Enrol.</th>
+					<th>Bajas</th>
+	<?php endif;?>
+					<th>Enrol.</th>
+					<th>Bajas</th>
+				</tr>
+				</thead>
+				<tbody class="">
+			<?php $acad = $result[0]['Academia'];?>
+			<?= $result[0]['Academia'];?>
+			<?php foreach($result as $row):?>
+				<?php if($acad != $row['Academia']):?>
+					<tr  class="ui-widget-content" style="height: 20px;" bgcolor='#F0F0F0'>
+						<td colspan='2' class="ui-widget-content "  align='right'><b>Total <?= obtenerNombre($acad);?>:</b></td>
+						<?php if($persel3>0): ?>
+						<td class="ui-widget-content ui-state-highlight" align='right'><b><?= $total_acad_e3;?></b></td>
+						<td class="ui-widget-content ui-state-error" align='right'><b><?= $total_acad_b3;?></b></td>
+					<?php endif;?>
+						<?php if($persel2>0): ?>
+						<td class="ui-widget-content ui-state-highlight" align='right'><b><?= $total_acad_e2;?></b></td>
+						<td class="ui-widget-content ui-state-error" align='right'><b><?= $total_acad_b2;?></b></td>
+					<?php endif;?>
+						<td class="ui-widget-content ui-state-highlight" align='right'><b><?= $total_acad_e1;?></b></td>
+						<td class="ui-widget-content ui-state-error" align='right'><b><?= $total_acad_b1;?></b></td>
+					</tr>
+					<?php $total_acad_e1=0; $total_acad_b1=0;$total_acad_e2=0;$total_acad_b2=0;$total_acad_e3=0;$total_acad_b3=0;?>
+					<tr><td>&nbsp;</td></tr>
+				<?php endif;?>
+
+					<tr class="notfirst" style="height: 20px;">
+						<td style="background:; border-style:solid; border-width:1px;" >
+							<a href="academy.php?v=view&id=<?= $row['academyid'];?>" target="_blank">
+								<span class="ui-icon ui-icon-newwin" style="float:left;"></span>
+							</a>
+							<?= obtenerNombre($row['Academia']);?></td>
+						<td style="background:; border-style:solid; border-width:1px;" ><?= $row['Course'];?></td>
+						<?php if($persel3>0): ?>
+						<td  class="ui-widget-content ui-state-highlight" align='right'><?= $row['enrol3'];?></td>
+						<td  class="ui-widget-content ui-state-error" align='right'><?= $row['bajas3'];?></td>
+					<?php endif;?>
+						<?php if($persel2>0): ?>
+						<td  class="ui-widget-content ui-state-highlight" align='right'><?= $row['enrol2'];?></td>
+						<td  class="ui-widget-content ui-state-error" align='right'><?= $row['bajas2'];?></td>
+					<?php endif;?>
+						<td  class="ui-widget-content ui-state-highlight" align='right'><?= $row['enrol1'];?></td>
+						<td  class="ui-widget-content ui-state-error" align='right'><?= $row['bajas1'];?></td>
+					</tr>
+					<?php if($persel3>0): ?>
+					<?php $total_acad_e3 += $row['enrol3'];?>
+					<?php $total_acad_b3 += $row['bajas3'];?>
+				<?php endif;?>
+					<?php if($persel2>0): ?>
+					<?php $total_acad_e2 += $row['enrol2'];?>
+					<?php $total_acad_b2 += $row['bajas2'];?>
+				<?php endif;?>
+					<?php $total_acad_e1 += $row['enrol1'];?>
+					<?php $total_acad_b1 += $row['bajas1'];?>
+
+					<?php $acad = $row['Academia'];?>
+				<?php endforeach;?>
+					<tr  class="ui-widget-content" style="height: 20px;" bgcolor='#F0F0F0'>
+						<td colspan='2' class="ui-widget-content "  align='right'><b>Total <?= obtenerNombre($acad);?>:</b></td>
+						<?php if($persel3>0): ?>
+						<td class="ui-widget-content ui-state-highlight" align='right'><b><?= $total_acad_e3;?></b></td>
+						<td class="ui-widget-content ui-state-error" align='right'><b><?= $total_acad_b3;?></b></td>
+					<?php endif;?>
+						<?php if($persel2>0): ?>
+						<td class="ui-widget-content ui-state-highlight" align='right'><b><?= $total_acad_e2;?></b></td>
+						<td class="ui-widget-content ui-state-error" align='right'><b><?= $total_acad_b2;?></b></td>
+					<?php endif;?>
+						<td class="ui-widget-content ui-state-highlight" align='right'><b><?= $total_acad_e1;?></b></td>
+						<td class="ui-widget-content ui-state-error" align='right'><b><?= $total_acad_b1;?></b></td>
+					</tr>
+					<tr><td>&nbsp;</td></tr>
+				</tbody>
+				</table>
+				<table class="listado ui-widget " id="detalle-export2" align="center" width="100%">
+				<tr class="ui-widget-header"><td colspan='8' align='center'><b>Alumnos por carrera</b></td></tr>
+				<tr class="ui-widget-header">
+					<th rowspan="2" colspan="2">Carrera</th>
+					<?php if($persel3>0): ?><th colspan="2">Insc. <?= $persel3;?></th><?php endif;?>
+					<?php if($persel2>0): ?><th colspan="2">Insc. <?= $persel2;?></th><?php endif;?>
+					<th colspan="2">Insc. <?= $persel1;?></th>
+				</tr>
+				<tr class="ui-widget-header">
+					<?php if($persel3>0): ?>
+									<th>Enrol.</th>
+									<th>Bajas</th>
+					<?php endif;?>
+					<?php if($persel2>0): ?>
+									<th>Enrol.</th>
+									<th>Bajas</th>
+					<?php endif;?>
+					<th>Enrol.</th>
+					<th>Bajas</th>
+				</tr>
+				<?php foreach($result2 as $row):?>
+					<tr class="notfirst " style="height: 20px;">
+						<td colspan='2' style="background:; border-style:solid; border-width:1px;" ><?= $row['Course'];?></td>
+						<?php if($persel3>0): ?>
+						<td  class="ui-widget-content ui-state-highlight" align='right'><?= $row['enrol3'];?></td>
+						<td  class="ui-widget-content ui-state-error" align='right'><?= $row['bajas3'];?></td>
+					<?php endif;?>
+						<?php if($persel2>0): ?>
+						<td  class="ui-widget-content ui-state-highlight" align='right'><?= $row['enrol2'];?></td>
+						<td  class="ui-widget-content ui-state-error" align='right'><?= $row['bajas2'];?></td>
+					<?php endif;?>
+						<td  class="ui-widget-content ui-state-highlight" align='right'><?= $row['enrol1'];?></td>
+						<td  class="ui-widget-content ui-state-error" align='right'><?= $row['bajas1'];?></td>
+					</tr>
+					<?php
+						if($persel3>0):
+							$total_alum_e3 += $row['enrol3'];
+							$total_alum_b3 += $row['bajas3'];
+						endif;
+						if($persel2>0):
+							$total_alum_e2 += $row['enrol2'];
+							$total_alum_b2 += $row['bajas2'];
+						endif;
+						$total_alum_e1 += $row['enrol1'];
+						$total_alum_b1 += $row['bajas1'];
+					?>
+				<?php endforeach;?>
+
+				<tr><td colspan='2' class="ui-widget-content" align='right'><b>Total de alumnos</b></td>
+					<?php if($persel3>0): ?>
+					<td class="ui-widget-content ui-state-highlight"  align='right'><b><?= $total_alum_e3;?></b></td>
+					<td class="ui-widget-content ui-state-error"  align='right'><b><?= $total_alum_b3;?></b></td>
+					<?php endif;?>
+					<?php if($persel2>0): ?>
+					<td class="ui-widget-content ui-state-highlight"  align='right'><b><?= $total_alum_e2;?></b></td>
+					<td class="ui-widget-content ui-state-error"  align='right'><b><?= $total_alum_b2;?></b></td>
+					<?php endif;?>
+					<td class="ui-widget-content ui-state-highlight"  align='right'><b><?= $total_alum_e1;?></b></td>
+					<td class="ui-widget-content ui-state-error"  align='right'><b><?= $total_alum_b1;?></b></td>
+				</tr>
+	</tbody>
 			</table>
+		</div>
+	</div>
+	<div class="table-header-fixed column-c dp-none" style="width: 99%;" >
+		<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+			<div class="portlet-content">
+				<table id="table_fixed" class="ui-widget" align="center" style="width:100%;">
+				</table>
+			</div>
 		</div>
 	</div>
 </div>

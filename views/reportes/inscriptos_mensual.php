@@ -1,15 +1,21 @@
-<div class="column-c" style="width:1000px">
-
-<form action="" method="POST">
-Mostrar los inscriptos de los cursos del periodo
-<select name="periodo">
-<?php foreach($LMS->getPeriodos() as $per): ?>
-	<option value="<?= $per;?>" <?php if($per == $periodo) echo "SELECTED";?>><?= $per;?></option>
-<?php endforeach;?>
-</select>
-<input type="submit" style="font-weight: bold" name="Mostrar" value="Mostrar"></input>
-<br/>
-</form>
+<?php
+	if ($H_USER->has_capability('menu/fixed')){
+		$menufixed = " style='width:1000px; overflow: auto; height: 510px'";
+	}else{
+		$menufixed = "";
+	}
+?>
+<div class="column-c"<?= $menufixed ?>>
+	<form action="" method="POST">
+		Mostrar los inscriptos de los cursos del periodo
+		<select name="periodo">
+		<?php foreach($LMS->getPeriodos() as $per): ?>
+			<option value="<?= $per;?>" <?php if($per == $periodo) echo "SELECTED";?>><?= $per;?></option>
+		<?php endforeach;?>
+		</select>
+		<input type="submit" style="font-weight: bold" name="Mostrar" value="Mostrar"></input>
+		<br/>
+	</form>
 	<div class="portlet">
 		<div class="portlet-header">Inscriptos por carrera mensuales</div>
 		<!--<div class="portlet-content"  id="table_inscriptos">

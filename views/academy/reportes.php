@@ -1,5 +1,11 @@
-
-<div class="column-c" style="width:90%;margin:26px auto">
+<?php
+	if ($H_USER->has_capability('menu/fixed')){
+		$menufixed = " style='width:90%; overflow: auto; height: 510px'";
+	}else{
+		$menufixed = "";
+	}
+?>
+<div class="column-c"<?= $menufixed ?>>
 
 	<!--======== FILTROS ========-->
 	<div class="column" style="width:100%">

@@ -45,16 +45,24 @@
 		<?php endforeach;?>		
 	}); 
 </script>
-<div class="ui-widget noprint" align="right">
-<table  align="right" class="noprint">
-	<tr>
-		<td>
-			<span class="button-print" onClick="document.body.offsetHeight;window.print();" style="font-size: 9px;"><b>Imprimir</b></span>
-		</td>
-	</tr>
-</table>
-</div>
-<div id="esconder" class="noprint column-c" style="width:90%">	
+<?php
+	if ($H_USER->has_capability('menu/fixed')){
+		$menufixed = " style='overflow: auto; height: 520px'";
+	}else{
+		$menufixed = "";
+	}
+?>
+<div<?= $menufixed ?>>
+	<div class="ui-widget noprint" align="right">
+		<table  align="right" class="noprint">
+			<tr>
+				<td>
+					<span class="button-print" onClick="document.body.offsetHeight;window.print();" style="font-size: 9px;"><b>Imprimir</b></span>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="esconder" class="noprint column-c" style="width:90%">	
 		<form action="reportes.php?v=ekits" name="form" method="post">	
 			<div class="column" style="width:200px">		
 				<div class="portlet">
@@ -110,98 +118,98 @@
 			</div>
 			<input type="submit" name="boton"  style="height: 30px; font-size:13px; width:100%; font-weight: bold;" class="button"  value="Consultar" />
 		</form>	
-</div>
+	</div>
 
-<div class="column-c" style="width:90%">
-	<div class="portlet">
-		<div class="portlet-header">Alumnos Sin Ekits</div>
-		<div class="portlet-content" >
-			<table id="listado" class="ui-widget" align="center" style="width:100%;">
-				<thead>
-					<tr class="ui-widget-header" style="height: 20px;">
-						<th>Academia</th>
-						<th>Curso</th>
-						<th>Total</th>
-					</tr>
-				</thead>
-				<tbody>
-				<?php if ($academias): ?>
-					<?php foreach($academias as $academia): ?>
-						<tr>
-							<td><?= $academia['academy']; ?></td>
-							<td><?= $academia['modelo']; ?></td>
-							<td align="right"><?= $academia['alumnos']; ?></td>
-						</tr>
-					<?php endforeach; ?>
-				<?php endif;?>
-				</tbody>
-				<tfoot>
-				</tfoot>
-			</table>
-			<?php if ($rows): ?>
-			<?php foreach($rows as $comi=>$rows2):?>
-			<form method="post" action="reportes.php?v=ekit_edit">
-			<input type="hidden" name="comision" value="<?=$rows2['comiid']?>" />
-			<table id="listado" class="ui-widget" align="center" style="width:100%;">
+	<div class="column-c" style="width:90%">
+		<div class="portlet">
+			<div class="portlet-header">Alumnos Sin Ekits</div>
+			<div class="portlet-content" >
+				<table id="listado" class="ui-widget" align="center" style="width:100%;">
 					<thead>
-						<tr class="ui-widget-header" style="height: 20px;" title="<?= $title;?>">
-							<th></th>
-							<th colspan="2">
-								<a href="courses.php?v=list&q=<?= $comi;?>" target="_blank">
-									<span class="ui-icon ui-icon-newwin" style="float:left;"></span>
-								</a>
-								<?=$comi;?>
-							</th>
-							<th colspan="2"><?=$rows2['modelo'];?></th>
-						</tr>
 						<tr class="ui-widget-header" style="height: 20px;">
-							<th width="80px">DNI</th>
-							<th width="200px">Alumno</th>
-							<th width="200px">Academia</th>
-							<th width="50px">Estado</th>
-							<th>eKits</th>
+							<th>Academia</th>
+							<th>Curso</th>
+							<th>Total</th>
 						</tr>
 					</thead>
-					<?php foreach($rows2['users'] as $comi=>$row):?>
 					<tbody>
-						<?php 
-						if($row['recursa']>0){ 
-							$class="ui-state-highlight"; 
-							$title="Recursante. Comsi&oacute;n con eKit: ".$LMS->GetField("mdl_course", "fullname", $row['recursa']);
-							$texto="Recursante";
-						}else{
-							$class="";$title="";$texto="";
-						}	
-						if($row['pago']==0){ 
-							$class="ui-state-error";
-							$texto="No está pago";
-						}else{
-							$class="";$texto="Pagó";
-						}
-						?>
+					<?php if ($academias): ?>
+						<?php foreach($academias as $academia): ?>
+							<tr>
+								<td><?= $academia['academy']; ?></td>
+								<td><?= $academia['modelo']; ?></td>
+								<td align="right"><?= $academia['alumnos']; ?></td>
+							</tr>
+						<?php endforeach; ?>
+					<?php endif;?>
+					</tbody>
+					<tfoot>
+					</tfoot>
+				</table>
+				<?php if ($rows): ?>
+				<?php foreach($rows as $comi=>$rows2):?>
+				<form method="post" action="reportes.php?v=ekit_edit">
+				<input type="hidden" name="comision" value="<?=$rows2['comiid']?>" />
+				<table id="listado" class="ui-widget" align="center" style="width:100%;">
+						<thead>
+							<tr class="ui-widget-header" style="height: 20px;" title="<?= $title;?>">
+								<th></th>
+								<th colspan="2">
+									<a href="courses.php?v=list&q=<?= $comi;?>" target="_blank">
+										<span class="ui-icon ui-icon-newwin" style="float:left;"></span>
+									</a>
+									<?=$comi;?>
+								</th>
+								<th colspan="2"><?=$rows2['modelo'];?></th>
+							</tr>
+							<tr class="ui-widget-header" style="height: 20px;">
+								<th width="80px">DNI</th>
+								<th width="200px">Alumno</th>
+								<th width="200px">Academia</th>
+								<th width="50px">Estado</th>
+								<th>eKits</th>
+							</tr>
+						</thead>
+						<?php foreach($rows2['users'] as $comi=>$row):?>
+						<tbody>
+							<?php 
+							if($row['recursa']>0){ 
+								$class="ui-state-highlight"; 
+								$title="Recursante. Comsi&oacute;n con eKit: ".$LMS->GetField("mdl_course", "fullname", $row['recursa']);
+								$texto="Recursante";
+							}else{
+								$class="";$title="";$texto="";
+							}	
+							if($row['pago']==0){ 
+								$class="ui-state-error";
+								$texto="No está pago";
+							}else{
+								$class="";$texto="Pagó";
+							}
+							?>
+							<tr class="ui-widget-header" style="height: 20px;" title="<?= $title;?>">
+								<td class="<?= $class; ?>"><?= $row['username']; ?></td>
+								<td class="<?= $class; ?>">
+									<a href="contactos.php?v=view&id=<?= $row['userid'];?>" target="_blank">
+										<span class="ui-icon ui-icon-newwin" style="float:left;"></span>
+									</a>
+									<?= $row['alumno']; ?>
+								</td>
+								<td class="<?= $class; ?>"><?= $row['academy'];?></td>
+								<td class="<?= $class; ?>"><?= $texto;?></td>
+								<td class="<?= $class; ?>" align="center"><textarea name="onlinetext[<?=$row['userid']?>]" cols="60"><?= $row['onlinetext'] ;?></textarea></td>
+							</tr>
+						<?php endforeach;?>
 						<tr class="ui-widget-header" style="height: 20px;" title="<?= $title;?>">
-							<td class="<?= $class; ?>"><?= $row['username']; ?></td>
-							<td class="<?= $class; ?>">
-								<a href="contactos.php?v=view&id=<?= $row['userid'];?>" target="_blank">
-									<span class="ui-icon ui-icon-newwin" style="float:left;"></span>
-								</a>
-								<?= $row['alumno']; ?>
-							</td>
-							<td class="<?= $class; ?>"><?= $row['academy'];?></td>
-							<td class="<?= $class; ?>"><?= $texto;?></td>
-							<td class="<?= $class; ?>" align="center"><textarea name="onlinetext[<?=$row['userid']?>]" cols="60"><?= $row['onlinetext'] ;?></textarea></td>
-						</tr>
-					<?php endforeach;?>
-					<tr class="ui-widget-header" style="height: 20px;" title="<?= $title;?>">
-						<td colspan="4"></td>
-						<td align="center"><input type="submit" name="submit" value="Cargar" class="button" /></td>
-					</tr>	
-				</tbody>
-			</table>
-			</form>
-			<?php endforeach;?>
-			<?php endif;?>
+							<td colspan="4"></td>
+							<td align="center"><input type="submit" name="submit" value="Cargar" class="button" /></td>
+						</tr>	
+					</tbody>
+				</table>
+				</form>
+				<?php endforeach;?>
+				<?php endif;?>
+			</div>
 		</div>
 	</div>
 </div>
-

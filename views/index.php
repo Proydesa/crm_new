@@ -1,5 +1,12 @@
-<?php if(isset($cumpleshoyactual) || isset($cumpleshoyotros)):?>
-<div class="column-c" style="width:80%">
+<?php
+	if ($H_USER->has_capability('menu/fixed')){
+		$menufixed = " style='width:80%; overflow: auto; height: 510px'";
+	}else{
+		$menufixed = " style='width:80%'";
+	}
+	if(isset($cumpleshoyactual) || isset($cumpleshoyotros)):
+?>
+<div class="column-c"<?= $menufixed ?>>
 	<div class="portlet">
 		<div class="portlet-header">Listado de alerta de cumpleaños</div>
 		<div class="portlet-content" >

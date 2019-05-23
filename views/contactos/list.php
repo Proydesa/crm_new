@@ -1,4 +1,11 @@
-﻿<div class="column-c" style="width:80%">
+﻿<?php
+	if ($H_USER->has_capability('menu/fixed')){
+		$menufixed = " style='width:80%; overflow: auto; height: 490px'";
+	}else{
+		$menufixed = "";
+	}
+?>
+<div class="column-c"<?= $menufixed ?>>
 	<div class="portlet">
 		<div class="portlet-header">Contactos</div>
 		<div class="portlet-content" >

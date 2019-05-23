@@ -1,4 +1,11 @@
-<div class="ui-widget">
+<?php
+	if ($H_USER->has_capability('menu/fixed')){
+		$menufixed = " style='overflow: auto; height: 530px'";
+	}else{
+		$menufixed = "";
+	}
+?>
+<div class="ui-widget"<?= $menufixed ?>>
 	<table class="ui-widget" align="center">
 		<tr class="ui-widget-header" style="height: 20px;">
 			<th  style="width:220px;">Nombre</th>

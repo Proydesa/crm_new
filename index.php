@@ -26,5 +26,5 @@
 	$view->Load('menu');
 	$view->Load('menuroot');
 	$view->Load('index', $data);
-	$view->Load('footer');
+	//$view->Load('footer');
 ?>

@@ -67,7 +67,14 @@
 		}
 	}
 </SCRIPT>
-<div class="column-c" style="width:90%">
+<?php
+	if ($H_USER->has_capability('menu/fixed')){
+		$menufixed = " style='width:90%; overflow: auto; height: 490px'";
+	}else{
+		$menufixed = "";
+	}
+?>
+<div class="column-c"<?= $menufixed ?>>	
 	<form action="<?= $HULK->SELF?>" method="post" name="parametros" id="form-list" class="noprint" style="margin:0; padding:0;">
 	<input type="hidden" name="p" id="p" />
 	<div class="column" style="width:300px">
@@ -97,7 +104,7 @@
 		</div>
 	</div>
 	</div>
-	<div class="column" style="width:550px">
+	<div class="column" style="width:700px">
 	<div class="portlet">
 		<div class="portlet-header">Academias</div>
 		<div class="portlet-content" style="height:140px;">
@@ -132,7 +139,7 @@
 		</div>
 	</div>-->
 	</div>
-	<input type="submit" name="boton"  style="height: 30px; font-size:13px; width:100%; font-weight: bold;" class="button"  value="Consultar" />	<!-- alan > -->
+	<input type="submit" name="boton"  style="height: 30px; font-size:13px; width:98%; font-weight: bold;" class="button"  value="Consultar" />	<!-- alan > -->
 	</form>
 	<div class="portlet">
 		<div class="portlet-header">Comisiones</div>

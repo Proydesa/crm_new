@@ -1,4 +1,4 @@
-﻿ <div class="column-c" style="width:60%">
+﻿ <div class="column-c" style="width:60%; overflow: auto; height: 440px">
 	<div class="portlet">
     	<div class="portlet-header"> Categorías de Help Desk</div>
 		<div class="portlet-content">

@@ -1,31 +1,38 @@
-<div class="column-c" style="width:600px">
-<form action="" method="POST">
-	<div id="fechas">
-	<?php $view->jquery_datepicker("#startdate, #enddate");?>
-Este informe muestra la cantidad de inscriptos desde el	<input type="text" id="startdate" name="startdate" style="width:70px;" value="<?= date('d-m-Y',$qstartdate);?>" /> 
-	hasta el <input type="text" id="enddate" name="enddate" style="width:70px;" value="<?= date('d-m-Y',$qenddate);?>" />
-</div>
-<br/>
-<span class="button" onClick="$('#acaselec').slideToggle();"><b>Selecciónar academias</b></span>
-<br/>
-<div id="acaselec" style="overflow:auto;height:300px; display:none;">
-<div align="right">
-	<span class="button" onClick="$('input[type=checkbox][name=\'academias[]\']').each( function() {	this.checked = true;});"><b>Todas</b></span> |
-	<span class="button" onClick="$('input[type=checkbox][name=\'academias[]\']').each( function() {	this.checked = false;});"><b>Ninguna</b></span>
-</div>
-	<script>$(function(){	$('#acalist').makeacolumnlists({cols: 4, colWidth: "80px", equalHeight: 'ul', startN: 1});});</script>
-	<ul id="acalist" class="noBullet">
-		<?php foreach($academias_user as $academia_user): ?>
-			<li><input type="checkbox" name="academias[]" value="<?= $academia_user['id'];?>" <?php if(in_array($academia_user['id'],$acad_sel)) echo "checked"; ?>/><label for="academia[]"><?= $academia_user['shortname']?></label></li>
-			<?php if(in_array($academia_user['id'],$acad_sel)) $graf_acad .= "&academy[]=".$academia_user['id'];?>
-		<?php endforeach; ?>	
-	</ul>
+<?php
+	if ($H_USER->has_capability('menu/fixed')){
+		$menufixed = " style='width:60%; overflow: auto; height: 510px'";
+	}else{
+		$menufixed = " style='width:60%'";
+	}
+?>
+<div class="column-c"<?= $menufixed ?>>
+	<form action="" method="POST">
+		<div id="fechas">
+			<?php $view->jquery_datepicker("#startdate, #enddate");?>
+		Este informe muestra la cantidad de inscriptos desde el	<input type="text" id="startdate" name="startdate" style="width:70px;" value="<?= date('d-m-Y',$qstartdate);?>" /> 
+			hasta el <input type="text" id="enddate" name="enddate" style="width:70px;" value="<?= date('d-m-Y',$qenddate);?>" />
+		</div>
+		<br/>
+		<span class="button" onClick="$('#acaselec').slideToggle();"><b>Selecciónar academias</b></span>
+		<br/>
+		<div id="acaselec" style="overflow:auto;height:300px; display:none;">
+		<div align="right">
+			<span class="button" onClick="$('input[type=checkbox][name=\'academias[]\']').each( function() {	this.checked = true;});"><b>Todas</b></span> |
+			<span class="button" onClick="$('input[type=checkbox][name=\'academias[]\']').each( function() {	this.checked = false;});"><b>Ninguna</b></span>
+		</div>
+			<script>$(function(){	$('#acalist').makeacolumnlists({cols: 4, colWidth: "80px", equalHeight: 'ul', startN: 1});});</script>
+			<ul id="acalist" class="noBullet">
+				<?php foreach($academias_user as $academia_user): ?>
+					<li><input type="checkbox" name="academias[]" value="<?= $academia_user['id'];?>" <?php if(in_array($academia_user['id'],$acad_sel)) echo "checked"; ?>/><label for="academia[]"><?= $academia_user['shortname']?></label></li>
+					<?php if(in_array($academia_user['id'],$acad_sel)) $graf_acad .= "&academy[]=".$academia_user['id'];?>
+				<?php endforeach; ?>	
+			</ul>
 
-</div>
-<div align="right">
-<input type="submit" name="Mostrar" value="Mostrar" class="button" style=" font-weight: bold;"></input>
-</div>
-</form>
+		</div>
+		<div align="right">
+			<input type="submit" name="Mostrar" value="Mostrar" class="button" style=" font-weight: bold;"></input>
+		</div>
+	</form>
 	<div class="portlet">
 		<div class="portlet-header">Inscriptos por carrera</div>
 		<!--<div class="portlet-content"  id="table_inscriptos">
@@ -99,3 +106,4 @@ Este informe muestra la cantidad de inscriptos desde el	<input type="text" id="s
 		</div>
 	</div>	
 	El origen se carga cúando se genera un nuevo usuario en la red proydesa. Los usuarios que ya existían en la base de datos antes de la implementación de este sistema se van a encontrar en la fila <b>"Otros"</b>.
+</div>

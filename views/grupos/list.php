@@ -1,4 +1,11 @@
-<div class="column-c" style="width:80%">	
+<?php
+	if ($H_USER->has_capability('menu/fixed')){
+		$menufixed = " style='width:80%; overflow: auto; height: 490px; padding-top: 20px'";
+	}else{
+		$menufixed = "";
+	}
+?>
+<div class="column-c"<?= $menufixed ?>>	
 	<div clasS="ui-widget" align="center">
 		<form class="ui-widget" method="get" action="grupos.php" >
 			<span>Periodo de creación: </span>

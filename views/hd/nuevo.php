@@ -21,7 +21,7 @@
 		});
 	});
 </script>
-<div class="column-c" style="width:80%;">
+<div class="column-c" style="width:80%; overflow: auto; height: 440px">
               <div align="right" class="ui-widget">
                 <em>*</em> - Requerido&nbsp;&nbsp;&nbsp;
               </div>

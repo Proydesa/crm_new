@@ -1,4 +1,11 @@
-﻿<div class="ui-widget-content" id="header" >
+﻿<?php
+	if ($H_USER->has_capability('menu/fixed')){
+		$menufixed = "position: fixed; width: 98%";
+	}else{
+		$menufixed = "width: 99%";
+	}
+?>
+<div class="ui-widget-content" id="header" style="<?= $menufixed ?>">
 		<?php if ($H_USER->has_capability('menu/crm')):	?>
 		<a tabindex="3" href="#menu-reportes" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="opcion-global"><span class="ui-icon ui-icon-triangle-1-s"></span>CRM</a>
 		<div id="menu-global" class="hidden">

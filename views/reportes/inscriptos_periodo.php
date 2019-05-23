@@ -1,30 +1,32 @@
-<div class="column-c" style="width:800px">
-
+<?php
+	if ($H_USER->has_capability('menu/fixed')){
+		$menufixed = " style='width:70%; overflow: auto; height: 510px'";
+	}else{
+		$menufixed = " style='width:70%'";
+	}
+?>
+<div class="column-c"<?= $menufixed ?>>
 	<div class="portlet">
 		<div class="portlet-header">Inscriptos por carrera</div>
-		<!--<div class="portlet-content"  id="table_inscriptos">
-
-		</div>-->
 		<div class="portlet-content">
-<form action="" method="POST">
-			<p>Está es la tabla comparativa entre los inscriptos del periodo <?=$periodo_anterior;?> al día <?= date("d-m-Y",$hoy_anterior);?> y los inscriptos
-			del periodo <?=$periodo_actual;?> al día <?= date("d-m-Y",$hoy);?>.</p>
-<br/><span class="button" style=" width:30%; font-weight: bold; height:25px;" onClick="$('#acaselec').slideToggle();">Selecciónar academias</span>
-<div id="acaselec" style="overflow:auto;height:300px; display:none;">
-<br/>
-		<span class="button" style="height: 25px; font-size:11px; width:20%; font-weight: bold;" onClick="$('input[type=checkbox][name=\'academias[]\']').each( function() {	this.checked = true;});">Todas</span>
-		<span class="button" style="height: 25px; font-size:11px; width:20%; font-weight: bold;" onClick="$('input[type=checkbox][name=\'academias[]\']').each( function() {	this.checked = false;});">Ninguna</span>  | 
-		<input type="submit" class="button" name="Mostrar" value="Mostrar"></input>
-
-		<script>$(function(){	$('#acalist').makeacolumnlists({cols: 7, colWidth: "100px", equalHeight: 'ul', startN: 1});});</script>
-	<ul id="acalist" class="noBullet">
-		<?php foreach($academias_user as $academia_user): ?>
-			<li><input type="checkbox" name="academias[]" value="<?= $academia_user['id'];?>" <?php if(in_array($academia_user['id'],$acad_sel)) echo "checked"; ?>/><label for="academia[]"><?= $academia_user['shortname']?></label></li>
-			<?php if(in_array($academia_user['id'],$acad_sel)) $graf_acad .= "&academy[]=".$academia_user['id'];?>
-		<?php endforeach; ?>	
-	</ul>
-	</div>
-</form>	
+			<form action="" method="POST">
+						<p>Está es la tabla comparativa entre los inscriptos del periodo <?=$periodo_anterior;?> al día <?= date("d-m-Y",$hoy_anterior);?> y los inscriptos
+						del periodo <?=$periodo_actual;?> al día <?= date("d-m-Y",$hoy);?>.</p>
+			<br/><span class="button" style=" width:30%; font-weight: bold; height:25px;" onClick="$('#acaselec').slideToggle();">Selecciónar academias</span>
+			<div id="acaselec" style="overflow:auto;height:310px; display:none;">
+			<br/>
+					<span class="button" style="height: 25px; font-size:11px; width:20%; font-weight: bold;" onClick="$('input[type=checkbox][name=\'academias[]\']').each( function() {	this.checked = true;});">Todas</span>
+					<span class="button" style="height: 25px; font-size:11px; width:20%; font-weight: bold;" onClick="$('input[type=checkbox][name=\'academias[]\']').each( function() {	this.checked = false;});">Ninguna</span>  | 
+					<input type="submit" class="button" name="Mostrar" value="Mostrar"></input>
+					<script>$(function(){	$('#acalist').makeacolumnlists({cols: 7, colWidth: "100px", equalHeight: 'ul', startN: 1});});</script>
+				<ul id="acalist" class="noBullet">
+					<?php foreach($academias_user as $academia_user): ?>
+						<li><input type="checkbox" name="academias[]" value="<?= $academia_user['id'];?>" <?php if(in_array($academia_user['id'],$acad_sel)) echo "checked"; ?>/><label for="academia[]"><?= $academia_user['shortname']?></label></li>
+						<?php if(in_array($academia_user['id'],$acad_sel)) $graf_acad .= "&academy[]=".$academia_user['id'];?>
+					<?php endforeach; ?>	
+				</ul>
+				</div>
+			</form>	
 			<table class="ui-widget" align="center" style="width:70%;">
 				<thead>
 					<tr style="height: 20px;" class="ui-widget-header">
@@ -86,3 +88,4 @@
 			</table>		
 		</div>
 	</div>
+</div>

@@ -49,39 +49,47 @@ if (!isset($_POST['idAcademia'] )){
 }
 
 ?> 
-<form action="reportes_lms.php?v=segAsistenciaParaInstructores" method="POST" style="margin:0; padding:0;">
-	<input type="hidden" id="esReporte" value="0"/>
-	<div class="column" style="width:80%">
-		<div class="portlet">
-			<div class="portlet-header">Filtros</div>
-			<div class="portlet-content" >
-			<table class="ui-widget" align="center">
-					<tr>
-						<td>Fecha: </td>
-						<td><?php $view->jquery_datepicker2("#startdate, #enddate");?>
-							<input id="startdate" style="width:90px;" name="startdate" type="text" align="center" value="<?= trim($dia); ?>" />
-						</td>
-					</tr>
-					<tr>
-							<td><b>Academias</b></td>
-							<td class="ui-widget-content">
-								<select name="idAcademia"  style="width:500px;">
-									<option value="0">Todos...</option>
-									<?php foreach($academies as $academia): ?>
-										<option value="<?= $academia['id']; ?>" <?=$academia['id']== $_POST['idAcademia'] ? 'selected': '' ?> ><?= $academia['name']; ?></option>
-									<?php endforeach; ?>
-								</select>
+<?php
+	if ($H_USER->has_capability('menu/fixed')){
+		$menufixed = " style='overflow: auto; height: 510px'";
+	}else{
+		$menufixed = "";
+	}
+?>
+<div<?= $menufixed ?>>
+	<form action="reportes_lms.php?v=segAsistenciaParaInstructores" method="POST" style="margin:0; padding:0;">
+		<input type="hidden" id="esReporte" value="0"/>
+		<div class="column" style="width:80%">
+			<div class="portlet">
+				<div class="portlet-header">Filtros</div>
+				<div class="portlet-content" >
+				<table class="ui-widget" align="center">
+						<tr>
+							<td>Fecha: </td>
+							<td><?php $view->jquery_datepicker2("#startdate, #enddate");?>
+								<input id="startdate" style="width:90px;" name="startdate" type="text" align="center" value="<?= trim($dia); ?>" />
 							</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td><input type="submit" name="boton"  style="height: 30px; font-size:13px; width:25%; font-weight: bold;" class="button"  value="Ver reporte" /><input type="submit" name="boton"  style="height: 30px; font-size:13px; width:25%; font-weight: bold;" class="button"  value="Exportar" onClick='this.form.action="reportes_lms.php?v=segAsistenciaParaInstructoresXLS";' /></td>			
-					</tr>
-				</table>
+						</tr>
+						<tr>
+								<td><b>Academias</b></td>
+								<td class="ui-widget-content">
+									<select name="idAcademia"  style="width:500px;">
+										<option value="0">Todos...</option>
+										<?php foreach($academies as $academia): ?>
+											<option value="<?= $academia['id']; ?>" <?=$academia['id']== $_POST['idAcademia'] ? 'selected': '' ?> ><?= $academia['name']; ?></option>
+										<?php endforeach; ?>
+									</select>
+								</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input type="submit" name="boton"  style="height: 30px; font-size:13px; width:25%; font-weight: bold;" class="button"  value="Ver reporte" /><input type="submit" name="boton"  style="height: 30px; font-size:13px; width:25%; font-weight: bold;" class="button"  value="Exportar" onClick='this.form.action="reportes_lms.php?v=segAsistenciaParaInstructoresXLS";' /></td>			
+						</tr>
+					</table>
+				</div>
 			</div>
-		</div>
-	</div>		
-</form>
+		</div>		
+	</form>
 	<div class="column" style="width:80%<?= $ejecuto==1 ? '': ';display:none;' ?>">
 		<div class="portlet">
 			<div class="portlet-header">Asistencias</div>
@@ -242,3 +250,4 @@ if (!isset($_POST['idAcademia'] )){
 			</div>
 		</div>
 	</div>
+</div>

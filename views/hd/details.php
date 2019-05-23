@@ -1,5 +1,4 @@
 ﻿<script type="text/javascript">
-
 	$(function(){
 		$( ".button_file2" ).button({ icons: { secondary: "ui-icon-document" }, text: true });
 	});
@@ -7,7 +6,6 @@
 	var contador = 0;
 	
 	function nuevo_adjunto(){
-	
 		if(contador != 3){
 			$("#files").append("<br/><input type=\"file\" name=\"archivos[]\" class=\"press\"  style=\"height:30px;\" /><br/>");
 			contador++;
@@ -16,7 +14,7 @@
 		}
 	}
 </script>
-<div class="column-c" style="width:950px;">
+<div class="column-c" style="width:950px; overflow: auto; height: 440px">
               <div align="right" class="ui-widget">
                 <em>*</em> - Requerido&nbsp;&nbsp;&nbsp; 
                 <?php
@@ -163,4 +161,3 @@
 		</div>
 	</div>
 </div>
- 

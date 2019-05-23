@@ -1,43 +1,50 @@
-<div class="column-c" style="width:1000px">
-<form action="" method="POST">
-Este informe muestra la cantidad de inscriptos por día de
-<select name="mes">
-<?php foreach($HULK->meses as $numeromes => $namemes): ?>
-	<option value="<?= $numeromes;?>" <?php if($numeromes == $mes) echo "SELECTED";?>><?= $namemes;?></option>
-<?php endforeach;?>
-</select> de
-<select name="ano">
-	<?php for($x=2010; $x<(date('Y')+1);$x++):?>
-	<option value="<?=$x;?>" <?php if($x == $ano) echo "SELECTED";?>><?=$x;?></option>
-	<?php endfor;?>
-</select>
+<?php
+	if ($H_USER->has_capability('menu/fixed')){
+		$menufixed = " style='width:80%; overflow: auto; height: 510px'";
+	}else{
+		$menufixed = "";
+	}
+?>
+<div class="column-c"<?= $menufixed ?>>
+	<form action="" method="POST">
+		Este informe muestra la cantidad de inscriptos por día de
+		<select name="mes">
+		<?php foreach($HULK->meses as $numeromes => $namemes): ?>
+			<option value="<?= $numeromes;?>" <?php if($numeromes == $mes) echo "SELECTED";?>><?= $namemes;?></option>
+		<?php endforeach;?>
+		</select> de
+		<select name="ano">
+			<?php for($x=2010; $x<(date('Y')+1);$x++):?>
+			<option value="<?=$x;?>" <?php if($x == $ano) echo "SELECTED";?>><?=$x;?></option>
+			<?php endfor;?>
+		</select>
 
-de comisiones del período
-<select name="periodo">
-<?php foreach($LMS->getPeriodos() as $per): ?>
-	<option value="<?= $per;?>" <?php if($per == $periodo) echo "SELECTED";?>><?= $per;?></option>
-<?php endforeach;?>
-</select>
-<input type="submit" style="font-weight: bold" name="Mostrar" value="Mostrar"></input>
-<span  title="Solo se restan las inscripciones que luego sufren un cambio de comision, estos dejan de aparecer en el día que se inscribieron por primera ves y pasan a aparecer en el día en que se hizo el cambio de comisíon.
-Esto es por como se guarda la información de inscripción en la base de datos.">(?)</span>
-<br/>
-<br/><span class="button" style=" width:20%; font-weight: bold; height:25px;" onClick="$('#acaselec').slideToggle();">Selecciónar academias</span>
-<div id="acaselec" style="overflow:auto;height:300px; display:none;">
-<br/>
-		<span class="button" style="height: 25px; font-size:11px; width:20%; font-weight: bold;" onClick="$('input[type=checkbox][name=\'academias[]\']').each( function() {	this.checked = true;});">Todas</span> |
-		<span class="button" style="height: 25px; font-size:11px; width:20%; font-weight: bold;" onClick="$('input[type=checkbox][name=\'academias[]\']').each( function() {	this.checked = false;});">Ninguna</span>
+		de comisiones del período
+		<select name="periodo">
+		<?php foreach($LMS->getPeriodos() as $per): ?>
+			<option value="<?= $per;?>" <?php if($per == $periodo) echo "SELECTED";?>><?= $per;?></option>
+		<?php endforeach;?>
+		</select>
+		<input type="submit" style="font-weight: bold" name="Mostrar" value="Mostrar"></input>
+		<span  title="Solo se restan las inscripciones que luego sufren un cambio de comision, estos dejan de aparecer en el día que se inscribieron por primera ves y pasan a aparecer en el día en que se hizo el cambio de comisíon.
+		Esto es por como se guarda la información de inscripción en la base de datos.">(?)</span>
 		<br/>
-		<br/>
-	<script>$(function(){	$('#acalist').makeacolumnlists({cols: 8, colWidth: "100px", equalHeight: 'ul', startN: 1});});</script>
-	<ul id="acalist" class="noBullet">
-		<?php foreach($academias_user as $academia_user): ?>
-			<li><input type="checkbox" name="academias[]" value="<?= $academia_user['id'];?>" <?php if(in_array($academia_user['id'],$acad_sel)) echo "checked"; ?>/><label for="academia[]"><?= $academia_user['shortname']?></label></li>
-			<?php if(in_array($academia_user['id'],$acad_sel)) $graf_acad .= "&academy[]=".$academia_user['id'];?>
-		<?php endforeach; ?>
-	</ul>
-</div>
-</form>
+		<br/><span class="button" style=" width:20%; font-weight: bold; height:25px;" onClick="$('#acaselec').slideToggle();">Selecciónar academias</span>
+		<div id="acaselec" style="overflow:auto;height:320px; display:none;">
+			<br/>
+			<span class="button" style="height: 25px; font-size:11px; width:20%; font-weight: bold;" onClick="$('input[type=checkbox][name=\'academias[]\']').each( function() {	this.checked = true;});">Todas</span> |
+			<span class="button" style="height: 25px; font-size:11px; width:20%; font-weight: bold;" onClick="$('input[type=checkbox][name=\'academias[]\']').each( function() {	this.checked = false;});">Ninguna</span>
+			<br/>
+			<br/>
+			<script>$(function(){	$('#acalist').makeacolumnlists({cols: 8, colWidth: "100px", equalHeight: 'ul', startN: 1});});</script>
+			<ul id="acalist" class="noBullet">
+				<?php foreach($academias_user as $academia_user): ?>
+					<li><input type="checkbox" name="academias[]" value="<?= $academia_user['id'];?>" <?php if(in_array($academia_user['id'],$acad_sel)) echo "checked"; ?>/><label for="academia[]"><?= $academia_user['shortname']?></label></li>
+					<?php if(in_array($academia_user['id'],$acad_sel)) $graf_acad .= "&academy[]=".$academia_user['id'];?>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	</form>
 	<div class="portlet">
 		<div class="portlet-header">Inscriptos por carrera</div>
 		<!--<div class="portlet-content"  id="table_inscriptos">
@@ -162,3 +169,4 @@ Esto es por como se guarda la información de inscripción en la base de datos."
 		</div>
 	</div>
 	El origen se carga cúando se genera un nuevo usuario en la red proydesa. Los usuarios que ya existían en la base de datos antes de la implementación de este sistema se van a encontrar en la fila <b>"Otros"</b>.
+</div>

@@ -1,4 +1,4 @@
-﻿<div class="ui-widget" align="left">
+﻿<div class="ui-widget" align="left" style="overflow: auto; height: 440px">
 	<div class="column-c" style="width:80%">
 		<div class="portlet">
 		<div class="portlet-content">
