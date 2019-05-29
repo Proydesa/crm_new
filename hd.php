@@ -999,7 +999,7 @@ function lista_notification(){
 		$mail->AddAddress('fundacion@fproydesa.org', 'Fundación Proydesa');
 		if(count($data['rowusers'])){
 			foreach ($data['rowusers'] as $ki=>$vi){
-				$mail->AddCC($vi['email'], $vi['firstname'].' '.$vi['lastname']);
+				$mail->AddBCC($vi['email'], $vi['firstname'].' '.$vi['lastname']);
 			}
 		}
 		//$mail->AddAddress($LMS->GetField('mdl_user','email',$data['userid']), $LMS->GetField('mdl_user','CONCAT(firstname," ",lastname)',$data['userid']));

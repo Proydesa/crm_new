@@ -3,11 +3,11 @@
 
 class H_Mail {
 
-	var $mail;
+	public $mail;
 	
 	function H_Mail() {
 
-		global $CFG;
+		$CFG = new stdClass();
 
 		$CFG->libdir = "../lms/lib";
 		$CFG->directorypermissions = 00777;
@@ -53,6 +53,10 @@ class H_Mail {
 
 	function AddAddress($address,$addressName=""){
 			$this->mail->AddAddress($address, $addressName);
+			return true;
+	}
+	function AddBCC($address,$addressName=""){
+			$this->mail->addBCC($address, $addressName);
 			return true;
 	}
 	function Subject($subject){
