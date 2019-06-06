@@ -162,16 +162,20 @@
 									<br/>
 									<div class="item">
 										<label for="assitance">Ignorar Feriados Técnicos: </label>
-										<input type="checkbox" id="tech" name="tech" value="0" />
+										<input type="checkbox" id="tech" name="tech" value="1" />
 										<div id="holidays" class="dp-none">										
 											<br>
 											<?php if($holidays): ?>
 											<select name="holidays[]" multiple style="width:100%;height:120px">
-												<?php foreach($holidays as $holiday): ?>
-												<option value="<?=$holiday['date']?>"><?=$holiday['date']?></option>
+												<?php 
+												foreach($holidays as $holiday):
+													$feriado = new DateTime($holiday['date']);
+												?>
+												<option value="<?=$holiday['date']?>"><?=$feriado->format('d/m/Y').' - '.$_daynames[$feriado->format('N')-1]?></option>
 												<?php endforeach; ?>
 											</select>
-											<small>(sin selección = ignora todos)</small>
+
+											<small>(Mantener la tecla CTRL o Shift para seleccionar más de uno)</small>
 											<?php endif; ?>
 										</div>
 									</div>

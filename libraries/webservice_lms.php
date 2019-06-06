@@ -650,25 +650,26 @@ class H_LMS extends H_LMS_CONN {
 
 		global $H_DB;
 		$date = date('Y',$date);
-		$where = "(c.type='holiday'";
-		if(!$tech){
-			$where .= " OR c.type='tech'";
+		$where = "(c.type='holiday' OR c.type='tech')";
+		/*if(!$tech){
+			$where .= "";
 		}
-		$where .= ")";
+		$where .= ")";*/
 
-		if(!$tech && !empty($ignore_days)){			
-			foreach($ignore_days as $day){
-				$where .= " AND c.date != '{$day}'";
+		if($tech){
+			if(!empty($ignore_days)){
+				foreach($ignore_days as $day){
+					$where .= " AND c.date != '{$day}'";
+				}				
 			}
 		}
 
-
-		$result = $H_DB->GetAll(
-			"SELECT c.date 
+		$q = "SELECT c.date 
 			FROM h_calendario c 
 			WHERE YEAR(c.date) = '{$date}' AND {$where} 
-			ORDER BY c.date ASC"
-		);
+			ORDER BY c.date ASC";
+
+		$result = $H_DB->GetAll($q);
 
 		if(!$result) return false;
 		$holidays = array();

@@ -65,12 +65,14 @@ switch($v){
 			case 2:
 				
 				$course = $_POST;
-				
+
 				/*echo '<pre>';
+				print_r($LMS->getHolidays(strtotime(date($course['startdate'])),$course['tech'],$course['holidays']));
 				print_r($course);
 				echo '</pre>';
-				die();*/
 
+				die();*/
+				
 				$course['shortname'] = $course['fullname'] = $course['fullname_complete'];
 
 				$course['periodo'] = getPeriodo($course['startdate']);
