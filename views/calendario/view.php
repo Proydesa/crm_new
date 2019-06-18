@@ -1,11 +1,4 @@
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='width:90%; overflow: auto; height: 490px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div class="column-c"<?= $menufixed ?>>
+<div class="column-c">
 	<div class="calendar">
 		<p><small><a href="#" onclick="start_tutorial()" >(ver tutorial)</a></small></p>
 		<div class="calendar-block">
@@ -139,6 +132,7 @@
 <script type="text/javascript" src="<?= $HULK->javascript.'/introjs.min.js'?>"></script>
 <script>
 var hascapability = '<?=$H_USER->has_capability('calendario/edit')?>';
+
 var Calendar = {
 	styles:['tech','holiday','course'],
 	templates:{
@@ -231,10 +225,11 @@ var Calendar = {
 		},function(data){
 			if(data.results==null){return false;}
 			$.each(data.results,function(k,v){
+				console.log(v);
 				var mod = Calendar.templates.course();
 				mod.attr('data-id',v.id);
 				mod.find('.delete,input[type="checkbox"]').attr('data-id',v.id);
-				mod.find('.caption').html(($('select[name="periods"] option:selected').text())+' - Inicia: '+v.inicia+' ('+v.amount+' clases - '+v.days+')');
+				mod.find('.caption').html(($('select[name="periods"] option:selected').text())+' - Inicia: '+v.inicia+' - Termina: '+v.finaliza+' ('+v.amount+' clases - '+v.days+')');
 				mod.find('input').prop('checked',true);
 				$('#courses').append(mod);
 				Calendar.buildclasess(v);
@@ -376,6 +371,8 @@ $(function(){
 	Calendar.init();
 });
 
+
+///Tutorial
 var intro = introJs();
 var start_tutorial = function(){
 	intro.start();
@@ -414,4 +411,5 @@ intro.setOptions({
 		}
 	]
 });
+
 </script>

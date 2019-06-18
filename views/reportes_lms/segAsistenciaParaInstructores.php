@@ -49,14 +49,8 @@ if (!isset($_POST['idAcademia'] )){
 }
 
 ?> 
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='overflow: auto; height: 510px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div<?= $menufixed ?>>
+
+<div>
 	<form action="reportes_lms.php?v=segAsistenciaParaInstructores" method="POST" style="margin:0; padding:0;">
 		<input type="hidden" id="esReporte" value="0"/>
 		<div class="column" style="width:80%">

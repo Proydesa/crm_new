@@ -1,11 +1,4 @@
-﻿<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='width:95%; overflow: auto; height: 490px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div class="column-c"<?= $menufixed ?>>
+﻿<div class="column-c">
 	<div class="portlet">
 		<div class="portlet-header">Academias</div>
 		<div class="portlet-content" >

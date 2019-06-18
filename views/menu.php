@@ -1,11 +1,4 @@
-﻿<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = "position: fixed; width: 98%";
-	}else{
-		$menufixed = "width: 99%";
-	}
-?>
-<div class="ui-widget-content" id="header" style="<?= $menufixed ?>">
+<div class="ui-widget-content" id="header" >
 		<?php if ($H_USER->has_capability('menu/crm')):	?>
 		<a tabindex="3" href="#menu-reportes" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="opcion-global"><span class="ui-icon ui-icon-triangle-1-s"></span>CRM</a>
 		<div id="menu-global" class="hidden">
@@ -455,7 +448,7 @@
 			</ul>
 		</div>
 	<?php endif;?>
-<!--
+	<!--
 	<?php if ($H_USER->has_capability('capacitacion/view')):	?>
 		<a tabindex="1" href="#menu-capacitacion" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="opcion-capacitacion"><span class="ui-icon ui-icon-triangle-1-s"></span>Cap. Instructores</a>
 		<div id="menu-capacitacion" class="hidden">
@@ -481,7 +474,7 @@
 			</ul>
 		</div>
 	<?php endif;?>
--->
+	-->
 	<?php if ($H_USER->has_capability('admin/view')):	?>
 		<a tabindex="4" href="#menu-configuraciones" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="opcion-configuraciones"><span class="ui-icon ui-icon-triangle-1-s"></span>Administraci&oacute;n</a>
 		<div id="menu-configuraciones" class="hidden">

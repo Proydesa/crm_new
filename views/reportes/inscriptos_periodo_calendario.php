@@ -1,11 +1,5 @@
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='width:60%; overflow: auto; height: 510px'";
-	}else{
-		$menufixed = " style='width:60%'";
-	}
-?>
-<div class="column-c"<?= $menufixed ?>>
+
+<div class="column-c">
 	<form action="" method="POST">
 		<div id="fechas">
 			<?php $view->jquery_datepicker("#startdate, #enddate");?>

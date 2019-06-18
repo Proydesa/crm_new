@@ -1,11 +1,5 @@
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='width:1000px; overflow: auto; height: 510px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div class="column-c"<?= $menufixed ?>>
+
+<div class="column-c">
 	<form action="" method="POST">
 		Mostrar los inscriptos de los cursos del periodo
 		<select name="periodo">

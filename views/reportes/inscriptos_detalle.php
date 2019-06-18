@@ -54,14 +54,8 @@
 
 	});
 </script>
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='overflow: auto; height: 510px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div<?= $menufixed ?>>
+
+<div>
 	<!-- Barra de ruta y botones de accion -->
 	<div class="ui-widget noprint" align="right">
 		<table  align="right" class="noprint">

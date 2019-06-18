@@ -1,11 +1,5 @@
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='overflow: auto; height: 510px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div class="column-c"<?= $menufixed ?>>
+
+<div class="column-c">
 	<form action="<?= $HULK->SELF?>" method="post" name="parametros" style="margin:0; padding:0;">
 		<div class="column noprint" style="width:20%">
 			<div class="portlet">

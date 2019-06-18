@@ -1,11 +1,4 @@
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='width:100%; overflow: auto; height: 510px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div class="column-c"<?= $menufixed ?>>
+<div class="column-c">
 	<div class="calendar">
 		<p><small><a href="#" onclick="start_tutorial()">(ver tutorial)</a></small></p>
 		<div class="calendar-block no-print">

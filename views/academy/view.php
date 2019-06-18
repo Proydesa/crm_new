@@ -41,14 +41,8 @@
 		$("#"+elemento).remove();
   }
 </script>
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='overflow: auto; height: 490px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div class="ui-widget" align="left"<?= $menufixed ?>>
+
+<div class="ui-widget" align="left">
 	<div class="column" style="width:70%">
 		<div class="portlet">
 			<div align="center"><h2><?= $row['name'];?></h2></div>

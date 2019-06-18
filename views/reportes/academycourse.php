@@ -125,14 +125,8 @@ function mostrarLi(pais){
 }
 
 </script>
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='overflow: auto; height: 490px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div<?= $menufixed ?>>
+
+<div>
 	<div class="ui-widget noprint" align="right">
 		<table  align="right" class="noprint">
 			<tr>

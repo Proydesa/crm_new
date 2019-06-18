@@ -1,11 +1,4 @@
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='overflow: auto; height: 490px; padding-top: 10px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div<?= $menufixed ?>>	
+<div>	
 	<div class="ui-widget">
 		<div class="column-p" align="center" style="width:100%">
 			<div class="portlet">

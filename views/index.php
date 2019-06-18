@@ -1,12 +1,5 @@
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='width:80%; overflow: auto; height: 510px'";
-	}else{
-		$menufixed = " style='width:80%'";
-	}
-	if(isset($cumpleshoyactual) || isset($cumpleshoyotros)):
-?>
-<div class="column-c"<?= $menufixed ?>>
+<?php if(isset($cumpleshoyactual) || isset($cumpleshoyotros)): ?>
+<div class="column-c">
 	<div class="portlet">
 		<div class="portlet-header">Listado de alerta de cumpleaños</div>
 		<div class="portlet-content" >
@@ -103,7 +96,11 @@
 	</div>
 </div>
 <?php endif;?>
+
+
 <div id="result" style="display:none"></div>
+
+
 <script>
 function check(id){
 $("#result").load("./contactos_de_la_red.php?v=check&idContacto="+id);

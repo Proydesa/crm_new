@@ -1,11 +1,5 @@
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='width:80%; overflow: auto; height: 510px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div class="column-c"<?= $menufixed ?>>
+
+<div class="column-c">
 	<form action="" method="POST">
 		Este informe muestra la cantidad de inscriptos por día de
 		<select name="mes">

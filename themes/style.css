@@ -58,12 +58,25 @@ header {
 	margin: 0px;
 	padding: 5px 5px 10px 5px;
 	text-align: right;
-	margin-top:-25px;
-/*	position:fixed;
-	left:3px;
-	right:3px;
-	top:3px;
-	z-index:4;*/
+	box-sizing: border-box;
+	/*margin-top:-25px;*/
+}
+#header.fixed{
+	position: fixed;
+	top:0;
+	left:0;
+	width:100%;
+	z-index: 9999;
+}
+
+.main-breadcrumb{
+	display:flex;
+	justify-content: space-between;
+	font-size: .765rem;
+	background-color: #f4f0ec;
+	border:1px solid #e0cfc2;
+	padding:5px;
+	margin-bottom:8px;
 }
 
 .rendicion{	width:85%;}
@@ -513,3 +526,4 @@ input[type="radio"],input[type="checkbox"]{
 #header .ui-button-text-icons .ui-button-text{
 	padding:0;
 }*/
+

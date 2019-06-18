@@ -1,11 +1,5 @@
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='width:70%; overflow: auto; height: 510px'";
-	}else{
-		$menufixed = " style='width:70%'";
-	}
-?>
-<div class="column-c"<?= $menufixed ?>>
+
+<div class="column-c">
 	<div class="portlet">
 		<div class="portlet-header">Inscriptos por carrera</div>
 		<div class="portlet-content">

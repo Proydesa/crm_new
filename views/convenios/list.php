@@ -1,11 +1,4 @@
-﻿<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='width: 40%; overflow: auto; height: 490px'";
-	}else{
-		$menufixed = "style='width: 40%;'";
-	}
-?>
-<div class="column-c"<?= $menufixed ?>>
+﻿<div class="column-c">
 	<div class="portlet">
 		<div class="portlet-header">Convenios</div>
 		<div class="portlet-content" >

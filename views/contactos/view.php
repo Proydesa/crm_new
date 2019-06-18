@@ -19,14 +19,8 @@
 	});
 </script>
 
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='overflow: auto; height: 490px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div class="ui-widget" align="left"<?= $menufixed ?>>
+
+<div class="ui-widget" align="left">
 	<div class="column" style="width:100%">
 		<div class="portlet">
 			<div class="portlet-header">Datos</div>

@@ -6,14 +6,8 @@ function enabledAllSelect(){
 	}
 }
 </script>
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='overflow: auto; height: 490px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div<?= $menufixed ?>>
+
+<div>
 	<form action="asistencia.php?v=reporte" method="POST" style="margin:0; padding:0;">
 		<div class="column" style="width:100%">
 			<div class="portlet">

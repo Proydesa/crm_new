@@ -6,14 +6,8 @@
 		$(".rendicion").width("80%");		
 	}
 </script>
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='overflow: auto; height: 510px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div class="ui-widget" align="left"<?= $menufixed ?>>
+
+<div class="ui-widget" align="left">
 	<div class="column noprint" style="width:20%;">
 		<div class="portlet">
 			<div class="portlet-header">Hist&oacute;rico de rendiciones</div>

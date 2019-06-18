@@ -171,14 +171,24 @@ class Calendar {
 	}
 
 	public function getcourses(){
+		
 		$year = Input::get('year');
+		$output = array();
 		$idperiod = Input::get('idperiod');
-		return $this->_hdb->GetAll(
+
+		$output = $this->_hdb->GetAll(
 			"SELECT cc.id, cc.idperiod, cc.start, DAYOFYEAR(cc.start) daynum, DATE_FORMAT(cc.start,'%d/%m/%Y') inicia, cc.amount, cc.days
 			FROM h_calendario_courses cc 
 			WHERE YEAR(cc.start)={$year} AND cc.idperiod={$idperiod} 
 			ORDER BY cc.start ASC"
 		);
+
+		foreach($output as $k=>$class){
+			$output[$k]['finaliza'] = date('d/m/Y',$this->getfinalclass(strtotime($class['start']),$class['amount'],$class['days']));
+			$output[$k]['enddate'] = $this->getfinalclass(strtotime($class['start']),$class['amount'],$class['days']);
+		}
+
+		return $output;
 	}
 
 	public function findcourses($idperiod=0,$year=0,$month=0,$day=0){

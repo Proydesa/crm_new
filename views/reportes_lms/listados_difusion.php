@@ -59,14 +59,8 @@
 	});
 
 </script>
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='overflow: auto; height: 510px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div<?= $menufixed ?>>
+
+<div>
 	<div id="esconder" class="noprint">
 		<form action="<?= $HULK->SELF?>" method="post" name="parametros" style="margin:0; padding:0;">
 			<div class="portlet" style="float:left;width:49%">

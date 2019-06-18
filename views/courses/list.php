@@ -1,4 +1,4 @@
-﻿<SCRIPT TYPE="text/javascript">
+<SCRIPT TYPE="text/javascript">
 
 	$(document).ready(function(){
 
@@ -67,14 +67,8 @@
 		}
 	}
 </SCRIPT>
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='width:90%; overflow: auto; height: 490px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div class="column-c"<?= $menufixed ?>>	
+
+<div class="column-c">	
 	<form action="<?= $HULK->SELF?>" method="post" name="parametros" id="form-list" class="noprint" style="margin:0; padding:0;">
 	<input type="hidden" name="p" id="p" />
 	<div class="column" style="width:300px">

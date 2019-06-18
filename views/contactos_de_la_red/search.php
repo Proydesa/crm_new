@@ -9,13 +9,8 @@
 		}	
 	}
 
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='overflow: auto; height: 510px'";
-	}else{
-		$menufixed = "";
-	}
 ?>
-<div<?= $menufixed ?>>
+<div>
 	<div class="ui-widget" align="left">
 		<div class="column" style="width:70%">
 			<div class="portlet">

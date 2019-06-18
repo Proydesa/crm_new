@@ -1,11 +1,5 @@
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='overflow: auto; height: 510px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div class="column-c"<?= $menufixed ?>>
+
+<div class="column-c">
 	<div class="ui-widget noprint" align="right">
 		<span  class="ui-widget noprint" align="right">
 			<form action="reportes.php?v=xls" method="post" id="detalle-form">

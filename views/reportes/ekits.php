@@ -45,14 +45,8 @@
 		<?php endforeach;?>		
 	}); 
 </script>
-<?php
-	if ($H_USER->has_capability('menu/fixed')){
-		$menufixed = " style='overflow: auto; height: 520px'";
-	}else{
-		$menufixed = "";
-	}
-?>
-<div<?= $menufixed ?>>
+
+<div>
 	<div class="ui-widget noprint" align="right">
 		<table  align="right" class="noprint">
 			<tr>
