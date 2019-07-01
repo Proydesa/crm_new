@@ -4,3 +4,4 @@ config\.php
 libraries/lms_lib/setupmoodle\.php
 
 data/temp/
+/Input/

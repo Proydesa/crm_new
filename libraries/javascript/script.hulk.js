@@ -37,14 +37,14 @@
 	});
 
 	// Validacion de campos de formulario
-		$('.validate').validate();
+	$('.validate').validate();
 
 	// Menues
-		$('.fg-button').hover(
+	$('.fg-button').hover(
 		function(){ $(this).removeClass('ui-state-default').addClass('ui-state-focus'); },
 		function(){ $(this).removeClass('ui-state-focus').addClass('ui-state-default'); }
 	);
-		$('#opcion-global').fgmenu({
+		/*$('#opcion-global').fgmenu({
 			content: $('#opcion-global').next().html(),
 			flyOut: true
 		});
@@ -64,9 +64,9 @@
 		$('#opcion-enlaces').fgmenu({	content: $('#opcion-enlaces').next().html(), flyOut: true  });
 		$('#opcion-hd').fgmenu({	content: $('#opcion-hd').next().html(), flyOut: true  });
 		$('#opcion-campaña').fgmenu({	content: $('#opcion-campaña').next().html(), flyOut: true  });
-		$('#opcion-capacitacion').fgmenu({	content: $('#opcion-capacitacion').next().html(), flyOut: true  });
+		$('#opcion-capacitacion').fgmenu({	content: $('#opcion-capacitacion').next().html(), flyOut: true  });*/
 
-// BUTTONS
+		// BUTTONS
 		$( ".searchbutton" ).button({ icons: { primary: "ui-icon-search" } });
 		$( "#backbutton" ).button({ icons: { primary: "ui-icon-arrowthick-1-w" } });
 		$( ".agregar" ).button({ icons: { primary: "ui-icon-plusthick" } });
@@ -170,5 +170,36 @@
 	      zebra   : ["even", "odd"],
 	    }
 	}).tablesorterPager({container: $("#pager")});
+
+
+
+	$(window).scroll(function(){
+		if(this.pageYOffset>100){
+			$('#header,.menu-spacer').addClass('fixed');
+		}else{
+			$('#header,.menu-spacer').removeClass('fixed');
+		}
+	});
+
+	$('#header .main-menu .btn').click(function(){
+		$('#header .main-menu .menu-item').hide();
+		$('#header .main-menu .submenu').hide();
+		$(this).parent().find('.menu-item').slideDown();
+	});
+	$('#header .main-menu .item').click(function(e){
+		if($(this).parent().find('.submenu').length!=0){
+			e.preventDefault();
+			$('#header .main-menu .submenu').slideUp();
+			$(this).parent().find('.submenu').slideDown();
+		}
+	});
+
+	$(document).mouseup(function(e){
+    var container = $("#header .main-menu .menu-item");
+    // if the target of the click isn't the container nor a descendant of the container
+    if(container.has(e.target).length === 0){
+			container.hide();
+    }
+	});
 
 });

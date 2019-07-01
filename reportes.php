@@ -1400,8 +1400,8 @@ function inscriptos_dia(){
 			AND u.roleid = 5
 			GROUP BY c2.shortname, c.intensivo, DAY(FROM_UNIXTIME(u.timestart)), MONTHNAME(FROM_UNIXTIME(u.timestart)), YEAR(FROM_UNIXTIME(u.timestart))
 			ORDER BY c.intensivo,c2.shortname,u.timestart ASC;";
-//echo $sql;
-//die();
+		//echo $sql;
+		//die();
 		$comparativa=$LMS->GetAll($sql);
 
 		$sqlcambiocomision="SELECT 
@@ -1420,7 +1420,7 @@ function inscriptos_dia(){
 								detalle LIKE '%tica por cambio de comisi%' 
 							GROUP BY periodo, DAY(FROM_UNIXTIME(date));";
 		$data['cambios'] = $LMS->GetAll($sqlcambiocomision);
-//show_array($cambiocomision);
+		//show_array($cambiocomision);
 		$intensivo= array(0=>"",1=>"_intensivo");
 		foreach($comparativa as $compa){
 			$data['carreras'][]= $compa['carrera'].$intensivo[$compa['intensivo']];
@@ -1643,7 +1643,6 @@ function iva_ventas(){
 											WHERE c.tipo = {$data['tipo']}
 											AND MONTH(FROM_UNIXTIME(c.date))={$data['mes']}
 											AND YEAR(FROM_UNIXTIME(c.date))={$data['ano']}
-											{$noncrecibo}
 										ORDER BY c.date;");
 	$view->Load('header');
 	if(empty($print)) $view->Load('menu',$data);

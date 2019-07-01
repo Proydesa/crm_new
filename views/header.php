@@ -25,8 +25,9 @@
 
 
 		<!-- Javascript y CSS del menu -->
-	    <script type="text/javascript" src="<?= $HULK->javascript;?>/fg_menu/fgmenu.pack.js"></script>
-    	<link type="text/css" href="<?= $HULK->javascript;?>/fg_menu/fg.menu.css" media="screen" rel="stylesheet" ></link>
+	  <!--<script type="text/javascript" src="<?= $HULK->javascript;?>/fg_menu/fgmenu.pack.js"></script>
+    <link type="text/css" href="<?= $HULK->javascript;?>/fg_menu/fg.menu.css" media="screen" rel="stylesheet" ></link>-->
+
 		<!-- Javascript adicionales (tabla, highlight) -->
 	    <script type="text/javascript" src="<?= $HULK->javascript;?>/jquery.table.pack.js"></script>
 		<script type="text/javascript" src="<?= $HULK->javascript;?>/jquery.watermark.pack.js"></script>
