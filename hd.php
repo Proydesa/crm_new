@@ -968,8 +968,10 @@ function listaplus(){
 ///////////////////////////////////////////////////////////////////////////////
 function lista_notification(){
 
+
 	global $HULK,$LMS,$H_DB,$H_USER,$view; $data['v'] = $v = $_REQUEST['v'];
 	require_once 'config.php';
+
 
 	$data['idUsers'] = isset($_REQUEST['id']) ? $_REQUEST['id'] : '';
 	$data['userid'] = $H_USER->get_property('id');
@@ -982,10 +984,9 @@ function lista_notification(){
 				$data['rowusers'][] = $LMS->getUser($vi);
 		}		
 	}else{
-		show_error("Array vacio","No hay usuarios para notificar.");
-		die();
 	}
 	$sent = false;
+
 
 	/////////////////// SEND MAILS //////////////////
 	if($_POST['action'] == 'newactivity'){
@@ -997,15 +998,20 @@ function lista_notification(){
 		$mail->Subject(utf8_decode("{$subject}"));
 		$mail->Body(utf8_decode("<p>{$summary}</p>"));
 		$mail->AddAddress('fundacion@fproydesa.org', 'Fundación Proydesa');
+
 		if(count($data['rowusers'])){
 			foreach ($data['rowusers'] as $ki=>$vi){
 				$mail->AddBCC($vi['email'], $vi['firstname'].' '.$vi['lastname']);
 			}
 		}
+		
 		//$mail->AddAddress($LMS->GetField('mdl_user','email',$data['userid']), $LMS->GetField('mdl_user','CONCAT(firstname," ",lastname)',$data['userid']));
 		$mail->CharSet = 'UTF-8';
 		if($mail->Send()){
 			$sent = true;
+		}else{
+			show_error('Error','Hubo un error al enviar el email.');
+			die();
 		}
 		//header("Location: {$HULK->STANDARD_SELF}"); 
 		//$view->js("window.location='{$HULK->STANDARD_SELF}';");
@@ -1014,13 +1020,14 @@ function lista_notification(){
 	/////////////////////////////////////////////////
 
 	$data['activity_type'] = $H_DB->GetAll("SELECT * FROM h_activity_type WHERE id=2;");
+	
 
 	$view->Load('header');
 	if(!$sent){
 		if(empty($print)) $view->Load('menuroot',$menuroot);
-		$view->Load('hd/'.$v, $data);		
+		$view->Load('hd/'.$v, $data);
 	}else{
-		echo '<p>Email enviado exitosamente!</p>';
+		show_error('Envío','Email enviado exitosamente!');
 	}
 	if(empty($print)) $view->Load('footer');
 }

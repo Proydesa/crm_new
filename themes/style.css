@@ -116,7 +116,7 @@ header {
 	margin:0;
 	padding:0;	
 	display: none;
-	width: 200px;
+	width: 230px;
 	z-index: 99999;
 }
 #header .main-menu > li > ul.menu-item.active{
@@ -137,7 +137,7 @@ header {
 }
 #header .main-menu > li > ul.menu-item > li{	
 	display: block;	
-	margin:6px 0;
+	margin:2px 0;
 }
 #header .main-menu > li > ul.menu-item > li.separator{	
 	opacity: 1;
@@ -145,7 +145,7 @@ header {
 	display: block;
 	/*background-color: #dfdfdf;*/
 	font-size: .665rem;
-	margin:10px 0 -8px 0;
+	margin:4px 0 -8px 0;
 	padding:6px 8px;
 	text-transform: uppercase;
 }

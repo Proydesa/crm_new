@@ -196,11 +196,10 @@
 			<li>
 				<a tabindex="3" href="#menu-reportes" class="btn" id="opcion-reportes"><span class="ui-icon ui-icon-triangle-1-s"></span><span>Reportes</span></a>				
 				<ul class="menu-item">
-					<li><p><b>Reportes</b></p></li>
 					
 					<?php if ($H_USER->has_capability('reportes/alum_acad')): ?>
-					<li><a href="#">Alumnos por Academia de la red</a>
-						<ul>
+					<li><a href="#" class="item">Alumnos por Academia de la red <i class="fa fa-caret-down"></i></a>
+						<ul class="submenu">
 							<li>
 								<a href="reportes.php?v=academycourse" >Tabla</a></li>
 							<li>
@@ -212,10 +211,10 @@
 
 					<?php if ($H_USER->has_capability('reportes/asistencia')): ?>
 					<li>
-						<a href="#">Asistencias</a>
-						<ul> 
+						<a href="#" class="item">Asistencias <i class="fa fa-caret-down"></i></a>
+						<ul class="submenu"> 
 							<li>
-								<a href="reportes_lms.php?v=asistencia" >Asistencia</a>
+								<a href="reportes_lms.php?v=asistencia" >Asistencia</i></a>
 							</li>
 							<li>
 								<a href="asistencia.php?v=view" >Instructores</a>
@@ -232,26 +231,26 @@
 
 					<?php if ($H_USER->has_capability('reportes/deudores')): ?>
 					<li>
-						<a href="reportes.php?v=deudores" >Inscriptos - Deudores</a>
+						<a href="reportes.php?v=deudores" class="item" >Inscriptos - Deudores</a>
 					</li>
 					<?php endif;?>
 
 					<?php if ($H_USER->has_capability('reportes/ekits')):	?>
 					<li>
-						<a href="reportes.php?v=ekits">Ekits</a>
+						<a href="reportes.php?v=ekits" class="item">Ekits</a>
 					</li>
 					<?php endif;?>
 
 					<?php if ($H_USER->has_capability('reportes/listados')):	?>
 					<li>
-						<a href="reportes_lms.php?v=listados_difusion" >Listados Difusión</a>
+						<a href="reportes_lms.php?v=listados_difusion" class="item" >Listados Difusión</a>
 					</li>
 					<?php endif;?>
 
 					<?php if ($H_USER->has_capability('reportes/inscriptos')):	?>
 					<li>
-						<a href="#">Inscriptos</a>
-						<ul>
+						<a href="#" class="item">Inscriptos  <i class="fa fa-caret-down"></i></a>
+						<ul class="submenu">
 							<li>
 								<a href="reportes.php?v=inscriptos&t=detalle">Inscriptos detallado</a>
 							</li>
@@ -273,53 +272,53 @@
 
 					<?php if ($H_USER->has_capability('reportes/bajas')):	?>
 					<li>
-						<a href="reportes.php?v=bajas" >Bajas</a>
+						<a href="reportes.php?v=bajas" class="item">Bajas</a>
 					</li>
 					<?php endif;?>
 
 					<?php if ($H_USER->has_capability('reportes/comp_pend')):	?>
 					<li>
-						<a href="reportes.php?v=comp_pendientes">Comprobantes Pendientes</a>
+						<a href="reportes.php?v=comp_pendientes" class="item">Comprobantes Pendientes</a>
 					</li>
 					<?php endif;?>
 
 					<?php if ($H_USER->has_capability('reportes/facturacion')):	?>
 					<li>
-						<a href="reportes.php?v=facturacion" >Facturaci&oacute;n</a>
+						<a href="reportes.php?v=facturacion" class="item">Facturaci&oacute;n</a>
 					</li>
 					<li>
-						<a href="reportes.php?v=facturacion_ekits" >Facturaci&oacute;n de eKits</a>
+						<a href="reportes.php?v=facturacion_ekits" class="item" >Facturaci&oacute;n de eKits</a>
 					</li>
 					<?php endif;?>
 
 					<?php if ($H_USER->has_capability('reportes/iva-ventas')):	?>
 					<li>
-						<a href="reportes.php?v=iva_ventas" >IVA - Ventas</a>
+						<a href="reportes.php?v=iva_ventas" class="item">IVA - Ventas</a>
 					</li>
 					<?php endif;?>
 
 					<?php if ($H_USER->has_capability('reportes/donaciones')):	?>
 					<li>
-						<a href="reportes.php?v=donaciones" >Donaciones</a>
+						<a href="reportes.php?v=donaciones" class="item">Donaciones</a>
 					</li>
 					<?php endif;?>
 
 					<?php if ($H_USER->has_capability('reportes/becados')):	?>
 					<li>
-						<a href="reportes.php?v=becados" >Becados</a>
+						<a href="reportes.php?v=becados" class="item" >Becados</a>
 					</li>
 					<?php endif;?>
 
 					<?php if ($H_USER->has_capability('reportes/empresas')):	?>
 					<li>
-						<a href="reportes.php?v=empresas">Empresas</a>
+						<a href="reportes.php?v=empresas" class="item">Empresas</a>
 					</li>
 					<?php endif;?>
 
-					<li><p><b>Herramientas</b></p></li>
+					<li class="separator"><p><b>Herramientas</b></p></li>
 					<li>
-						<a href="#">Pagomiscuentas</a>
-						<ul>
+						<a href="#" class="item">Pagomiscuentas <i class="fa fa-caret-down"></i></a>
+						<ul class="submenu">
 							<?php if ($H_USER->has_capability('pagomiscuentas/descarga')):	?>
 							<li>
 								<a href="admin.php?v=pagomiscuentas">Descarga pagomiscuentas</a>
@@ -341,16 +340,16 @@
 				<a tabindex="4" href="#menu-configuraciones" class="btn" id="opcion-configuraciones"><span class="ui-icon ui-icon-triangle-1-s"></span><span>Administraci&oacute;n</span></a>
 				<ul class="menu-item">
 					<li>
-						<a href="admin.php?v=configuracion">Configuraci&oacute;n general</a>
+						<a href="admin.php?v=configuracion" class="item">Configuraci&oacute;n general</a>
 					</li>
 					<li>
-					<a href="admin.php?v=roles">Roles y permisos</a></li>
+						<a href="admin.php?v=roles" class="item">Roles y permisos</a></li>
 					<li>
-						<a shref="sincronizadores.php?v=view">Sincronizadores</a>
+						<a shref="sincronizadores.php?v=view" class="item">Sincronizadores</a>
 					</li>
 					<li>
-						<a href="#">Cursos</a>
-						<ul>
+						<a href="#" class="item">Cursos  <i class="fa fa-caret-down"></i></a>
+						<ul class="submenu">
 							<li>
 								<a href="admin.php?v=cuotas">Cuotas</a>
 							</li>
@@ -362,67 +361,64 @@
 							</li>
 						</ul>
 					</li>
-					<li><a href="#">Actividades</a>
-						<ul>
+					<li><a href="#" class="item">Actividades <i class="fa fa-caret-down"></i></a>
+						<ul class="submenu">
 							<li><a href="admin.php?v=asuntos">Asuntos</a></li>
 						</ul>
 					</li>
 					<?php if ($H_USER->has_capability('hd/config')):	?>
 					<li>
-						<a href="#">Help Desk</a>
+						<a href="#" class="item">Help Desk  <i class="fa fa-caret-down"></i></a>
 						<ul class="submenu">
 							<li><a href="hd.php?v=categories">Categorias</a></li>
 						</ul>
 					</li>
 					<?php endif;?>
 					<li>
-						<a href="#">Herramientas</a>
-						<ul>
-							<li><a href="ftp.php">Acceso FTP</a></li>
+						<a href="#" class="item">Herramientas  <i class="fa fa-caret-down"></i></a>
+						<ul class="submenu">
+							<li><a href="ftp.php" >Acceso FTP</a></li>
 						</ul>
 					</li>
-					<li><a href="admin.php?v=bancos">Bancos</a></li>
+					<li><a href="admin.php?v=bancos" class="item">Bancos</a></li>
 				</ul>
 			</li>
 			<?php endif;?>
 
 			<li>
-				<a tabindex="6" href="#menu-cuenta" class="btn" id="opcion-cuenta"><span class="ui-icon ui-icon-triangle-1-s"></span><span>Cuenta</span></a>				
+				
+				<a tabindex="6" href="#menu-cuenta" class="btn" id="opcion-cuenta"><span class="ui-icon ui-icon-triangle-1-s"></span><span>Cuenta</span></a>
+				
 				<ul class="menu-item">
 					<center>
 						<div class="portlet-header ui-widget-header ui-corner-all"><b><?= $H_USER->getName();?></b></div>
 						<a href="index.php"><img src="https://www.proydesa.org/lms_new/user/pix.php/<?= $H_USER->get_property('id');?>/f1.jpg"/></a></center>
+
 					<li>
-						<a href="#" onclick="window.open('contactos.php?v=view&id=<?= $H_USER->get_property('id');?>');" style="width:10%;">
-							<span class="ui-icon ui-icon-newwin" style="float:left;"></span>
-						</a>
-						<a href="contactos.php?v=view&id=<?= $H_USER->get_property('id');?>" style="width:75%;">Perfil</a></li>
+						<a href="contactos.php?v=view&id=<?= $H_USER->get_property('id');?>" class="item" >Perfil</a>
+					</li>
 					<?php if ($H_USER->has_capability('user/rendicion/rendir')):	?>
 						<li>
-							<a href="#" onclick="window.open('users.php?v=rendicion');" style="width:10%;">
-								<span class="ui-icon ui-icon-newwin" style="float:left;"></span>
-							</a>
-						<a href="users.php?v=rendicion"  style="width:75%;">Carga Manual Rendici&oacute;n</a></li>
+							<a href="users.php?v=rendicion" class="item">Carga Manual Rendici&oacute;n</a></li>
 						<li>
-							<a href="#" onclick="window.open('users.php?v=rendicion');" style="width:10%;">
-								<span class="ui-icon ui-icon-newwin" style="float:left;"></span>
-							</a>
-						<a href="users.php?v=rendicion"  style="width:75%;">Rendici&oacute;n</a></li>
+							<a href="users.php?v=rendicion" class="item" >Rendici&oacute;n</a>
+						</li>
 					<?php endif;?>
-					<li><a href="#">Estilos</a>
-						<ul>
+
+					<li><a href="#" class="item">Estilos <i class="fa fa-caret-down"></i></a>
+						<ul class="submenu">
 							<?php foreach($HULK->themes as $theme):?>
 								<li><a href="<?=$HULK->SELF?>&theme=<?= $theme;?>"><?php if($HULK->theme==$theme) echo " *" ?> <?= $theme;?></a></li>
 							<?php endforeach;?>
 						</ul>
 					</li>
-					<li><a href="#">Idiomas</a>
-						<ul>
-								<li><a href="#">* Español</a></li>
+					<li><a href="#" class="item">Idiomas</a>
+						<ul class="submenu">
+							<li><a href="#">* Español</a></li>
 						</ul>
 					</li>
 					<li><hr/></li>
-					<li><a href="login.php?logout=1">Cerrar Sesi&oacute;n</a></li>
+					<li><a href="login.php?logout=1" class="item">Cerrar Sesi&oacute;n</a></li>
 				</ul>
 				
 			</li>
@@ -431,55 +427,55 @@
 			<li>
 				<a tabindex="7" href="#menu-enlaces" class="btn" id="opcion-enlaces"><span class="ui-icon ui-icon-triangle-1-s"></span><span>Enlaces</span></a>
 				<ul class="menu-item">
-					<li>
+					<li class="separator">
 						<p><b>Sitios Públicos</b></p></li>
 					<li>
-						<a href="http://www.proydesa.org/portal" target="_blank">Portal</a>
+						<a href="http://www.proydesa.org/portal" class="item" target="_blank">Portal</a>
 					</li>
 					<li>
-						<a href="http://rrhh.proydesa.org/" target="_blank">Web Site Laboral</a>
+						<a href="http://rrhh.proydesa.org/" class="item" target="_blank">Web Site Laboral</a>
 					</li>
 					<li>
-						<a href="http://estudiemos.proydesa.org/" target="_blank">Estudiemos .org</a>
+						<a href="http://estudiemos.proydesa.org/" class="item" target="_blank">Estudiemos .org</a>
 					</li>
-					<li>
+					<li class="separator">
 						<p><b>Redes Sociales</b></p>
 					</li>
 					<li>
-						<a href="http://www.facebook.com/pages/Buenos-Aires-Argentina/Fundacion-Proydesa/329367770317?ref=ts" target="_blank">Facebook</a>
+						<a href="http://www.facebook.com/pages/Buenos-Aires-Argentina/Fundacion-Proydesa/329367770317?ref=ts" class="item" target="_blank">Facebook</a>
 					</li>
 					<li>
-						<a href="http://www.flickr.com/photos/48765985@N08/sets/" target="_blank">Flickr</a>
+						<a href="http://www.flickr.com/photos/48765985@N08/sets/" class="item" target="_blank">Flickr</a>
 					</li>
 					<li>
-						<a href="http://www.slideshare.net/proydesa" target="_blank">Slideshare</a>
+						<a href="http://www.slideshare.net/proydesa" class="item" target="_blank">Slideshare</a>
 					</li>
 					<li>
-						<a href="http://twitter.com/proydesa" target="_blank">Twitter</a>
+						<a href="http://twitter.com/proydesa" class="item" target="_blank">Twitter</a>
 					</li>
 					<li>
-						<a href="http://www.youtube.com/user/fundacionproydesa" target="_blank">Youtube</a>
+						<a href="http://www.youtube.com/user/fundacionproydesa" class="item" target="_blank">Youtube</a>
 					</li>
 					<li>
-						<a href="http://fundacionproydesa.blogspot.com" target="_blank">Blogspot</a>
+						<a href="http://fundacionproydesa.blogspot.com" class="item" target="_blank">Blogspot</a>
 					</li>
 					<li>
-						<a href="http://www.linkedin.com/groups?home=&gid=2911029&trk=anet_ug_hm" target="_blank">Linkedin</a>
+						<a href="http://www.linkedin.com/groups?home=&gid=2911029&trk=anet_ug_hm" class="item" target="_blank">Linkedin</a>
 					</li>
 					<li>
-						<a href="http://www.plaxo.com/groups/profile/231928512564" target="_blank">Plaxo</a>
+						<a href="http://www.plaxo.com/groups/profile/231928512564" class="item" target="_blank">Plaxo</a>
 					</li>
-					<li>
+					<li class="separator">
 						<p><b>Internos</b></p>
 					</li>
 					<li>
-						<a href="http://office365.proydesa.org" target="_blank">WebMail Proydesa</a>
+						<a href="http://office365.proydesa.org" class="item" target="_blank">WebMail Proydesa</a>
 					</li>
 					<li>
-						<a href="http://192.168.0.9/" target="_blank">Intranet Proydesa</a>
+						<a href="http://192.168.0.9/" class="item" target="_blank">Intranet Proydesa</a>
 					</li>
 					<li>
-						<a href="http://dev.proycore.proydesa.org/lms" target="_blank">LMS Desarrollo</a>
+						<a href="http://dev.proycore.proydesa.org/lms" class="item" target="_blank">LMS Desarrollo</a>
 					</li>
 				</ul>
 			</li>

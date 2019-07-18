@@ -181,16 +181,19 @@
 		}
 	});
 
-	$('#header .main-menu .btn').click(function(){
+	$('#header .main-menu .btn').click(function(e){
+		///e.stopPropagation();
 		$('#header .main-menu .menu-item').hide();
 		$('#header .main-menu .submenu').hide();
 		$(this).parent().find('.menu-item').slideDown();
 	});
 	$('#header .main-menu .item').click(function(e){
-		if($(this).parent().find('.submenu').length!=0){
+		var submenu = $(this).parent().find('.submenu');
+		if(submenu.length!=0){
 			e.preventDefault();
-			$('#header .main-menu .submenu').slideUp();
-			$(this).parent().find('.submenu').slideDown();
+
+			$('#header .main-menu .submenu').not(submenu).slideUp();
+			submenu.slideToggle();
 		}
 	});
 

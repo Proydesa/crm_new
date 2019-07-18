@@ -13,11 +13,11 @@ class H_Mail {
 		$CFG->directorypermissions = 00777;
 		$CFG->dataroot  = 'D:\AppServ\moodledata';
 
-		require_once "{$CFG->libdir}/setuplib.php";
-		require_once "{$CFG->libdir}/textlib.class.php";	
+		//require_once "{$CFG->libdir}/setuplib.php";
+		//require_once "{$CFG->libdir}/textlib.class.php";	
 		require_once "{$CFG->libdir}/phpmailer/class.phpmailer.php";	
 		require_once "{$CFG->libdir}/phpmailer/class.smtp.php";	
-		global $HULK;
+		///global $HULK;
 		
 		$this->mail	= new PHPMailer();
 
@@ -38,9 +38,9 @@ class H_Mail {
 		$this->mail->IsSMTP();
 		$this->mail->SMTPDebug  = 0;    
 		$this->mail->SMTPAuth   = true; 
-		$this->mail->SMTPSecure = 'ssl';                 // enable SMTP authentication
-		$this->mail->Host       = "smtp.fproydesa.com.ar"; // sets the SMTP server
-		$this->mail->Port       = 587;                    // set the SMTP port for the GMAIL server
+		$this->mail->SMTPSecure = false;                 // enable SMTP authentication
+		$this->mail->Host       = "smtp.correoseguro.co"; // sets the SMTP server
+		$this->mail->Port       = 25;                    // set the SMTP port for the GMAIL server
 		$this->mail->Username   = "academia@fproydesa.com.ar"; // SMTP account username
 		$this->mail->Password   = "WSProy365";        // SMTP account password
 		$this->mail->From	   = 'academia@fproydesa.com.ar';
