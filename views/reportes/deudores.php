@@ -140,9 +140,9 @@
 									<a href="courses.php?v=view&id=<?= $comision;?>" target="_blank">
 									<span class="ui-icon ui-icon-newwin" style="float:left;"></span></a>
 									<?php if(strtotime(date("d-m-Y",$cuotas['startdate']))>=strtotime(date("d-m-Y",time()))): ?>
-										&nbsp;<b><?= $LMS->GetField('crm.vw_course','fullname',$comision); ?></b>
+										&nbsp;<b><?= $LMS->GetField($HULK->dbname.'.vw_course','fullname',$comision); ?></b>
 									<?php else: ?>
-										&nbsp;<?= $LMS->GetField('crm.vw_course','fullname',$comision); ?>
+										&nbsp;<?= $LMS->GetField($HULK->dbname.'.vw_course','fullname',$comision); ?>
 									<?php endif; ?>
 								</td>
 								<td width="150px" class="ui-widget-content"><?= $cuotas['instructor']; ?></td>
