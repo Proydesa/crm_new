@@ -345,7 +345,7 @@
 					<li>
 						<a href="admin.php?v=roles" class="item">Roles y permisos</a></li>
 					<li>
-						<a shref="sincronizadores.php?v=view" class="item">Sincronizadores</a>
+						<a href="sincronizadores.php?v=view" class="item">Sincronizadores</a>
 					</li>
 					<li>
 						<a href="#" class="item">Cursos  <i class="fa fa-caret-down"></i></a>

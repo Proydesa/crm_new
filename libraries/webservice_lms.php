@@ -553,11 +553,11 @@ class H_LMS extends H_LMS_CONN {
 		}
 		return $result;
 	}
-	function getCourseStudents($id){
+	function getCourseStudents($id,$periodo=''){
 		global $H_DB;
 		global $HULK;
 		// Traigo todas las bajas
-		$bajas = $H_DB->GetOne("SELECT GROUP_CONCAT(userid) FROM h_bajas WHERE comisionid={$id} AND cancel=0;");
+		$bajas = $H_DB->GetOne("SELECT GROUP_CONCAT(userid) FROM h_bajas WHERE comisionid={$id} AND cancel=0 AND periodo='{$periodo}';");
 		if($bajas){
 			$WHERE .= " AND u.id NOT IN({$bajas})";
 		}

@@ -10,6 +10,4 @@
 	require_once "{$HULK->libdir}/webservice_lms".EXT;
 	require_once "{$HULK->libdir}/Error".EXT;	
 	require_once "{$HULK->libdir}/mailClass".EXT;	
-	require_once "{$HULK->libdir}/comprobantes".EXT;	
-	
-?>
+	require_once "{$HULK->libdir}/comprobantes".EXT;

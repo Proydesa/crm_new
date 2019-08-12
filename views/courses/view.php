@@ -202,8 +202,16 @@
 							<?php endif; ?>
 
 							<!-- Asistencia-->
-							<?php if(count($asistencias)>0): foreach($asistencias as $asistencia): ?>
-							<th class="textCenter sz-6"><?= ConvertDays(date('D',$asistencia['sessdate'])).'<br />'.date('d',$asistencia['sessdate']).'<br />'.ConvertMonth(date('M',$asistencia['sessdate'])); ?></th>
+							<?php if(count($asistencias)>0): foreach($asistencias as $ka=>$asistencia): ?>
+							
+							<th class="textCenter sz-6">
+								(<?= $ka+1 ?>)
+								<br>
+								<?= ConvertDays(date('D',$asistencia['sessdate'])).' '.date('d',$asistencia['sessdate']); ?>
+								<br>
+								<?=	ConvertMonth(date('M',$asistencia['sessdate'])); ?>								
+							</th>
+
 							<?php endforeach; else: ?>
 							<th>Info no cargada</th>
 							<?php endif; ?>

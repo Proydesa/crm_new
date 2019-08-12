@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 require_once 'config.php';
 
@@ -9,7 +9,7 @@ $data['v'] = $v = $_REQUEST['v'];
 
 
 switch($v){
-/***********************/
+	/***********************/
 	case 'view':
 		
 		$H_USER->require_capability('admin/view');
@@ -41,7 +41,7 @@ switch($v){
 		
 		break;
 
-/***********************/
+	/***********************/
 	case 'help_desk':
 
 		$H_USER->require_capability('admin/view');
@@ -49,7 +49,7 @@ switch($v){
 		header("Location: sincronizadores.php?v=view&log=help_desk");				
 		break;
 
-/***********************/
+	/***********************/
 	case 'bajador':
 		break;
 	case 'gradebook_compare':
@@ -101,11 +101,11 @@ switch($v){
 		}		
 		break;
 
-/***********************/
+	/***********************/
 	case 'recolector':
 		break;
 
-/***********************/
+	/***********************/
 	case 'lms':
 
 		$H_USER->require_capability('admin/view');
@@ -154,7 +154,7 @@ switch($v){
 			break;
 		}
 	
-	// Levantamos los archivo que hay
+		// Levantamos los archivo que hay
 		if (is_dir($dir)) {
 			if ($gd = opendir($dir)) {
 				while (($archivo = readdir($gd)) !== false) {
@@ -165,7 +165,7 @@ switch($v){
 				closedir($gd);
 			}
 		}
-	// Levantamos los archivo que hay en historicos
+		// Levantamos los archivo que hay en historicos
 		if (is_dir($dir2)) {
 			if ($gd2 = opendir($dir2)) {
 				while (($archivo2 = readdir($gd2)) !== false) {
@@ -178,7 +178,7 @@ switch($v){
 		}		
 	
 		break;
-/***********************/
+	/***********************/
 	case 'lms_view':
 
 		$H_USER->require_capability('admin/view');
@@ -231,7 +231,7 @@ switch($v){
 			$data['preview'].="</table>";
 		break;
 
-/***********************/
+	/***********************/
 	case 'log':
 		$H_USER->require_capability('admin/view');
 		if($_POST['name']){
@@ -251,12 +251,9 @@ switch($v){
 	break;
 	default:
 		break;
-}	
-
+}
 $view->Load('header',$data);
 $view->Load('menu');
 $view->Load('menuroot',$menuroot);
 $view->Load('sincronizadores/'.$v,$data);
 $view->Load('footer');
-
-?>

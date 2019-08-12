@@ -8,6 +8,9 @@
 	
 	set_time_limit(3600); // 1 hour should be enough
 
+	$HULK->sincro_gradebook  = 'F:/work/proydesa/sincronizadores/gradebooks';
+	//die($HULK->sincro_gradebook);
+
 	$dir=$HULK->sincro_gradebook."/upload";
 	$dir2=$HULK->sincro_gradebook."/historico";
 	$filename_error=$HULK->sincro_gradebook."/errores ".date('Y-m-d_his').".csv";
@@ -54,6 +57,7 @@ Errores: <span id="userserrors"></span><br/>
 	flush_buffers();
 	// Paso los datos del archivo a un vector organizado por nombre de campo
 	$result = files_to_vector($dir);
+
 
 	$file_errors = fopen($filename_error, 'w');
 	fputcsv($file_errors,array("academy","course","shortname","firstname","lastname","username","email","course_startdate","course_enddate","type","classid","status","acid","periodo","final","user_cisco"),",");	

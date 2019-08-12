@@ -5,5 +5,5 @@
 		-> <a href="<?= $link;?>"><?= $name;?></a>
 		<?php endforeach;endif;?>
 	</div>
-	<div class="date" ><?= show_fecha(time());?> &nbsp;&nbsp;&nbsp;</div>
+	<div class="date" ><?= show_fecha(time());?></div>
 </div>

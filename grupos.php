@@ -56,7 +56,7 @@ switch($v){
 															FROM h_comprobantes_cuotas cc
 															INNER JOIN h_cuotas c ON cc.cuotaid=c.id
 															WHERE cc.comprobanteid={$id};");
-/*		$cont2 = "<br />Alumno/s: ";
+		/*		$cont2 = "<br />Alumno/s: ";
 		foreach ($contactos as $cont){
 			$cont2 .= $LMS->GetField('mdl_user','CONCAT(firstname," ",lastname)',$cont['userid']).", ";
 		}
@@ -101,6 +101,7 @@ switch($v){
 		}else{
 			$data['comps'] = $H_DB->GetAll("SELECT * FROM h_comprobantes WHERE cancel={$data['comprobante']['id']};");
 		}
+		
 		if($data['comprobante']['tipo']==1){
 			$view->Load('print/recibo',$data);
 		}elseif($data['comprobante']['tipo']==2){

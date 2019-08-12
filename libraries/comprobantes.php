@@ -13,7 +13,7 @@ class Comprobantes extends H_Database_Conn {
 		
 		$return = $this->GetAll("SELECT c.id, c.importe,
 									(SELECT SUM(cc.importe) FROM h_comprobantes_cuotas cc WHERE cc.comprobanteid=c.id GROUP by cc.comprobanteid) as pagado
-									FROM crm.h_comprobantes c  
+									FROM {$HULK->dbname}.h_comprobantes c  
 									WHERE c.importe > IFNULL((SELECT SUM(cc.importe) FROM h_comprobantes_cuotas cc WHERE cc.comprobanteid=c.id GROUP by cc.comprobanteid),0)
 									AND tipo IN (1,2)
 									AND c.grupoid={$grupoid}
@@ -25,7 +25,7 @@ class Comprobantes extends H_Database_Conn {
 		
 		$return = $this->GetAll("SELECT c.id, c.importe,
 									(SELECT SUM(cc.importe) FROM h_comprobantes_cuotas cc WHERE cc.comprobanteid=c.id GROUP by cc.comprobanteid) as pagado
-									FROM crm.h_comprobantes c  
+									FROM {$HULK->dbname}.h_comprobantes c  
 									WHERE c.importe > IFNULL((SELECT SUM(cc.importe) FROM h_comprobantes_cuotas cc WHERE cc.comprobanteid=c.id GROUP by cc.comprobanteid),0)
 									AND tipo IN (1,2)
 									AND c.grupoid={$grupoid}

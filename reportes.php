@@ -205,6 +205,7 @@ function deudores(){
 	$data['acad_sel'] 	 = $_REQUEST['academias'];
 	$data['dia_sel'] 	 = $_REQUEST['dia'];
 
+
 	$menuroot['ruta'] = array("Informe de deudores"=>"reportes.php?v=deudores");
 
 	$data['academias_user'] = $LMS->getAcademys("AND status=0 ");
@@ -228,6 +229,7 @@ function deudores(){
 		$data['periodo_sel'] = $HULK->periodo;
 	}
 	$WHERE .= " AND c.periodo={$data['periodo_sel']} ";
+
 
 	if($_REQUEST['modelo']){
 		$WHERE .= " AND c.from_courseid={$data['modelo_sel']} ";
@@ -274,10 +276,10 @@ function deudores(){
 		if($sipasa=="no"){
 			continue;
 		}
-		// Traigo todas las bajas
-		$bajas = $H_DB->GetOne("SELECT GROUP_CONCAT(userid) FROM h_bajas WHERE comisionid={$comision['id']} AND cancel=0;");
-		$cant_bajas = $H_DB->GetOne("SELECT COUNT(userid) FROM h_bajas WHERE comisionid={$comision['id']} AND cancel=0 AND detalle NOT LIKE '%tica por cambio de comisi%';");
-		$cant_cambio_comi = $H_DB->GetOne("SELECT COUNT(userid) FROM h_bajas WHERE comisionid={$comision['id']} AND cancel=0 AND detalle LIKE '%tica por cambio de comisi%';");
+
+		$bajas = $H_DB->GetOne("SELECT GROUP_CONCAT(userid) FROM h_bajas WHERE comisionid={$comision['id']} AND cancel=0 AND periodo={$data['periodo_sel']};");
+		$cant_bajas = $H_DB->GetOne("SELECT COUNT(userid) FROM h_bajas WHERE comisionid={$comision['id']} AND cancel=0 AND detalle NOT LIKE '%tica por cambio de comisi%' AND periodo={$data['periodo_sel']};");
+		$cant_cambio_comi = $H_DB->GetOne("SELECT COUNT(userid) FROM h_bajas WHERE comisionid={$comision['id']} AND cancel=0 AND detalle LIKE '%tica por cambio de comisi%' AND periodo={$data['periodo_sel']};");
 
 		$sql = "SELECT e.userid AS id
 					  FROM {$HULK->dbname}.vw_enrolados e
@@ -371,7 +373,8 @@ function deudores(){
 									// No tiene que ser baja para que sume a deuda
 						if (!$H_DB->GetOne("SELECT DISTINCT insc_id FROM h_bajas WHERE userid={$cuota_alum['userid']} AND courseid={$cuota_alum['courseid']}
 																 AND comisionid={$comision['id']}
-																 AND cancel=0;")){
+																 AND cancel=0
+																 AND periodo={$data['periodo_sel']};")){
 							$data['deudores'][$comision['id']][$cuota_alum['cuota']]['alumnos']++;
 							$data['deudores'][$comision['id']][$cuota_alum['cuota']]['importe'] += $cuota_alum['valor_cuota'] - $cuota_alum['valor_pagado'];
 							$data['deudores'][$comision['id']][$cuota_alum['cuota']]['valor_cuota'] += $cuota_alum['valor_cuota'];

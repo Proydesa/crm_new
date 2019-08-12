@@ -1,12 +1,13 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>:: CRM :: <?= ucwords($HULK->FILE);?> -> <?= ucwords($v);?></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
-		<link rel="shortcut icon" href="<?= $HULK->wwwroot;?>/favicon.ico"></link>
-		<meta name="application-name" content="CRM Hulk"></meta>
-		<meta name="description" content="Sistema de Administración CRM - Hulk" ></meta>
-		<meta name="aplication-url" content="<?= $HULK->wwwroot;?>/index.php" ></meta>
-		<meta name="icon" href="<?= $HULK->wwwroot;?>/favicon.ico" sizes="32x32" ></meta>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="shortcut icon" href="<?= $HULK->wwwroot;?>/favicon.ico">
+		<meta name="application-name" content="CRM Hulk">
+		<meta name="description" content="Sistema de Administración CRM - Hulk" >
+		<meta name="aplication-url" content="<?= $HULK->wwwroot;?>/index.php" >
+		<meta name="icon" href="<?= $HULK->wwwroot;?>/favicon.ico" sizes="32x32" >
 
 		<!-- CSS del JqueryUI -->
 		<link href="<?= $HULK->wwwroot;?>/themes/<?= $HULK->theme;?>/jquery-ui.css" rel="stylesheet" type="text/css"  />
@@ -29,7 +30,7 @@
     <link type="text/css" href="<?= $HULK->javascript;?>/fg_menu/fg.menu.css" media="screen" rel="stylesheet" ></link>-->
 
 		<!-- Javascript adicionales (tabla, highlight) -->
-	    <script type="text/javascript" src="<?= $HULK->javascript;?>/jquery.table.pack.js"></script>
+	  <script type="text/javascript" src="<?= $HULK->javascript;?>/jquery.table.pack.js"></script>
 		<script type="text/javascript" src="<?= $HULK->javascript;?>/jquery.watermark.pack.js"></script>
 		<script type="text/javascript" src="<?= $HULK->javascript;?>/jquery.validate.pack.js"></script>
 		<script type="text/javascript" src="<?= $HULK->javascript;?>/jquery.autoresize.js"></script>
@@ -42,8 +43,8 @@
 		<script type="text/javascript" src="<?= $HULK->javascript;?>/jquery.tablesorter.pager.js"></script>
 		<link type="text/css" href="<?= $HULK->javascript;?>/theme.jui.css" rel="stylesheet">
 		<!-- Correccions y extras al estilo general -->
-		<link href="<?= $HULK->wwwroot;?>/themes/style.css" rel="stylesheet" type="text/css"  ></link>
-		<link href="<?= $HULK->wwwroot;?>/themes/print.css" rel="stylesheet" type="text/css" media="print" ></link>
+		<link href="<?= $HULK->wwwroot;?>/themes/style.css" rel="stylesheet" type="text/css"  >
+		<link href="<?= $HULK->wwwroot;?>/themes/print.css" rel="stylesheet" type="text/css" media="print" >
 
 		<!-- Cargar custom CSS -->
 		<?php if(isset($_arrcss)): foreach ($_arrcss as $css): ?>
@@ -52,6 +53,7 @@
 
 		
 		<!-- Ejecucion de los scripts generales del hulk -->
-	    <script type="text/javascript" src="<?= $HULK->javascript;?>/script.hulk.js"></script>
+	  <script type="text/javascript" src="<?= $HULK->javascript;?>/script.hulk.js"></script>
 	</head>
+	
 	<body class="ui-widget-content noBorder">

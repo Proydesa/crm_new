@@ -160,12 +160,14 @@ switch($v){
 		$H_USER->require_capability('course/view');
 
 		$data['row']			= $LMS->getCourse($id);
+
+		$periodo = $data['row']['periodo'];
 		
-		$data['estudiantes']	= $LMS->getCourseStudents($id);
+		$data['estudiantes']	= $LMS->getCourseStudents($id,$periodo);
 		
 		$data['instructores']	= $LMS->getCourseInstructors($id);
 
-		$data['bajas']	= $H_DB->GetAll("SELECT b.* FROM h_bajas b WHERE b.comisionid={$id} AND b.cancel=0;");
+		$data['bajas']	= $H_DB->GetAll("SELECT b.* FROM h_bajas b WHERE b.comisionid={$id} AND b.cancel=0 AND periodo={$periodo};");
 	
 		$data['capacidad']		= $H_DB->GetRow("SELECT capacity FROM h_academy_aulas aa
 											INNER JOIN h_course_config cah ON aa.id=cah.aulaid

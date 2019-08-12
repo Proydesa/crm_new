@@ -30,7 +30,7 @@ Error functions y Log class
 		if ($template!='error_array')
 			$message = '<p>'.implode('</p><p>', ( ! is_array($message)) ? array($message) : $message).'</p>';
 
-		if (ob_get_level() > ob_level + 1)
+		if (ob_get_level() > ob_get_level() + 1)
 		{
 			ob_end_flush();
 		}
