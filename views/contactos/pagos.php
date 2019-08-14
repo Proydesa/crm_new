@@ -235,7 +235,7 @@
 		}
 	}
 </script>
-<div class="column-c" style="overflow: auto; height: 440px; width:93%" align="center">
+<div class="column-c" style=" width:93%" align="center">
 	<div style="width:93%">
 		<?php if($no_pagos):?>
 			<div class="portlet">
@@ -484,7 +484,7 @@
 													</td>
 											<?php endif;?>
 										<?php endif;?>
-										<td align="center"><?= $LMS->GetField('mdl_user','firstname',$pago['takenby'])." ".$LMS->GetField('mdl_user','lastname',$pago['takenby']) ;?></td>
+										<td align="center" ><?= $LMS->GetField('mdl_user','firstname',$pago['takenby'])." ".$LMS->GetField('mdl_user','lastname',$pago['takenby']) ;?></td>
 										<td align="center"><?= $pago['periodo'] ;?></td>
 										<!--alan listado de grupos que a los que esta asociado el user -->
 										<?php $numcomp[$contador]=$pago['numero'];?>

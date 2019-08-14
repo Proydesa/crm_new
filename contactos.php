@@ -985,10 +985,10 @@ switch($v){
 		}
 		$data['row']['lastname'] = addslashes($data['row']['lastname']);
 		$data['gradebooks_lms'] =  $H_DB->GetAll("SELECT * FROM h_gradebooks g WHERE g.userid={$id} ORDER BY periodo DESC, modeloname DESC;");
-		$data['gradebooks_bajador'] =  $H_DB->GetAll("SELECT * FROM `historicos`.h_gradebooks_bajadorNet3 g WHERE g.username LIKE '%{$data['row']['username']}%' OR (g.firstname LIKE '{$data['row']['firstname']}' AND g.lastname LIKE '{$data['row']['lastname']}') OR g.email LIKE '{$data['row']['email']}'  ORDER BY fecha_inicio DESC, modeloname DESC;");
-		$data['gradebooks_gesteval'] =  $H_DB->GetAll("SELECT * FROM `historicos`.h_gradebooks_gesteval g WHERE g.username LIKE '%{$data['row']['username']}%' OR (g.firstname LIKE '{$data['row']['firstname']}' AND g.lastname LIKE '{$data['row']['lastname']}') OR g.email LIKE '{$data['row']['email']}'  ORDER BY fecha_inicio DESC, modeloname DESC;");
-		$data['gradebooks_oracle'] =  $H_DB->GetAll("SELECT * FROM `historicos`.h_gradebooks_oracle g WHERE g.username LIKE '%{$data['row']['username']}%' OR (g.firstname LIKE '{$data['row']['firstname']}' AND g.lastname LIKE '{$data['row']['lastname']}') OR g.email LIKE '{$data['row']['email']}'  ORDER BY fecha_inicio DESC, modeloname DESC;");
-		$data['gradebooks_sun'] =  $H_DB->GetAll("SELECT * FROM `historicos`.h_gradebooks_sun g WHERE g.username LIKE '%{$data['row']['username']}%' OR (g.firstname LIKE '{$data['row']['firstname']}' AND g.lastname LIKE '{$data['row']['lastname']}') OR g.email LIKE '{$data['row']['email']}'  ORDER BY fecha_inicio DESC, modeloname DESC;");
+		$data['gradebooks_bajador'] =  $H_DB->GetAll("SELECT * FROM `proydesa_historicos`.h_gradebooks_bajadorNet3 g WHERE g.username LIKE '%{$data['row']['username']}%' OR (g.firstname LIKE '{$data['row']['firstname']}' AND g.lastname LIKE '{$data['row']['lastname']}') OR g.email LIKE '{$data['row']['email']}'  ORDER BY fecha_inicio DESC, modeloname DESC;");
+		$data['gradebooks_gesteval'] =  $H_DB->GetAll("SELECT * FROM `proydesa_historicos`.h_gradebooks_gesteval g WHERE g.username LIKE '%{$data['row']['username']}%' OR (g.firstname LIKE '{$data['row']['firstname']}' AND g.lastname LIKE '{$data['row']['lastname']}') OR g.email LIKE '{$data['row']['email']}'  ORDER BY fecha_inicio DESC, modeloname DESC;");
+		$data['gradebooks_oracle'] =  $H_DB->GetAll("SELECT * FROM `proydesa_historicos`.h_gradebooks_oracle g WHERE g.username LIKE '%{$data['row']['username']}%' OR (g.firstname LIKE '{$data['row']['firstname']}' AND g.lastname LIKE '{$data['row']['lastname']}') OR g.email LIKE '{$data['row']['email']}'  ORDER BY fecha_inicio DESC, modeloname DESC;");
+		$data['gradebooks_sun'] =  $H_DB->GetAll("SELECT * FROM `proydesa_historicos`.h_gradebooks_sun g WHERE g.username LIKE '%{$data['row']['username']}%' OR (g.firstname LIKE '{$data['row']['firstname']}' AND g.lastname LIKE '{$data['row']['lastname']}') OR g.email LIKE '{$data['row']['email']}'  ORDER BY fecha_inicio DESC, modeloname DESC;");
 
 		$data['grades_class'] = array('E'=>'','I'=>'ui-state-error','F'=>'ui-state-error','P'=>'ui-state-highlight');
 
@@ -1204,7 +1204,7 @@ switch($v){
 																		WHERE c.userid={$id}
 																		GROUP BY c.id
 																		)
-									UNION (SELECT 1 as id,c.userid as userid,'-' as courseid,'-' as cuota,'cobro' as valor_cuota,c.importe as valor_pagado,c.date as date,c.takenby as takenby,
+									UNION (SELECT 1 as id,c.userid as userid,'-' as courseid,'-' as cuota,'cobro' as valor_cuota,c.importe as valor_pagado,c.date as date,cc.takenby as takenby,
 									'-' as periodo,1 as libroid,1 as p_especial,'-' as grupoid,1 as insc_id,c.comprobanteid as numero,1 as baja_id,1 as baja_cancel, c.summary as detalle,
 									cc.pendiente as pendiente
 																FROM h_cobros c
