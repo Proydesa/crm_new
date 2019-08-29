@@ -63,6 +63,7 @@ function generate_paswword(){
 }
 function show_fecha($fecha,$format=""){
 	global $HULK;
+	date_default_timezone_set('America/Argentina/Buenos_Aires');
 
 	if($format==""){
 		return date("d",$fecha)." de ".$HULK->meses[date("n",$fecha)]." de ".date("Y",$fecha);

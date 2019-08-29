@@ -153,11 +153,12 @@ switch($v){
 
 
 		break;
-	/***********************/
+	
 
 	case 'view':
 		$id = $_REQUEST['id'];
 		$H_USER->require_capability('course/view');
+
 
 		$data['row']			= $LMS->getCourse($id);
 
@@ -192,7 +193,7 @@ switch($v){
 		///////// END EDIT //////////////////
 
 		break;
-	/***********************/
+	
 	case 'list':
 
 		$data['q'] = $q = $_REQUEST['q'];
@@ -567,7 +568,7 @@ switch($v){
 			$course = (object) $course;			
 			require_once($HULK->libdir.'/lms_lib/setupmoodle.php');
 			require_once($HULK->lms_dirroot.'/lib/blocklib.php');
-			$CFG->defaultblocks_override = 'course_proydesa,activity_modules:attendance,news_items,calendar_upcoming,recent_activity';
+			$CFG->defaultblocks_override = 'course_proydesa,activity_modules:attendance,news_items,calendar_upcoming,recent_activity,ciclo_lectivo';
 			$CFG->defaultblocks_site = 'site_main_menu,site_proydesa:html,calendar_month';
 	 		$context = context_course::instance($course->id);
 	   		blocks_delete_all_for_context($context->id);

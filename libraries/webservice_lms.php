@@ -706,16 +706,21 @@ class H_LMS extends H_LMS_CONN {
 
 				$node = array_search($arrdaycodes[date('w',$currentdate)], $arr_days);
 				$horarioid = $arr_schedules[$node];
-				$q_horario = $H_DB->GetOne("SELECT inicio FROM h_horarios WHERE id={$horarioid}");
-				$horario = 0;
+				$q_horario = $H_DB->GetRow("SELECT inicio, fin FROM h_horarios WHERE id={$horarioid}");
+				$horario_inicio = 0;
+				$duration = 0;
 				if($q_horario){
-					$horario_parsed = date_parse($q_horario);
-					$horario = ($horario_parsed['hour']*3600)+($horario_parsed['minute']*60);
+					$horario_inicio_parsed = date_parse($q_horario['inicio']);
+					$horario_fin_parsed = date_parse($q_horario['fin']);
+					$horario_inicio = ($horario_inicio_parsed['hour']*3600)+($horario_inicio_parsed['minute']*60);
+					$horario_fin = ($horario_fin_parsed['hour']*3600)+($horario_fin_parsed['minute']*60);
+					$duration = $horario_fin-$horario_inicio;
 				}
 
 				$rec = array();
 				$rec['attendanceid'] = $attendanceid;
-				$rec['sessdate'] = $currentdate+$horario;
+				$rec['sessdate'] = $currentdate+$horario_inicio;
+				$rec['duration'] = $duration;
 				$rec['description'] = '';
 				$rec['descriptionformat'] = '1';
 

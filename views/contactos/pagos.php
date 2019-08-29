@@ -575,7 +575,8 @@
 									<td align="center">
 										<?php if($comprobante['anulada']==0): ?>
 											<span  class="button-print" id="imprimir<?=$comprobante['id']?>" onClick="window.open('contactos.php?v=pagos-print&id=<?=$comprobante['id'];?>','imprimir','width=600,height=500,resizable=yes,scrollbars=yes');">Imprimir</span>
-											<?php if($H_USER->has_capability('comprobante/anular') AND $comprobante['rendicionid']==0):	?>
+											
+											<?php if($H_USER->has_capability('comprobante/anular')): // AND $comprobante['rendicionid']==0	?>
 												<span class="button-anular anular" id="<?=$comprobante['id']?>">Anular</span>
 											<?php endif; ?>
 											<?php if($H_USER->has_capability('comprobante/cancelar')):	?>
