@@ -9,9 +9,10 @@ header("Content-Type: application/json; charset=utf-8", true);
 
 if(!Input::exists()) die(json_encode(array('status'=>'fail','message'=>'faltan parámetros')));
 
-$_calendar = new Calendar();
+$Calendar = new Calendar();
 
 switch(Input::get('mode')) {
+
 	case 'save':
 		
 		if(!$H_USER->has_capability('calendario/edit')) die(json_encode(array('status'=>'restricted','message'=>'No tienes los permisos para hacer esta operación.')));
@@ -20,41 +21,52 @@ switch(Input::get('mode')) {
 			die(json_encode(array('status'=>'restricted','message'=>'No tienes los permisos para hacer esta operación.')));
 		}
 
-		if(!$_calendar->save()) die(json_encode(array('status'=>'fail','message'=>'No tienes los permisos para hacer esta operación.')));
+		if(!$Calendar->save()) die(json_encode(array('status'=>'fail','message'=>'No tienes los permisos para hacer esta operación.')));
+
+		if(!$Calendar->change_attendance(Input::get('courses'),Input::get('date'),Input::get('type'))) die(json_encode(array('status'=>'fail','message'=>'Hubo un error al mover las fechas')));
+		
 		echo json_encode(array('status'=>'ok'));
 		break;
 
 	case 'savecourse':
-		if(!$_calendar->savecourse()) die(json_encode(array('status'=>'fail','message'=>'error en la base de datos')));
+		if(!$Calendar->savecourse()) die(json_encode(array('status'=>'fail','message'=>'error en la base de datos')));
 		echo json_encode(array('status'=>'ok'));
 		break;
 
 	case 'get':
-		$calendar = $_calendar->get();
+		$calendar = $Calendar->get();
 		echo json_encode(array('status'=>'ok','get'=>$calendar ));
 		break;
 
 	case 'deletecourse':
-		$_calendar->deletecourse(Input::get('id'));
+		$Calendar->deletecourse(Input::get('id'));
 		echo json_encode(array('status'=>'ok'));
 		break;
 
 	case 'getcourses':
-		$courses = $_calendar->getcourses();
+		$courses = $Calendar->getcourses();
 		echo json_encode(array('status'=>'ok','results'=>$courses));
 		break;
 
 
 	case 'generate_image':
 		if(!$H_USER->has_capability('calendario/cronograma')) die(json_encode(array('status'=>'fail','message'=>'No tienes permiso para realizar esta operación')));
-		$filename = $_calendar->generate_image();
+		$filename = $Calendar->generate_image();
 		echo json_encode(array('status'=>'ok','filename'=>$filename));
 		break;
 
 	case 'delete_image':
 		if(!$H_USER->has_capability('calendario/cronograma')) die(json_encode(array('status'=>'fail','message'=>'No tienes permiso para realizar esta operación')));
-		if(!$_calendar->delete_image(Input::get('id'))) die(json_encode(array('status'=>'fail')));
+		if(!$Calendar->delete_image(Input::get('id'))) die(json_encode(array('status'=>'fail')));
 		echo json_encode(array('status'=>'ok'));
+		break;
+
+
+	case 'get_courses_by_day':
+
+
+		$courses = $Calendar->get_courses_by_date(Input::get('date'));
+		echo json_encode(array('status'=>'ok','results'=>$courses,'date'=>Input::get('date')));
 		break;
 	
 	default:

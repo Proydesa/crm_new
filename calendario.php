@@ -14,6 +14,8 @@ $data['_monthnamesmin'] = array('Ene','Feb','Mar','Abr','May','Jun','Jul','Ago',
 $data['_daynamesmin'] = array('Mon'=>'Lun','Tue'=>'Mar','Wed'=>'Mie','Thu'=>'Jue','Fri'=>'Vie','Sat'=>'Sáb','Sun'=>'Dom');
 $data['_daynames'] = array('Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo');
 
+date_default_timezone_set('America/Argentina/Buenos_Aires');
+
 switch ($v) {
 
 	case 'view':
@@ -163,7 +165,7 @@ switch ($v) {
 
 		////////////////////////////////
 		///$_calendar->findcourses($idperiod=0,$year=0,$month=0,$day=0)
-		date_default_timezone_set('America/Argentina/Buenos_Aires');
+		
 		$data['_courses'] = $LMS->getCoursesByRange(strtotime($data['_startdate']),strtotime($data['_finishdate']));
 		//$data[]
 		////////////////////////////////

@@ -62,7 +62,7 @@
 		
 		<div class="calendar-block">
 
-			<div class="grid">
+			<div class="grid" >
 				<h3 class="main-title">Grilla de aulas Período <?= $_period.' semana del '.date('d',strtotime($_startdate)).' de '.$_monthnames[date('n',strtotime($_startdate))-1].' al '.date('d',strtotime($_finishdate)).' de '.$_monthnames[date('n',strtotime($_finishdate))-1].' de '.date('Y',strtotime($_startdate)) ?></h3>
 
 				<p class="course-overlap"><span class="mod mod-overlap">Hay superposición de cursos en un aula</span></p>
@@ -201,7 +201,7 @@
 </div>
 
 <!-- MESSAGES -->
-<div id="messages" >
+<div id="messages" class="pop-messages" >
 	<div class="content">
 		<div class="header">
 			<button type="button" class="close" data-button="close"><i class="fa fa-times"></i></button>
@@ -286,12 +286,13 @@ $(function(){
 	
 	$('#btn_download').unbind('click').on('click',function(e){
 		e.preventDefault();
-		$('.grid').css({overflow:'visible'});
-		html2canvas($('.grid')).then(function(canvas) {
-			TheCanvas = canvas;
-			TheCanvas = Canvas2Image.convertToJPEG(canvas);
-			$('#btn_hidden').attr({'href':TheCanvas.src}).find('span').trigger('click');
-		});
+		///$('.grid').css({overflow:'visible'});
+		html2canvas($('.grid'))
+			.then(function(canvas) {
+				TheCanvas = canvas;
+				TheCanvas = Canvas2Image.convertToJPEG(canvas);
+				$('#btn_hidden').attr({'href':TheCanvas.src}).find('span').trigger('click');
+			});
 	});
 
 	$('#form_special').submit(function(e){

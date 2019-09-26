@@ -431,10 +431,14 @@ $rowheight = 48px
 									background-color white
 								.caption 
 									text-align center
+	
+
 	.grid 
 		background-color white
 		padding 10px 0
+		box-sizing border-box
 		overflow auto
+		min-width 1468px
 		.main-title 
 			text-align center
 			margin 0
@@ -451,7 +455,7 @@ $rowheight = 48px
 					th
 						border 1px solid Gray(10) 
 						padding 4px 0
-						font-size 9pt
+						font-size .875rem
 						width 100px
 						white-space nowrap
 					th:nth-of-type(1),th:nth-of-type(2)
@@ -459,10 +463,10 @@ $rowheight = 48px
 			tbody
 				tr 
 					td 
-						//border 1px solid black
+						//border 1px solid black						
 						text-align center
 						padding 0
-						font-size 12pt
+						font-size .875rem
 						box-sizing border-box
 						vertical-align top
 						position relative
@@ -482,7 +486,7 @@ $rowheight = 48px
 							border 1px solid Gray(10)
 							align-items center
 							display flex
-							font-size 10pt
+							font-size .775rem
 							margin 0 0 1px 0
 							height $rowheight
 							padding 0
@@ -499,7 +503,7 @@ $rowheight = 48px
 									font-weight bold 
 									font-family 'Roboto', sans-serif
 								.desc 
-									font-size 9pt
+									font-size .775rem
 						.mod 
 							position absolute
 							//border none
@@ -518,20 +522,20 @@ $rowheight = 48px
 									font-family 'Roboto', sans-serif
 									display block
 								span.name
-									font-size 10pt
+									font-size .8rem
 									font-weight bold
 								span.instructor 
 									line-height 1
 									display block
 									margin-top 2px
-									font-size 8pt
+									font-size .675rem
 							.ref-hour 
 								border-bottom 1px solid alpha(Gray(50),.5)
 								background-color alpha(black,.1)
 								color white
 								opacity 1
 								position absolute
-								font-size 9pt
+								font-size .7rem
 								font-style italic
 								text-align left
 								padding 0 4px
@@ -567,6 +571,7 @@ $rowheight = 48px
 				padding 4px 10px
 			.btn 
 				padding 4px 10px
+
 .mod-intensivo
 	background-color alpha(#fabf8f,.85) !important
 	color black !important
@@ -593,7 +598,8 @@ $rowheight = 48px
 	background-color white !important
 	border 2px solid red
 	color red !important
-#messages 
+
+.pop-messages 
 	align-items center
 	background-color alpha(white,.85)
 	display flex
@@ -601,12 +607,13 @@ $rowheight = 48px
 	height 100%
 	opacity 0
 	left 0
+	overflow auto
 	top 0
 	position fixed
 	visibility hidden
 	transition opacity 300ms ease-out
 	width 100%
-	z-index 999
+	z-index 999999
 	.content 
 		background-color white
 		border 1px solid alpha(black,.1)
@@ -614,7 +621,8 @@ $rowheight = 48px
 		padding 4px
 		transition transform 500ms cubic-bezier(.23,1,.32,1)
 		transform translateY(-50%)
-		width 380px
+		max-width 480px
+		width 100%
 		.header 
 			background-color green
 			padding 4px 10px
@@ -634,11 +642,43 @@ $rowheight = 48px
 			button 
 				font-size .7em
 				padding 4px 8px
-#messages.active 
+.pop-messages.active 
 	opacity 1
 	visibility visible
 	.content 
 		transform translateY(0)
+		
+.add-holiday-content
+	.date 
+		margin 0
+	.subtitle
+		margin 0 0 1rem 0
+	hr 
+		border none
+		border-top 1px solid Gray(10)
+		margin 1rem 0
+	.course-item 
+		border 1px solid Gray(10)
+		margin 2px 0
+		padding .2rem .65rem
+		display flex 		
+		align-items center
+		text-align left
+		.course
+			padding 8px
+			margin 0
+			font-size .675rem
+			width 200px
+			a 
+				text-decoration none 
+				&:hover 
+					text-decoration underline
+		input[type="text"]
+			padding .465rem .465rem
+			border none 
+			background-color Gray(5)
+			width 100%			
+
 @media print
 	.no-print 
 		display none !important

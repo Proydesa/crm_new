@@ -13,7 +13,7 @@ class Calendar {
 					$_data;
 
 	public function __construct(){
-		global $H_DB, $H_USER;
+		global $H_DB, $H_USER, $LMS;
 		$this->_hdb = $H_DB;
 		$this->_user = $H_USER;
 	}
@@ -208,6 +208,57 @@ class Calendar {
 			{$where}
 			ORDER BY cc.start ASC"
 		);
+	}
+
+	public function get_courses_by_date($date=''){
+		global $LMS;
+
+		return $LMS->GetAll(
+			"SELECT atss.id sessid, atss.attendanceid, atss.sessdate, atss.duration, c.*
+			FROM mdl_attendance_sessions atss
+			LEFT JOIN mdl_attendance att ON att.id=atss.attendanceid
+			LEFT JOIN mdl_course c ON c.id=att.course
+			WHERE c.academyid=1 AND FROM_UNIXTIME(atss.sessdate, '%Y-%m-%d') = '{$date}'"
+		);
+	}
+	public function change_attendance($courses=array(),$date='',$type=''){
+
+
+		global $LMS;
+
+		date_default_timezone_set('America/Argentina/Buenos_Aires');
+
+		if(!is_array($courses)) return true;
+
+		foreach($courses as $course){
+			if(!empty($course['newdate'])){
+
+				$arr_date = explode('/', $course['newdate']); 
+				$sessdate = strtotime($arr_date[2].'-'.$arr_date[1].'-'.$arr_date[0].' '.date('H',$course['olddate']).':'.date('i',$course['olddate']).':00');
+				//$sessdate = $timestamp+(abs($timestamp-$course['olddate']));
+			
+
+				$LMS->insert('mdl_attendance_sessions_cancelled',array(
+					'attendanceid'=>$course['attendanceid'],
+					'sessdate'=>$course['olddate'],
+					'description'=>'Feriado '.($type=='tech' ? 'Tecnico' : 'Nacional')
+				));
+				$LMS->delete('mdl_attendance_sessions',"id=".$course['sessid']);
+
+
+				$LMS->insert('mdl_attendance_sessions',array(
+					'attendanceid'=>$course['attendanceid'],
+					'sessdate'=>$sessdate,
+					'duration'=>$course['duration'],
+					'descriptionformat'=>1
+				));
+
+			}
+			
+		}
+
+
+		return true;
 	}
 
 	////public function findcoursesbyperiod($from='',$to='')
