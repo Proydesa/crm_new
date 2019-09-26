@@ -157,20 +157,32 @@
 
 				<div class="flex-item alert-container">
 					<h4>Clases Canceladas</h4>
-					<?php $tc = 0; if(!empty($asistencias_canceladas)): foreach($asistencias_canceladas as $asistencia): ?>
+					<?php 
+					$tc = 0; 
+					if(!empty($asistencias_canceladas)): 
+						foreach($asistencias_canceladas as $asistencia): 
+							if(!preg_match('/Feriado/',$asistencia['description'])):
+					?>
 					<div class="bg-danger alert-item">
 						<?= ConvertDays(date('D',$asistencia['sessdate'])).'. '.date('d',$asistencia['sessdate']).' '.ConvertMonth(date('M',$asistencia['sessdate'])).'. - '.$asistencia['description'] ?>
 					</div>
-					<?php $tc++; endforeach; endif; ?>
+					<?php $tc++; endif; endforeach; endif; ?>
 					<?php if(!$tc): ?>
 					<p>No hubo clases canceladas</p>
 					<?php endif; ?>
 				</div>
 
 				<div class="flex-item alert-container">
+					<h4>Feriados</h4>
+					<?php 
+					if(!empty($asistencias_canceladas)): 
+						foreach($asistencias_canceladas as $asistencia): 
+							if(preg_match('/Feriado/',$asistencia['description'])):
+					?>
 					<div class="bg-primary alert-item">
-						xxx
+						<?=ConvertDays(date('D',$asistencia['sessdate'])).'. '.date('d',$asistencia['sessdate']).' '.ConvertMonth(date('M',$asistencia['sessdate'])).'. - '.$asistencia['description']?>
 					</div>
+					<?php endif; endforeach; endif; ?>
 				</div>
 
 			</div>
