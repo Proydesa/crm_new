@@ -160,13 +160,12 @@
 					<?php 
 					$tc = 0; 
 					if(!empty($asistencias_canceladas)): 
-						foreach($asistencias_canceladas as $asistencia): 
-							if(!preg_match('/Feriado/',$asistencia['description'])):
+						foreach($asistencias_canceladas as $asistencia):							
 					?>
 					<div class="bg-danger alert-item">
 						<?= ConvertDays(date('D',$asistencia['sessdate'])).'. '.date('d',$asistencia['sessdate']).' '.ConvertMonth(date('M',$asistencia['sessdate'])).'. - '.$asistencia['description'] ?>
 					</div>
-					<?php $tc++; endif; endforeach; endif; ?>
+					<?php $tc++; endforeach; endif; ?>
 					<?php if(!$tc): ?>
 					<p>No hubo clases canceladas</p>
 					<?php endif; ?>

@@ -1,0 +1,18 @@
+- Generar dos vistas del cronograma.
+ - con permiso de edición: 
+ 		+ eliminar algún día al tocar
+ 		+ guardar el jpg del período
+ - sin permiso de edición
+ 		+ cargar el jpg guardado del período y descargar
+
+ - footer aclarar fondo y poner al mismo tamaño los títulos
+
+- Crear comisión 
+	- Mostrar los feriados técnicos si elige ignorarlos
+	- Chequear la superposición de aulas. marcar el mod para detectar que hay superposiciones
+
+- El editar la fecha de una comisión chequear la hora, y la fecha del final del curso
+
+- Recupero de contraseña del lms
+
+- pop de notificaciones, mostrar mensaje de éxito (hd.php)
