@@ -1,17 +1,18 @@
 for sz in 0 2 4 6 7 8 9 10 11 12 14 16 18 20 22 24 26 28 30 36 40 46
-	.sz-{sz} 
+	.sz-{sz}
 		font-size 1pt * sz
 	.lnhg-{sz}
 		line-height 1pt * sz
 	.pad-{sz}
 		padding 1px * sz
-Gray(PC)
-	col = 255-((255*PC)/100)
-	rgb(col,col,col)
+
 $rowheight = 48px
-/*#header 
-	margin-top 0*/
-.calendar	
+
+@import '_colours'
+@import '_elements'
+
+
+.calendar
 	font-family 'Roboto','Helvetica', sans-serif
 	padding 16px 10px
 	font-size 9pt
@@ -19,6 +20,7 @@ $rowheight = 48px
 		border-top 1px solid #fdfdfd
 	h1,h2,h3,h4
 		margin 0 0 8px 0
+
 	.calendar-wrapper
 		border 1px solid #184e2e
 		.calendar-row
@@ -51,7 +53,7 @@ $rowheight = 48px
 						.day-cell
 							box-sizing border-box
 							border-bottom 1px solid rgba(32,106,85,0.2)
-							padding 8px 4px	
+							padding 8px 4px
 							text-align center
 							transition all 400ms cubic-bezier(.23,1,.32,1)
 							width 14.2857%
@@ -61,24 +63,29 @@ $rowheight = 48px
 							color black
 						.day-name
 							background-color rgba(32,106,85,0.2)
-					.days-wrapper:nth-of-type(even) 
+					.days-wrapper:nth-of-type(even)
 						.day-cell:not(.day-name)
 							background-color rgba(32,106,85,0.15)
-					.days-wrapper:nth-of-type(odd) 
+					.days-wrapper:nth-of-type(odd)
 						.day-cell:not(.day-name)
 							background-color rgba(32,106,85,0.08)
-					.days-wrapper:nth-of-type(n) 
+					.days-wrapper:nth-of-type(n)
+
 						.day-cell.selected
-							background-color rgba(224,207,194,1)
+							background-color $beige
 						.day-cell.holiday
-							background-color rgba(199,90,6,1)
+							background-color $warning
+							color white
+						.day-cell.forced
+							background-color $danger
 							color white
 						.day-cell.tech
-							background-color rgba(6,106,199,1)
-							color white 
-						.day-cell.course
-							background-color rgba(20,120,20,1)
+							background-color $primary
 							color white
+						.day-cell.course
+							background-color $success
+							color white
+
 						.day-cell.course:nth-of-type(7)
 							background-color rgba(20,120,20,.7)
 							color white
@@ -99,29 +106,29 @@ $rowheight = 48px
 							color white
 						.day-cell.course:nth-of-type(1)
 							background-color rgba(20,120,20,1)
-							color white 
-					.days-wrapper:nth-of-type(even) 
+							color white
+					.days-wrapper:nth-of-type(even)
 						.day-cell.inactive:not(.day-name)
 							background-color rgba(32,106,85,0.15)
 							color black
-					.days-wrapper:nth-of-type(odd) 
+					.days-wrapper:nth-of-type(odd)
 						.day-cell.inactive:not(.day-name)
 							background-color rgba(32,106,85,0.08)
 							color black
-		.calendar-row:first-of-type 
+		.calendar-row:first-of-type
 			.month-outer:nth-of-type(1),
 			.month-outer:nth-of-type(2)
 				background-color rgba(120,120,0,0.3)
 				border-bottom 1px solid #184e2e
 			.month-outer:nth-of-type(2)
-				border-right 1px solid #184e2e 
-		.calendar-row:first-of-type 
+				border-right 1px solid #184e2e
+		.calendar-row:first-of-type
 			.month-outer:nth-of-type(3),
 			.month-outer:nth-of-type(4)
 				background-color rgba(0,120,0,0.3)
 			.month-outer:nth-of-type(4)
 				border-bottom 1px solid #184e2e
-		.calendar-row:nth-of-type(2) 
+		.calendar-row:nth-of-type(2)
 			.month-outer:nth-of-type(1),
 			.month-outer:nth-of-type(2),
 			.month-outer:nth-of-type(3)
@@ -129,19 +136,21 @@ $rowheight = 48px
 				border-bottom 1px solid #184e2e
 			.month-outer:nth-of-type(3)
 				border-right 1px solid #184e2e
-		.calendar-row:nth-of-type(2) 
+		.calendar-row:nth-of-type(2)
 			.month-outer:nth-of-type(4),
-		.calendar-row:nth-of-type(3) 
-			.month-outer
-				background-color rgba(0,120,120,0.5) 
-		.calendar-row:nth-of-type(3) 
+		.calendar-row:nth-of-type(3)
 			.month-outer
 				background-color rgba(0,120,120,0.5)
+		.calendar-row:nth-of-type(3)
+			.month-outer
+				background-color rgba(0,120,120,0.5)
+
+
 	.calendar-block
 		background-color white
 		border 1px solid Gray(10)
 		margin 0 0 1px 0
-		padding 16px 
+		padding 16px
 		.courses-wrapper
 			//border 1px solid Gray(5)
 			display flex
@@ -161,8 +170,8 @@ $rowheight = 48px
 						min-width 120px
 						margin 0 10px 4px 0
 						padding 5px
-					ul.days 
-						display flex 
+					ul.days
+						display flex
 						padding 0
 						margin 0 10px 0 0
 						li.day
@@ -172,12 +181,12 @@ $rowheight = 48px
 							display block
 							margin 0 2px 0 0
 							padding 6px 10px
-							&:hover 
+							&:hover
 								opacity .85
-						li.day.active 
+						li.day.active
 							background-color #5cb85c
 							color white
-			.block-courses 
+			.block-courses
 				padding 16px
 				box-sizing border-box
 				width 50%
@@ -196,9 +205,9 @@ $rowheight = 48px
 						position relative
 						transition box-shadow 300ms ease-out
 						width 100%
-						&:hover 
+						&:hover
 							box-shadow 3px 3px 6px 1px rgba(0,0,0,0.12)
-						.content,.buttons 
+						.content,.buttons
 							flex-grow 1
 						.content
 							border-right 1px solid Gray(10)
@@ -210,7 +219,7 @@ $rowheight = 48px
 								font-weight 700
 							hr
 								margin 2px 0 6px 0
-							.description 
+							.description
 								font-size 9pt
 								margin 0
 								color Gray(40)
@@ -223,7 +232,7 @@ $rowheight = 48px
 							padding 8px 16px
 		#description_text
 			font-size 11pt
-		.ref-wrapper 
+		.ref-wrapper
 			display flex
 			.mod
 				padding 6px
@@ -231,19 +240,22 @@ $rowheight = 48px
 				margin 0 4px 0 0
 				width auto
 			.mod-tech
-				background-color rgba(6,106,199,1)
-				color white !important 
+				background-color $primary
+				color white !important
 			.mod-course
-				background-color rgba(20,120,20,1)
+				background-color $success
 				color white !important
 			.mod-holiday
-				background-color rgba(199,90,6,1)
+				background-color $warning
+				color white !important
+			.mod-forced
+				background-color $danger
 				color white !important
 			.mod-selected
-				background-color rgba(224,207,194,1)
-		.header-wrapper 
+				background-color $beige
+		.header-wrapper
 			h2
-				border-bottom 1px solid rgba(224,207,194,1)
+				border-bottom 1px solid $beige
 				margin 4px 0 26px 0
 			.years,select,input,button
 				padding 4px 10px
@@ -271,16 +283,19 @@ $rowheight = 48px
 						border-top-right-radius 10px
 						border-bottom-right-radius 10px
 					button.active.btn-holiday
-						background-color rgba(199,90,6,1)
+						background-color $warning
 						color white !important
 					button.active.btn-course
-						background-color rgba(20,120,20,1)
+						background-color $success
 						color white !important
 					button.active.btn-tech
-						background-color rgba(6,106,199,1)
+						background-color $primary
+						color white !important
+					button.active.btn-forced
+						background-color $danger
 						color white !important
 					button.active.btn-erase
-						background-color #E64759
+						background-color red
 						color white !important
 			.check-group
 				display flex
@@ -311,13 +326,13 @@ $rowheight = 48px
 			.period,.logo
 				color maroon
 				width 50%
-			.period 
-				.title 
+			.period
+				.title
 					font-size 36pt
 					line-height 1
 			.logo
 				text-align right
-				img 
+				img
 					max-width 200px
 		.title-bar
 			background-color alpha(#c9a390,.75)
@@ -326,22 +341,22 @@ $rowheight = 48px
 			text-transform uppercase
 			h3
 				font-size 1.3em
-			ul 
+			ul
 				margin 10px 0
 				padding 0
-				li 
+				li
 					display block
 					font-size 1.3em
-			.wrapper 
-				display flex 
-				.col 
+			.wrapper
+				display flex
+				.col
 					width 50%
-			.title 
+			.title
 				font-size 18pt
 			.subtitle
 				font-size 16pt
 				font-weight 300
-			.proy 
+			.proy
 				font-family 'Times', serif
 				font-size 1.1em
 		.logos-courses
@@ -354,17 +369,17 @@ $rowheight = 48px
 			font-size 10pt
 			text-align center
 			padding 10px
-			p 
+			p
 				margin 0
 				padding 0
-		.body			
-			.schedule-body 
+		.body
+			.schedule-body
 				background-color white
 				//border 2px solid Gray(10)
 				margin 26px 0
 				//min-height 360px
-				display flex 
-				.month 
+				display flex
+				.month
 					padding 4px
 					//height 320px
 					width 100%
@@ -373,10 +388,10 @@ $rowheight = 48px
 						border 1px solid Gray(20)
 						box-shadow 4px 4px 4px alpha(black,.05)
 						.month-head
-							padding 8px 16px 
+							padding 8px 16px
 							///background-color #0d190d
 							border-bottom 1px solid Gray(20)
-							.month-name 
+							.month-name
 								//color white
 								font-weight 600
 								font-size 18pt
@@ -384,14 +399,14 @@ $rowheight = 48px
 						.month-body
 							.month-row
 								align-items center
-								background-color alpha(#154733,.05)								
+								background-color alpha($success,.05)
 								display flex
 								position relative
 								//padding 6px 16px
 								&:not(:last-of-type)
 									///border-bottom 1px solid #0d190d
 									border-bottom 1px solid Gray(20)
-								.day  
+								.day
 									background-color alpha(#154733,.12)
 									color darken(#154733,4)
 									//color #154733
@@ -399,7 +414,7 @@ $rowheight = 48px
 									min-width 34px
 									width 34px
 									text-align center
-									.num 
+									.num
 										font-size 16pt
 										font-weight 600
 									.dayname
@@ -416,30 +431,37 @@ $rowheight = 48px
 							.month-row:not(.blank)
 								cursor pointer
 							.month-row.tech
-								background-color alpha(rgba(6,66,159,1),.05)
+								background-color alpha($primary,.05)
 								.day
-									background-color alpha(rgba(6,66,159,1),.12)								
+									background-color alpha($primary,.12)
 									color rgba(6,66,159,1)
 							.month-row.holiday
-								background-color alpha(rgba(159,50,6,1),.05)
+								background-color alpha($warning,.05)
 								.day
-									background-color alpha(rgba(159,50,6,1),.12)
+									background-color alpha($warning,.12)
 									color rgba(159,50,6,1)
+
+							.month-row.forced
+								background-color alpha($danger,.05)
+								.day
+									background-color alpha($danger,.12)
+									color rgba(159,50,6,1)
+
 							.month-row.blank
 								background-color white
-								.day 
+								.day
 									background-color white
-								.caption 
+								.caption
 									text-align center
-	
 
-	.grid 
+
+	.grid
 		background-color white
 		padding 10px 0
 		box-sizing border-box
 		overflow auto
 		min-width 1468px
-		.main-title 
+		.main-title
 			text-align center
 			margin 0
 		.table-grid
@@ -451,9 +473,9 @@ $rowheight = 48px
 				//background-color #154733
 				background-color white
 				color #154733
-				tr 
+				tr
 					th
-						border 1px solid Gray(10) 
+						border 1px solid Gray(10)
 						padding 4px 0
 						font-size .875rem
 						width 100px
@@ -461,9 +483,9 @@ $rowheight = 48px
 					th:nth-of-type(1),th:nth-of-type(2)
 						width 110px
 			tbody
-				tr 
-					td 
-						//border 1px solid black						
+				tr
+					td
+						//border 1px solid black
 						text-align center
 						padding 0
 						font-size .975rem
@@ -475,11 +497,11 @@ $rowheight = 48px
 							background-color Gray(1)
 							border 1px solid Gray(10)
 						&:nth-of-type(2)
-							.row 
+							.row
 								background-color Gray(2)
-						.tag 
+						.tag
 							padding 6px
-						.row 
+						.row
 							//background-color rgba(250,191,143,.2)
 							background-color white
 							box-sizing border-box
@@ -491,26 +513,26 @@ $rowheight = 48px
 							height $rowheight
 							padding 0
 							justify-content center
-						.row-overlap 
+						.row-overlap
 							border 2px solid red
 						for num in (1..28)
 							.row-{num}
 								height ($rowheight * num)+(num)
-						.turnos 
-							.data 
-								.code 
+						.turnos
+							.data
+								.code
 									display block
-									font-weight bold 
+									font-weight bold
 									font-family 'Roboto', sans-serif
-								.desc 
+								.desc
 									font-size .775rem
-						.mod 
+						.mod
 							position absolute
 							//border none
 							color white
 							padding 2px 6px
 							box-sizing border-box
-							top 0 
+							top 0
 							left 0
 							height $rowheight
 							width 100%
@@ -524,12 +546,12 @@ $rowheight = 48px
 								span.name
 									font-size .85rem
 									font-weight bold
-								span.instructor 
+								span.instructor
 									line-height 1
 									display block
 									margin-top 2px
 									font-size .775rem
-							.ref-hour 
+							.ref-hour
 								border-bottom 1px solid alpha(Gray(50),.5)
 								background-color alpha(black,.1)
 								color white
@@ -544,18 +566,18 @@ $rowheight = 48px
 								left 0
 								top 0
 								width 100%
-							.remove 
+							.remove
 								cursor pointer
 								opacity .8
 								position absolute
-								right 4px 
+								right 4px
 								top -2px
-								&:hover 
+								&:hover
 									opacity 1
 		.table-ref
-			display flex 
-			flex-wrap wrap 
-			.mod 
+			display flex
+			flex-wrap wrap
+			.mod
 				padding 8px 16px
 				margin 2px 2px 0 0
 				box-sizing border-box
@@ -563,14 +585,14 @@ $rowheight = 48px
 				font-size 1rem
 	.special-events
 		align-items center
-		display flex 
+		display flex
 		flex-wrap wrap
-		.mod 
+		.mod
 			margin 0 4px 0 0
 			padding 8px
 			select,input
 				padding 4px 10px
-			.btn 
+			.btn
 				padding 4px 10px
 
 .mod-intensivo
@@ -600,97 +622,50 @@ $rowheight = 48px
 	border 2px solid red
 	color red !important
 
-.pop-messages 
-	align-items center
-	background-color alpha(white,.85)
-	display flex
-	justify-content center 
-	height 100%
-	opacity 0
-	left 0
-	overflow auto
-	top 0
-	position fixed
-	visibility hidden
-	transition opacity 300ms ease-out
-	width 100%
-	z-index 999999
-	.content 
-		background-color white
-		border 1px solid alpha(black,.1)
-		box-shadow 2px 2px 4px alpha(black,.1)
-		padding 4px
-		transition transform 500ms cubic-bezier(.23,1,.32,1)
-		transform translateY(-50%)
-		max-width 480px
-		width 100%
-		.header 
-			background-color green
-			padding 4px 10px
-			text-align right
-			border-radius 4px
-			.close 
-				cursor pointer
-				border none
-		.body 
-			padding 26px 10px
-			text-align center
-			font-size .7em
-		.footer 
-			padding 16px 10px
-			border-top 1px solid alpha(black,.1)
-			text-align center
-			button 
-				font-size .7em
-				padding 4px 8px
-.pop-messages.active 
-	opacity 1
-	visibility visible
-	.content 
-		transform translateY(0)
-		
+
 .add-holiday-content
-	.date 
+	.date
 		margin 0
 	.subtitle
 		margin 0 0 1rem 0
-	hr 
+	hr
 		border none
 		border-top 1px solid Gray(10)
 		margin 1rem 0
-	.course-item 
+	.course-item
 		border 1px solid Gray(10)
 		margin 2px 0
 		padding .2rem .65rem
-		display flex 		
-		align-items center
 		text-align left
-		.course
-			padding 8px
-			margin 0
-			font-size .675rem
-			width 200px
-			a 
-				text-decoration none 
-				&:hover 
-					text-decoration underline
-		input[type="text"]
-			padding .465rem .465rem
-			border none 
-			background-color Gray(5)
-			width 100%			
+		.wrapper
+			align-items center
+			display flex
+			.course
+				padding 8px
+				margin 0
+				font-size .675rem
+				width 200px
+				a
+					text-decoration none
+					&:hover
+						text-decoration underline
+			input[type="text"]
+				padding .465rem .465rem
+				border none
+				background-color Gray(5)
+				width 100%
 
 @media print
-	.no-print 
+	.no-print
 		display none !important
 @media screen and (max-width 1080px)
-	.calendar 
+	.calendar
 		.calendar-row
 			flex-wrap wrap
 			.month-outer
-				width 50%	
+				width 50%
 				border none !important
-		.filters 
+		.filters
 			.item
 				width 100%
 		.calendar-block
@@ -702,9 +677,9 @@ $rowheight = 48px
 	.calendar
 		.schedule
 			.body
-				.schedule-body 
+				.schedule-body
 					flex-wrap wrap
 @media screen and (max-width 696px)
-	.calendar 
+	.calendar
 		.month-outer
-			width 100%			
+			width 100%

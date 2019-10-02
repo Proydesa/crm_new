@@ -48,12 +48,17 @@
 
 		<!-- Cargar custom CSS -->
 		<?php if(isset($_arrcss)): foreach ($_arrcss as $css): ?>
-		<link href="<?= $HULK->wwwroot.'/'.$css['folder'].$css['style'].'.css?id='.rand(1111,9999) ?>" <?= isset($css['media']) ? 'media="'.$css['media'].'"' : '' ?> <?= isset($css['rel']) ? 'rel="'.$css['rel'].'"' : '' ?>> 
+		<link href="<?= $HULK->wwwroot.'/'.$css['folder'].$css['style'].'.css?id='.rand(1111,9999) ?>" <?= isset($css['media']) ? 'media="'.$css['media'].'"' : '' ?> <?= isset($css['rel']) ? 'rel="'.$css['rel'].'"' : '' ?>>
 		<?php endforeach; endif; ?>
 
-		
+
 		<!-- Ejecucion de los scripts generales del hulk -->
 	  <script type="text/javascript" src="<?= $HULK->javascript;?>/script.hulk.js"></script>
+
+
+	  <script>
+	  	var WWWROOT = '<?=$HULK->wwwroot?>';
+	  </script>
 	</head>
-	
+
 	<body class="ui-widget-content noBorder">

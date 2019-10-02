@@ -5,7 +5,7 @@
 			<div class="header-wrapper">
 				<h2>CALENDARIO </h2>
 				<form class="years" onchange="this.submit()" method="post">
-					<span>Elegir Año:</span> 
+					<span>Elegir Año:</span>
 					<select name="years">
 						<?php for($i=2017; $i<=date('Y')+1; $i++): ?>
 						<option value="<?= $i ?>" <?= $i==$_year ? 'selected' : '' ?> ><?= $i ?></option>
@@ -25,7 +25,7 @@
 				<div class="block-course-edit">
 					<h4>Generar Curso</h4>
 					<div class="inner-block" id="course_generator">
-						<input id="course_start" type="text" placeholder="día de inicio" > 
+						<input id="course_start" type="text" placeholder="día de inicio" >
 						<select id="course_classes">
 							<option value="0">Cant. de Clases</option>
 							<?php for($i=1;$i<=20;$i++): ?>
@@ -42,7 +42,7 @@
 							<li data-value="d" class="day">D</li>
 						</ul>
 						<button data-btn="generate" class="btn btn-success btn-sm">Generar</button>
-					</div>		
+					</div>
 				</div>
 				<div class="block-courses">
 					<h4>Cursos generados </h4>
@@ -58,13 +58,14 @@
 					<button data-btn="holiday" class="btn btn-primary btn-holiday active">Feriado Nacional</button>
 					<?php endif; ?>
 					<button data-btn="tech" class="btn btn-primary btn-tech <?= (!$H_USER->has_capability('calendario/edit/holidays') ? 'active' : '') ?>">Feriado Técnico</button>
+					<button data-btn="forced" class="btn btn-primary btn-forced">Fuerza Mayor</button>
 					<button data-btn="erase" class="btn btn-primary btn-erase" title="reestablecer día"><i class="fa fa-eraser"></i></button>
 				</div>
 			</div>
 		</div>
 		<?php endif; ?>
 		<div class="calendar-wrapper">
-			<?php 
+			<?php
 			$arrMonthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 			$arrDaysNames = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
 			$arrDaysCodes = ['l','m','w','j','v','s','d'];
@@ -84,7 +85,7 @@
 			<?php endif; ?>
 			<div class="month-outer" >
 				<div class="month-wrapper" data-month="<?= $mth ?>" data-period="<?= $period ?>" >
-					<?php 
+					<?php
 					$calendar = new Calendar();
 					$calendar->currentYear = $_year;
 					$calendar->currentMonth = $mth;
@@ -120,10 +121,11 @@
 		</div>
 		<div class="calendar-block">
 			<h4>Referencias:</h4>
-			<div class="ref-wrapper">				
+			<div class="ref-wrapper">
 				<div class="mod mod-holiday">Feriado Nacional</div>
 				<div class="mod mod-course">Inicio de Clases</div>
 				<div class="mod mod-tech">Feriado Técnico</div>
+				<div class="mod mod-forced">Fuerza Mayor</div>
 			</div>
 		</div>
 	</div>
@@ -134,14 +136,12 @@
 
 <div id="add_holiday" class="pop-messages">
 	<div class="content">
-		<div class="header">
+		<div class="pop-header">
 			<button type="button" class="close" data-button="close"><i class="fa fa-times"></i></button>
 		</div>
 
-		<div class="body"></div>
+		<div class="pop-body"></div>
 
-		<div class="footer">
-		</div>
 
 	</div>
 </div>

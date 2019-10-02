@@ -1,0 +1,57 @@
+.pop-messages
+	align-items center
+	background-color alpha(black,.8)
+	display flex
+	justify-content center
+	height 100%
+	opacity 0
+	left 0
+	overflow auto
+	top 0
+	position fixed
+	visibility hidden
+	transition opacity 300ms ease-out
+	width 100%
+	z-index 999999
+	.content
+		background-color white
+		border 1px solid alpha(black,.1)
+		box-shadow 2px 2px 4px alpha(black,.1)
+		padding 4px
+		transition transform 500ms cubic-bezier(.23,1,.32,1)
+		transform translateY(-50%)
+		max-width 480px
+		width 100%
+		.pop-header
+			background-color $success
+			padding 0 10px
+			text-align right
+			border-radius 4px
+			.close
+				cursor pointer
+				background-color transparent
+				color white
+				font-size 1rem
+				margin 0
+				padding 0
+				border none
+		.pop-body
+			padding 26px 10px
+			text-align center
+			font-size .7em
+		.pop-footer
+			padding 16px 10px
+			border-top 1px solid alpha(black,.1)
+			text-align center
+			button
+				font-size .7em
+				padding 4px 8px
+.pop-messages.active
+	opacity 1
+	visibility visible
+	.content
+		transform translateY(0)
+
+.form-control
+	border 1px solid Gray(10)
+	width 100%

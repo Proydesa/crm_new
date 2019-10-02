@@ -200,6 +200,29 @@ function ConvertDays($day){
 		case 'Sun':
 			$dayconverted = 'Dom';
 			break;
+
+		case 'L':
+			$dayconverted = 1;
+			break;
+		case 'M':
+			$dayconverted = 2;
+			break;
+		case 'W':
+			$dayconverted = 3;
+			break;
+		case 'J':
+			$dayconverted = 4;
+			break;
+		case 'V':
+			$dayconverted = 5;
+			break;
+		case 'S':
+			$dayconverted = 6;
+			break;
+		case 'D':
+			$dayconverted = 7;
+			break;
+
 		default:
 			$dayconverted = $day;
 	}
@@ -261,17 +284,17 @@ function ConvertMonth($month){
 	}
 	return $monthconverted;
 }
-function flush_buffers($text=NULL){ 
-	
+function flush_buffers($text=NULL){
+
 	if(isset($text)){
 		if(is_array($text) OR is_object($text)){
 			show_array($text);
 		}else{
 			echo '<p>'.$text.'</p>';
 		}
-	} 
-	ob_end_flush(); 
-    @ob_flush(); 
-    flush(); 
-    ob_start(); 
+	}
+	ob_end_flush();
+    @ob_flush();
+    flush();
+    ob_start();
 }

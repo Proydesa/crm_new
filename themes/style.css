@@ -60,7 +60,7 @@ header {
 	margin: 0px;
 	padding: 5px;
 	margin-bottom:2px;
-	box-sizing: border-box;	
+	box-sizing: border-box;
 }
 #header.fixed{
 	position: fixed;
@@ -114,7 +114,7 @@ header {
 	position: absolute;
 	font-size: .765rem;
 	margin:0;
-	padding:0;	
+	padding:0;
 	display: none;
 	width: 230px;
 	z-index: 99999;
@@ -123,23 +123,23 @@ header {
 	background-color: #f4f0ec;
 	display: block;
 }
-#header .main-menu > li > ul.menu-item a.item:hover{	
+#header .main-menu > li > ul.menu-item a.item:hover{
 	background-color: #e0cfc2;
 }
-#header .main-menu > li > ul.menu-item a.item{	
+#header .main-menu > li > ul.menu-item a.item{
 	display: block;
 	padding:4px 8px;
 	font-weight: bold;
 	color:black;
 }
-#header .main-menu > li > ul.menu-item i.fa{	
+#header .main-menu > li > ul.menu-item i.fa{
 	float:right;
 }
-#header .main-menu > li > ul.menu-item > li{	
-	display: block;	
+#header .main-menu > li > ul.menu-item > li{
+	display: block;
 	margin:2px 0;
 }
-#header .main-menu > li > ul.menu-item > li.separator{	
+#header .main-menu > li > ul.menu-item > li.separator{
 	opacity: 1;
 	color:#999;
 	display: block;
@@ -156,7 +156,7 @@ header {
 	display: none;
 	position: relative;
 	z-index: 99999;
-	padding:0;	
+	padding:0;
 }
 
 #header .main-menu > li > ul.menu-item ul.submenu li{
@@ -475,6 +475,8 @@ h2,h3 { margin:8px 0px 8px 0px;}
 	border:1px solid #e0cfc2;
 	margin:8px 0;
 	padding:6px;
+	max-height: 200px;
+	overflow: auto;
 	width: 480px;
 }
 .alert-container h4{
@@ -638,7 +640,7 @@ input[type="radio"],input[type="checkbox"]{
 	vertical-align: middle;
 }
 
-/*#header .ui-button-text-icon-primary .ui-button-text, 
+/*#header .ui-button-text-icon-primary .ui-button-text,
 #header .ui-button-text-icons .ui-button-text{
 	padding:0;
 }*/

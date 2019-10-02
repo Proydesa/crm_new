@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class Calendar {
 
@@ -10,22 +10,24 @@ class Calendar {
 					$_daysInMonth=0,
 					$_dayLabels = array("Mon","Tue","Wed","Thu","Fri","Sat","Sun"),
 					$_hdb,
+					$_lms,
 					$_data;
 
 	public function __construct(){
 		global $H_DB, $H_USER, $LMS;
 		$this->_hdb = $H_DB;
 		$this->_user = $H_USER;
+		$this->_lms = $LMS;
 	}
 
 	public function showDay($cellNumber){
-			 
+
 		if($this->currentDay==0){
-			$firstDayOfTheWeek = date('N',strtotime($this->currentYear.'-'.$this->currentMonth.'-01'));		 
+			$firstDayOfTheWeek = date('N',strtotime($this->currentYear.'-'.$this->currentMonth.'-01'));
 			if(intval($cellNumber) == intval($firstDayOfTheWeek)){
 				$this->currentDay=1;
 			}
-		}		 
+		}
 		if( ($this->currentDay!=0) && ($this->currentDay<=$this->_daysInMonth) ){
 			$cellContent = $this->currentDay;
 			$this->currentDay++;
@@ -38,13 +40,13 @@ class Calendar {
 
 	public function weeksInMonth(){
 		if( null==($this->currentYear) ) {
-			$this->currentYear =  date("Y",time()); 
+			$this->currentYear =  date("Y",time());
 		}
 		if(null==($this->currentMonth)) {
 			$this->currentMonth = date("m",time());
 		}
 		$_daysInMonths = $this->daysInMonth();
-		$numOfweeks = ($_daysInMonths%7==0?0:1) + intval($_daysInMonths/7);			 
+		$numOfweeks = ($_daysInMonths%7==0?0:1) + intval($_daysInMonths/7);
 		$monthEndingDay= date('N',strtotime($this->currentYear.'-'.$this->currentMonth.'-'.$_daysInMonths));
 		$monthStartDay = date('N',strtotime($this->currentYear.'-'.$this->currentMonth.'-01'));
 		if($monthEndingDay<$monthStartDay){
@@ -88,7 +90,7 @@ class Calendar {
 	}
 
 	public function save(){
-		
+
 		$check = $this->_hdb->GetRow("SELECT * FROM h_calendario WHERE date='".Input::get('date')."'");
 		$sql = array(
 			'date'=>Input::get('date'),
@@ -101,8 +103,8 @@ class Calendar {
 			return false;
 		}
 		if(Input::get('type')=='erase'){
-			$this->_hdb->delete('h_calendario',"date='".Input::get('date')."'");				
-		}else{			
+			$this->_hdb->delete('h_calendario',"date='".Input::get('date')."'");
+		}else{
 			if(empty($check)){
 				$this->_hdb->insert('h_calendario',$sql);
 			}else{
@@ -123,8 +125,8 @@ class Calendar {
 			$where .= "YEAR(c.date) = '{$year}'";
 		}
 		return $this->_hdb->GetAll(
-			"SELECT c.date, c.type 
-			FROM h_calendario c 
+			"SELECT c.date, c.type
+			FROM h_calendario c
 			{$where}
 			ORDER BY c.date ASC"
 		);
@@ -143,8 +145,8 @@ class Calendar {
 			$where .= "c.type = '{$type}'";
 		}
 		return $this->_hdb->GetAll(
-			"SELECT c.date, c.type 
-			FROM h_calendario c 
+			"SELECT c.date, c.type
+			FROM h_calendario c
 			{$where}
 			ORDER BY c.date ASC"
 		);
@@ -159,27 +161,27 @@ class Calendar {
 			'amount'=>Input::get('amount'),
 			'days'=>Input::get('days')
 		);
-					
+
 		if(empty($check)){
 			$this->_hdb->insert('h_calendario_courses',$sql);
 		}else{
 			$id=$check['id'];
 			$this->_hdb->update('h_calendario_courses',$sql,"id={$id}");
 		}
-		
+
 		return true;
 	}
 
 	public function getcourses(){
-		
+
 		$year = Input::get('year');
 		$output = array();
 		$idperiod = Input::get('idperiod');
 
 		$output = $this->_hdb->GetAll(
 			"SELECT cc.id, cc.idperiod, cc.start, DAYOFYEAR(cc.start) daynum, DATE_FORMAT(cc.start,'%d/%m/%Y') inicia, cc.amount, cc.days
-			FROM h_calendario_courses cc 
-			WHERE YEAR(cc.start)={$year} AND cc.idperiod={$idperiod} 
+			FROM h_calendario_courses cc
+			WHERE YEAR(cc.start)={$year} AND cc.idperiod={$idperiod}
 			ORDER BY cc.start ASC"
 		);
 
@@ -203,17 +205,16 @@ class Calendar {
 			$where .= " AND DAY(cc.start)={$day}";
 		}
 		return $this->_hdb->GetAll(
-			"SELECT cc.id, cc.idperiod, cc.start, cc.amount, cc.days 
-			FROM h_calendario_courses cc 
+			"SELECT cc.id, cc.idperiod, cc.start, cc.amount, cc.days
+			FROM h_calendario_courses cc
 			{$where}
 			ORDER BY cc.start ASC"
 		);
 	}
 
 	public function get_courses_by_date($date=''){
-		global $LMS;
 
-		return $LMS->GetAll(
+		return $this->_lms->GetAll(
 			"SELECT atss.id sessid, atss.attendanceid, atss.sessdate, atss.duration, c.*
 			FROM mdl_attendance_sessions atss
 			LEFT JOIN mdl_attendance att ON att.id=atss.attendanceid
@@ -221,10 +222,7 @@ class Calendar {
 			WHERE c.academyid=1 AND FROM_UNIXTIME(atss.sessdate, '%Y-%m-%d') = '{$date}'"
 		);
 	}
-	public function change_attendance($courses=array(),$date='',$type=''){
-
-
-		global $LMS;
+	public function change_attendance($courses=array(),$date='',$type='',$comments=''){
 
 		date_default_timezone_set('America/Argentina/Buenos_Aires');
 
@@ -233,20 +231,20 @@ class Calendar {
 		foreach($courses as $course){
 			if(!empty($course['newdate'])){
 
-				$arr_date = explode('/', $course['newdate']); 
+				$arr_date = explode('/', $course['newdate']);
 				$sessdate = strtotime($arr_date[2].'-'.$arr_date[1].'-'.$arr_date[0].' '.date('H',$course['olddate']).':'.date('i',$course['olddate']).':00');
 				//$sessdate = $timestamp+(abs($timestamp-$course['olddate']));
-			
 
-				$LMS->insert('mdl_attendance_sessions_cancelled',array(
+
+				$this->_lms->insert('mdl_attendance_sessions_cancelled',array(
 					'attendanceid'=>$course['attendanceid'],
 					'sessdate'=>$course['olddate'],
-					'description'=>'Feriado '.($type=='tech' ? 'Tecnico' : 'Nacional')
+					'description'=>$comments
 				));
-				$LMS->delete('mdl_attendance_sessions',"id=".$course['sessid']);
+				$this->_lms->delete('mdl_attendance_sessions',"id=".$course['sessid']);
 
 
-				$LMS->insert('mdl_attendance_sessions',array(
+				$this->_lms->insert('mdl_attendance_sessions',array(
 					'attendanceid'=>$course['attendanceid'],
 					'sessdate'=>$sessdate,
 					'duration'=>$course['duration'],
@@ -254,11 +252,44 @@ class Calendar {
 				));
 
 			}
-			
+
 		}
 
 
 		return true;
+	}
+
+	public function check_attendance($courses=array()){
+
+		date_default_timezone_set('America/Argentina/Buenos_Aires');
+
+		if(!is_array($courses)) return false;
+
+		foreach($courses as $course){
+			if(!empty($course['newdate'])){
+
+				$arr_date = explode('/', $course['newdate']);
+				$sessdate = strtotime($arr_date[2].'-'.$arr_date[1].'-'.$arr_date[0].' '.date('H',$course['olddate']).':'.date('i',$course['olddate']).':00');
+				$attendanceid = $course['attendanceid'];
+
+				$attendance = $this->_lms->GetField_sql(
+					"SELECT a.course
+					FROM mdl_attendance_sessions ass
+					LEFT JOIN mdl_attendance a ON a.id=ass.attendanceid
+					WHERE ass.attendanceid={$attendanceid} AND ass.sessdate={$sessdate}"
+				);
+
+				if($attendance){
+					$output = new stdClass();
+					$output->date = $course['newdate'];
+					$output->course = $attendance;
+					return $output;
+				}
+			}
+		}
+
+		return false;
+
 	}
 
 	////public function findcoursesbyperiod($from='',$to='')
@@ -332,7 +363,7 @@ class Calendar {
 	}
 	public function get_images($year=0,$period=0){
 		return $this->_hdb->GetAll(
-			"SELECT * 
+			"SELECT *
 			FROM h_calendario_images
 			WHERE year={$year} AND period={$period}"
 		);
@@ -346,6 +377,11 @@ class Calendar {
 			unlink('../../images/calendario/'.$image['image'].'.jpg');
 		}
 		return true;
+	}
+
+	public function get_cancelled_class($date=''){
+		return $this->_lms->GetOne("SELECT description FROM mdl_attendance_sessions_cancelled WHERE FROM_UNIXTIME(sessdate,'%Y-%m-%d')='{$date}'");
+
 	}
 
 }

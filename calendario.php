@@ -21,7 +21,7 @@ switch ($v) {
 	case 'view':
 
 		$H_USER->require_capability('calendario/view');
-		
+
 		$data['_calendar'] = $_calendar;
 
 		$data['_periods'] = $_calendar->getperiods();
@@ -34,13 +34,14 @@ switch ($v) {
 		break;
 
 	case 'cronograma':
-		
+
+
 		$data['_periods'] = $_calendar->getperiods();
 		$data['_calendar'] = $_calendar;
 		$data['_year'] =  isset($_POST['years']) ? $_POST['years'] : date('Y');
 		$data['_period'] =  isset($_POST['periods']) ? $_POST['periods'] : 1;
 
-		
+
 		/////////////////////////
 		$data['_node'] = 0;
 		if(!empty($data['_periods'])){
@@ -65,7 +66,7 @@ switch ($v) {
 					if(date('N',strtotime($course['start']))==$i){
 						$arrdays[$course['start']] = 'Inicio de Clases';
 						$practico[] = $_calendar->getfinalclass(strtotime($course['start']),$course['amount']-1,$course['days']);
-						$teorico[] = $_calendar->getfinalclass(strtotime($course['start']),$course['amount'],$course['days']);						
+						$teorico[] = $_calendar->getfinalclass(strtotime($course['start']),$course['amount'],$course['days']);
 					}
 				}
 			}
@@ -73,8 +74,28 @@ switch ($v) {
 			for($m=$data['_periods'][$data['_node']]['month_min']; $m<=$data['_periods'][$data['_node']]['month_max']; $m++){
 				if(!empty($holidays = $_calendar->getholidays($m,$data['_year']))){
 					foreach ($holidays as $holiday) {
+
+						//show_array($holiday['date'].'  -- '.strtotime($holiday['date']));
+
 						if(date('N',strtotime($holiday['date']))==$i && strtotime((array_search('Inicio de Clases', $arrdays))) < strtotime($holiday['date']) ){
-							$arrdays[$holiday['date']] = 'Feriado '.($holiday['type'] == 'tech' ? 'Técnico' : 'Nacional');
+
+							$arrdays[$holiday['date']] = '';
+
+							switch ($holiday['type']) {
+								case 'tech':
+									$arrdays[$holiday['date']] = 'Feriado Técnico';
+									break;
+
+								case 'holiday':
+									$arrdays[$holiday['date']] = 'Feriado Nacional';
+									break;
+
+								case 'forced':
+									//$arrdays[$holiday['date']] = $_calendar->get_cancelled_class($holiday['date']);
+									$arrdays[$holiday['date']] = 'Clase Cancelada';
+									break;
+
+							}
 						}
 					}
 				}
@@ -93,15 +114,15 @@ switch ($v) {
 					}
 				}
 			}
-			
-			
+
+
 
 			$data['_schedules'][] = array('dayname'=>$data['_daynames'][$nodesch],'days'=>array());
 			$data['_maxrows'] = count($arrdays)>$data['_maxrows'] ? count($arrdays) : $data['_maxrows'];
 
-			
+
 			ksort($arrdays);
-			$data['_schedules'][$nodesch]['days'] = $arrdays;			
+			$data['_schedules'][$nodesch]['days'] = $arrdays;
 
 			$nodesch++;
 
@@ -160,18 +181,18 @@ switch ($v) {
 		"SELECT h.*, t.desc_turno, t.desc_franja_horaria
 		FROM h_horarios h
 		LEFT JOIN h_turnos t ON t.cod_turno=h.turno
-		GROUP BY h.turno 
+		GROUP BY h.turno
 		ORDER BY h.name");
 
 		////////////////////////////////
 		///$_calendar->findcourses($idperiod=0,$year=0,$month=0,$day=0)
-		
+
 		$data['_courses'] = $LMS->getCoursesByRange(strtotime($data['_startdate']),strtotime($data['_finishdate']));
 		//$data[]
 		////////////////////////////////
 
 		break;
-	
+
 	default:
 		$v	=	'index';
 		break;

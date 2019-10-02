@@ -1,25 +1,5 @@
-var Messages = {
-	dialog:function(obj){
-		if(obj.show){
-			$('#add_holiday').addClass('active').find('.body').html(obj.message);
-		}else{
-			$('#add_holiday').removeClass('active').find('.body').html('');
-		}
-		$('#add_holiday [data-button="close"]').unbind('click').click(function(){
-			Messages.dialog({show:false});
-		});
-		if('callback' in obj){
-			$('#add_holiday [data-button="ok"]').show().unbind('click').click(function(){
-				Messages.dialog({show:false});
-				obj.callback();
-			});			
-		}else{
-			$('#add_holiday [data-button="ok"]').hide();
-		}
-	}
-}
 var Calendar = {
-	styles:['tech','holiday','course'],
+	styles:['tech','holiday','course','forced'],
 	templates:{
 		div:$('<div>'),
 		i:$('<i>'),
@@ -59,7 +39,7 @@ var Calendar = {
 			},
 			error:function(data){
 				console.log(data.responseText);
-				
+
 			}
 		});
 	},
@@ -76,8 +56,8 @@ var Calendar = {
 			countpanic++;
 			$.each(arrDaysCodes,function(k,v){
 				if($('.day-cell[data-daynum="'+daynum+'"]').attr('data-daycode') == v){
-					if(!$('.day-cell[data-daynum="'+daynum+'"]').hasClass('holiday') && !$('.day-cell[data-daynum="'+daynum+'"]').hasClass('tech')){
-						
+					if(!$('.day-cell[data-daynum="'+daynum+'"]').hasClass('holiday') && !$('.day-cell[data-daynum="'+daynum+'"]').hasClass('tech') && !$('.day-cell[data-daynum="'+daynum+'"]').hasClass('forced')){
+
 						var courseids = [];
 						if($('.day-cell[data-daynum="'+daynum+'"]').attr('data-idcourse')!=undefined){
 							courseids = $('.day-cell[data-daynum="'+daynum+'"]').attr('data-idcourse').split(',');
@@ -122,23 +102,28 @@ var Calendar = {
 		});
 	},
 	save_holiday:function(obj){
-		this.ajax({
-			mode:'save',
-			date:obj.date,
-			daynum:obj.daynum,
-			daycode:obj.daycode,
-			type:obj.type,
-			courses:obj.courses
-		},function(data){
-			if(data.status != 'ok'){
-				alert(data.message); 
+		$('#add_holiday .course-item .course-status').html('');
+		obj.mode = 'save';
+		var btn = obj.btn;
+		obj.btn = null;
+
+		this.ajax(obj,function(data){
+
+			if(data.status == 'unavailable'){
+				$('#add_holiday .course-item[data-course="'+data.course+'"] .course-status').html(data.message);
 				return false;
 			}
-			$(obj.btn.currentTarget).removeClass(Calendar.styles.join(' '));
-			if(obj.type!='erase'){
-				$(obj.btn.currentTarget).addClass(obj.type);
+			if(data.status != 'ok'){
+				$('#add_holiday .pop-status').html(data.message);
+				console.log(data);
+				return false;
 			}
-				
+			$(btn.currentTarget).removeClass(Calendar.styles.join(' '));
+			if(obj.type!='erase'){
+				$(btn.currentTarget).addClass(obj.type);
+			}
+
+			messages.dialog({show:false});
 			Calendar.getcourses();
 		});
 
@@ -156,6 +141,8 @@ var Calendar = {
 				var day = $(btn.currentTarget).text();
 				var daynum = $(btn.currentTarget).attr('data-daynum');
 				var daycode = $(btn.currentTarget).attr('data-daycode');
+
+
 
 				$('#add_holiday .courses').html('');
 
@@ -187,6 +174,7 @@ var Calendar = {
 						var form = $(promise[2]);
 						form.find('.date').html(day+'/'+month+'/'+year);
 
+
 						$.each(data.results, function(k,v){
 							var mod = $(promise[1]);
 							mod.find('.course a').text(v.fullname).attr('href','courses.php?v=view&id='+v.id);
@@ -197,24 +185,27 @@ var Calendar = {
 								'data-attendanceid':v.attendanceid,
 								'data-duration':v.duration
 							});
+							mod.attr('data-course',v.id);
 							form.find('.courses').append(mod);
 
 						});
-						$('#add_holiday .body').append(form);
+						$('#add_holiday .pop-body').html(form);
 
 
 						$('[data-toggle="datepicker"]').datepicker({
 							setDate:day+'/'+month+'/'+year,
-							dateFormat:'dd/mm/yy'
+							dateFormat:'dd/mm/yy',
+							firstDay:1,
+							changeMonth:true
 						});
 
 
-						Messages.dialog({show:true});
+						messages.dialog({show:true});
 
-						$('#add_holiday form').submit(function(e){
+						$('#add_holiday form').unbind('submit').submit(function(e){
 							e.preventDefault();
 							var courses = [];
-							$.each($('#add_holiday form input[type="text"]'),function(k,v){								
+							$.each($('#add_holiday form input[type="text"]'),function(k,v){
 								courses.push({
 									courseid:$(this).attr('data-courseid'),
 									newdate:$(this).val(),
@@ -225,22 +216,22 @@ var Calendar = {
 								});
 							});
 
+							var comments = $(this).find('[name="comments"]').val();
 							Calendar.save_holiday({
 								date:year+'-'+month+'-'+day,
 								type:type,
 								daynum:daynum,
 								daycode:daycode,
 								btn:btn,
-								courses:courses
+								courses:courses,
+								comments:comments
 							});
 
-							///console.log(courses,year+'-'+month+'-'+day)
-							Messages.dialog({show:false});
 						});
 
 					});
-						
-				
+
+
 			},this));
 		}
 
@@ -248,7 +239,7 @@ var Calendar = {
 			$('[data-btn-group="holiday-group"] button').not(btn.currentTarget).removeClass('active');
 			$(btn.currentTarget).addClass('active');
 		});
-		
+
 		$('[data-btn-group="days-group"]').on('click','li',function(btn){
 			$(btn.currentTarget).toggleClass('active');
 		});
@@ -325,10 +316,10 @@ var Calendar = {
 				if(hits==ids.length){
 					$(this).addClass('inactive');
 				}else{
-					$(this).removeClass('inactive');					
+					$(this).removeClass('inactive');
 				}
 			});
-			
+
 
 		},this));
 		////////////////////////////////////
@@ -343,14 +334,14 @@ var Calendar = {
 			dayNamesMin:["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
 			monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ]
 		});
-		
+
 
 		this.getcourses();
 	}
 }
 $(function(){
 	Calendar.init();
-	//Messages.dialog({show:true})
+	//messages.dialog({show:true})
 });
 
 

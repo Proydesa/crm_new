@@ -143,6 +143,7 @@ class H_Database extends H_Database_Conn {
 	}
 	function registrarBaja($userid,$courseid, $opciones){
 		global $LMS,$H_USER;
+		$baja = new stdClass();
 		$baja->userid 		= $userid;
 		$baja->comisionid = $courseid;
 		$baja->detalle 		= $opciones['detalle'];

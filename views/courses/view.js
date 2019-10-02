@@ -130,6 +130,38 @@ $(function(){
 	$(window).resize(function(){
 		ResizeHeader();
 	});
+
+	$('[data-toggle="cancelled"] a').click(function(e){
+		e.preventDefault();
+		var id = $(this).parent().attr('data-id');
+		var text = $(this).text();
+
+
+		get_template('change-cancelled-class-description')
+			.then(function(data){
+
+				var template = $(data);
+				template.find('textarea').val(text);
+				template.find('[name="id"]').val(id);
+
+				$('#pop_cancelled .pop-body').html(template);
+
+				messages.dialog({show:true});
+
+			});
+
+	});
+
+	$('#pop_cancelled').on('submit','form',function(e){
+		e.preventDefault();
+		var post = get_form(this);
+		post.mode = 'change_cancelled_description';
+		ajax('views/courses/ajaxCourses',post)
+		.then(function(data){
+			window.location.reload();
+		})
+	})
+
 	BuildHeader();
 	NotifyAttendance();
 });

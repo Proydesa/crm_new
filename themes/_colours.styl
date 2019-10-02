@@ -1,0 +1,21 @@
+$colours = {
+	'orange':rgb(199,146,0),
+	'blue':rgb(6,106,199),
+	'red':rgb(199,6,6),
+	'green':rgb(20,120,20),
+	'beige':rgb(224,207,194),
+	'primary':#337ab7,
+	'success':#5cb85c,
+	'danger':#d43f3a,
+	'warning':#f0ad4e
+}
+for name,value in $colours
+	.text-{name}
+		color value
+	.bg-{name}
+		background-color value
+	define('$'+replace('-','_',name),value)
+
+Gray(PC)
+	col = 255-((255*PC)/100)
+	rgb(col,col,col)

@@ -30,7 +30,7 @@ switch($v){
 				$data['academys']	= $LMS->getAcademys();
 				break;
 			case 1:
-				
+
 				$jquerynew = true;
 				// TODO Configura curso
 				$modelid		= $_REQUEST['modid'];
@@ -49,7 +49,7 @@ switch($v){
 				$data['forma_de_pago'] = $LMS->getField("mdl_proy_academy_convenio","forma_de_pago",$data['categoryid'],"categoryid");
 
 				//Instructores capacitados para ese curso modelo
-				$data['instructores'] = $LMS->getAcademyInstructor($academyid,$modelid);			
+				$data['instructores'] = $LMS->getAcademyInstructor($academyid,$modelid);
 
 				//Aulas de la academia
 				$data['aulas'] = $H_DB->GetAll("SELECT * FROM h_academy_aulas WHERE academyid={$academyid} ORDER BY name;");
@@ -58,12 +58,12 @@ switch($v){
 				$data['schedules'] = $H_DB->GetAll("SELECT * FROM h_horarios ORDER BY name;");
 
 				$_calendar = new Calendar();
-				$data['holidays'] = $_calendar->getholidaysbyperiod(date('Y-01-01'),'','tech');				
+				$data['holidays'] = $_calendar->getholidaysbyperiod(date('Y-01-01'),'','tech');
 
 				break;
 
 			case 2:
-				
+
 				$course = $_POST;
 
 				/*echo '<pre>';
@@ -72,13 +72,13 @@ switch($v){
 				echo '</pre>';
 
 				die();*/
-				
+
 				$course['shortname'] = $course['fullname'] = $course['fullname_complete'];
 
 				$course['periodo'] = getPeriodo($course['startdate']);
 				date_default_timezone_set('America/Argentina/Buenos_Aires');
 				$course['timemodified'] = time();
-				$course['timecreated'] = time();	
+				$course['timecreated'] = time();
 
 				$course['startdate'] = strtotime(date($course['startdate']));
 				$course['enrolstartdate'] = 0;
@@ -103,7 +103,7 @@ switch($v){
 						show_error("Error","Error al enrolar el instructor");
 					}
 				}
-				
+
 				if ($course['secundario']>0){
 					if(!$LMS->enrolUser($course['secundario'], $courseid, 4) ){
 						show_error("Error","Error al enrolar el instructor secundario");
@@ -123,7 +123,7 @@ switch($v){
 				}
 				$horario = explode(',',$course['schedules']);
 				$daycodes = explode(',',$course['daycodes']);
-				foreach($horario as $k=>$hr){					
+				foreach($horario as $k=>$hr){
 					if(!$H_DB->insert('h_course_config',array(
 						'courseid'=>$courseid,
 						'aulaid'=>$aula['id'],
@@ -153,9 +153,16 @@ switch($v){
 
 
 		break;
-	
+
 
 	case 'view':
+
+		/// Cargar custom CSS para el view ///
+		$_arrcss = [
+			['folder'=>'themes/','style'=>'courses','rel'=>'stylesheet']
+		];
+		$jquerynew = true;
+
 		$id = $_REQUEST['id'];
 		$H_USER->require_capability('course/view');
 
@@ -163,13 +170,13 @@ switch($v){
 		$data['row']			= $LMS->getCourse($id);
 
 		$periodo = $data['row']['periodo'];
-		
+
 		$data['estudiantes']	= $LMS->getCourseStudents($id,$periodo);
-		
+
 		$data['instructores']	= $LMS->getCourseInstructors($id);
 
 		$data['bajas']	= $H_DB->GetAll("SELECT b.* FROM h_bajas b WHERE b.comisionid={$id} AND b.cancel=0 AND periodo={$periodo};");
-	
+
 		$data['capacidad']		= $H_DB->GetRow("SELECT capacity FROM h_academy_aulas aa
 											INNER JOIN h_course_config cah ON aa.id=cah.aulaid
 											WHERE cah.courseid={$id};");
@@ -187,13 +194,29 @@ switch($v){
 											ORDER BY sortorder;");
 		}
 		$data['cuotas'] = $H_DB->GetAll("SELECT DISTINCT(c.cuota) FROM h_cuotas c inner JOIN h_inscripcion h ON c.insc_id = h.id and h.comisionid={$id} and c.courseid={$data['row']['from_courseid']} ORDER BY c.cuota");
-		
+
 		/*$data['cuotas'] = $H_DB->GetAll("SELECT DISTINCT(c.cuota) FROM h_cuotas c LEFT JOIN h_inscripcion h ON h.courseid=c.courseid WHERE h.comisionid={$id} ORDER BY c.cuota");*/
-		
+
+		$course_config = $H_DB->GetAll("SELECT dias FROM h_course_config WHERE courseid=".$id);
+		$data['course_config'] = array();
+		foreach($course_config as $cfg){
+			$data['course_config'][] = ConvertDays($cfg['dias']);
+		}
+
+		$startdate = date('Y-m-d',$data['row']['startdate']);
+		$enddate = date('Y-m-d',$data['row']['enddate']);
+
+		$data['holidays'] = $H_DB->GetAll(
+			"SELECT c.id, c.date, c.type
+			FROM h_calendario c
+			WHERE c.date BETWEEN '{$startdate}' AND '{$enddate}'
+			ORDER BY c.date ASC"
+		);
+
 		///////// END EDIT //////////////////
 
 		break;
-	
+
 	case 'list':
 
 		$data['q'] = $q = $_REQUEST['q'];
@@ -483,9 +506,9 @@ switch($v){
 		$data['course_config'] = $H_DB->getCourseConfigFull($id);
 
 		//Aulas de la academia
-		$data['aulas'] = $H_DB->GetAll("SELECT * FROM h_academy_aulas WHERE academyid={$data['course']['academyid']} ORDER BY name;");		
+		$data['aulas'] = $H_DB->GetAll("SELECT * FROM h_academy_aulas WHERE academyid={$data['course']['academyid']} ORDER BY name;");
 
-		
+
 		break;
 
 	case 'cambio_instructor':
@@ -502,21 +525,21 @@ switch($v){
 			foreach($_REQUEST['addselect'] as $ins){
 				if(!$LMS->enrolUser($ins, $id, 4) ){
 						show_error("Error","Error al enrolar el instructor");
-					}					
-			}				
+					}
+			}
 		}
 		if($_POST['remove']){
 			foreach($_REQUEST['removeselect'] as $ins){
 				if(!$LMS->unenrolUser($ins, $id, 4) ){
 						show_error("Error","Error al enrolar el instructor");
-					}					
-			}				
+					}
+			}
 		}
 
 		$data['instructores']	= $LMS->getCourseInstructors($id);
 		$data['instructores_potenciales'] = $LMS->getAcademyInstructor($data['course']['academyid'],$data['course']['from_courseid']);
 
-		break;		
+		break;
 	case 'inscriptos-print':
 
 		$data['courseid'] = $_REQUEST['id'];
@@ -565,7 +588,7 @@ switch($v){
 		$courseid = $_REQUEST['id'];
 		if ($courseid){
 			$course	= $LMS->getCourse($courseid);
-			$course = (object) $course;			
+			$course = (object) $course;
 			require_once($HULK->libdir.'/lms_lib/setupmoodle.php');
 			require_once($HULK->lms_dirroot.'/lib/blocklib.php');
 			$CFG->defaultblocks_override = 'course_proydesa,activity_modules:attendance,news_items,calendar_upcoming,recent_activity,ciclo_lectivo';
@@ -577,7 +600,7 @@ switch($v){
 		 	ob_flush(); flush();
 		}
 		redireccionar("courses.php?v=view&id={$courseid}");
-		die();		
+		die();
 		break;
 	/***********************/
 	default:

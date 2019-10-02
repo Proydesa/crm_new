@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once '../../config.php';
 require_once '../../libraries/Input.php';
@@ -14,17 +14,24 @@ $Calendar = new Calendar();
 switch(Input::get('mode')) {
 
 	case 'save':
-		
+
 		if(!$H_USER->has_capability('calendario/edit')) die(json_encode(array('status'=>'restricted','message'=>'No tienes los permisos para hacer esta operación.')));
-		
+
 		if(Input::get('type') == 'holiday' && !$H_USER->has_capability('calendario/edit/holidays')){
 			die(json_encode(array('status'=>'restricted','message'=>'No tienes los permisos para hacer esta operación.')));
 		}
 
+		if($unavailable = $Calendar->check_attendance(Input::get('courses'))) die(json_encode(array('status'=>'unavailable','message'=>'Ya hay una clase creada para la fecha '.$unavailable->date.' para este curso','course'=>$unavailable->course)));
+
 		if(!$Calendar->save()) die(json_encode(array('status'=>'fail','message'=>'No tienes los permisos para hacer esta operación.')));
 
-		if(!$Calendar->change_attendance(Input::get('courses'),Input::get('date'),Input::get('type'))) die(json_encode(array('status'=>'fail','message'=>'Hubo un error al mover las fechas')));
-		
+		if(!$Calendar->change_attendance(
+			Input::get('courses'),
+			Input::get('date'),
+			Input::get('type'),
+			Input::get('comments')
+		)) die(json_encode(array('status'=>'fail','message'=>'Hubo un error al mover las fechas')));
+
 		echo json_encode(array('status'=>'ok'));
 		break;
 
@@ -68,7 +75,7 @@ switch(Input::get('mode')) {
 		$courses = $Calendar->get_courses_by_date(Input::get('date'));
 		echo json_encode(array('status'=>'ok','results'=>$courses,'date'=>Input::get('date')));
 		break;
-	
+
 	default:
 		echo json_encode(array('status'=>'fail','message'=>'faltan parámetros'));
 		break;

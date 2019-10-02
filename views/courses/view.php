@@ -61,7 +61,7 @@
 									<td class="ui-widget-content" align="right"><b>Forma de pago:</b></td>
 									<td class="ui-widget-content"><?= $row['forma_de_pago'];?></td>
 									<td class="ui-widget-content" colspan="2" align="center">
-									<?php if($row['lms_version']=="LMS2"): ?>								
+									<?php if($row['lms_version']=="LMS2"): ?>
 										<a class="button" href="courses.php?v=edit&id=<?= $row['id'];?>">Editar</a>
 
 										<?php if($H_USER->has_capability('course/cambio_instructor')): ?>
@@ -82,7 +82,7 @@
 		</div>
 
 		<div class="column" style="width:50%">
-			<?php if($row['lms_version']=="LMS2"): ?>								
+			<?php if($row['lms_version']=="LMS2"): ?>
 			<?php if(count($estudiantes)): ?>
 			<div class="portlet" align="center" style="padding:10px">
 				<a class="button" target="_blank" href="courses.php?v=inscriptos-print&id=<?= $row['id'];?>">Imprimir Listado</a>
@@ -126,13 +126,15 @@
 				<p>Esta comisión pertenece a una versión de <b>LMS antigua</b>. Por eso no se muestran todas las opciones para el manejo de la misma.</p>
 			</div>
 			<?php endif;?>
+
+
+			<a href="<?=$HULK->lms_wwwroot.'/blocks/ciclo_lectivo/ciclo_lectivo.php?courseid='.$row['id']?>" target="_blank">Ver Ciclo Lectivo <i class="fa fa-angle-double-right"></i></a>
 		</div>
 	</div>
 
 	<div class="clearfix"></div>
 	<hr>
 
-	<?php //if(count($estudiantes)): ?>
 	<!-- NUEVO LAYOUT -->
 	<div class="column-c">
 		<!-- ALERTAS -->
@@ -157,13 +159,13 @@
 
 				<div class="flex-item alert-container">
 					<h4>Clases Canceladas</h4>
-					<?php 
-					$tc = 0; 
-					if(!empty($asistencias_canceladas)): 
-						foreach($asistencias_canceladas as $asistencia):							
+					<?php
+					$tc = 0;
+					if(!empty($asistencias_canceladas)):
+						foreach($asistencias_canceladas as $asistencia):
 					?>
-					<div class="bg-danger alert-item">
-						<?= ConvertDays(date('D',$asistencia['sessdate'])).'. '.date('d',$asistencia['sessdate']).' '.ConvertMonth(date('M',$asistencia['sessdate'])).'. - '.$asistencia['description'] ?>
+					<div class="bg-danger alert-item" data-toggle="cancelled" data-id="<?=$asistencia['id']?>">
+						<?= '<span>'.ConvertDays(date('D',$asistencia['sessdate'])).'. '.date('d',$asistencia['sessdate']).' '.ConvertMonth(date('M',$asistencia['sessdate'])).'.</span> - <a href="" title="click para editar texto">'.(empty($asistencia['description']) ? '[sin descripción]' : $asistencia['description']).'</a>' ?>
 					</div>
 					<?php $tc++; endforeach; endif; ?>
 					<?php if(!$tc): ?>
@@ -171,16 +173,33 @@
 					<?php endif; ?>
 				</div>
 
+
+
 				<div class="flex-item alert-container">
 					<h4>Feriados</h4>
-					<?php 
-					if(!empty($asistencias_canceladas)): 
-						foreach($asistencias_canceladas as $asistencia): 
-							if(preg_match('/Feriado/',$asistencia['description'])):
+					<?php
+					if($holidays):
+						foreach($holidays as $holiday):
+							$holiday = (object) $holiday;
+							$h_date = new DateTime($holiday->date);
+							if(in_array($h_date->format('N'), $course_config)):
+
+							switch ($holiday->type) {
+								case 'holiday':
+									$type = 'Feriado Nacional';
+									$colour = 'warning';
+									break;
+								case 'tech':
+									$type = 'Feriado Técnico';
+									$colour = 'primary';
+									break;
+								default:
+									$type = 'Fuerza mayor';
+									$colour = 'danger';
+									break;
+							}
 					?>
-					<div class="bg-primary alert-item">
-						<?=ConvertDays(date('D',$asistencia['sessdate'])).'. '.date('d',$asistencia['sessdate']).' '.ConvertMonth(date('M',$asistencia['sessdate'])).'. - '.$asistencia['description']?>
-					</div>
+					<div class="bg-<?=$colour?> alert-item"><?=ConvertDays($h_date->format('D')).' '.$h_date->format('d').' '.ConvertMonth($h_date->format('M')).' - '.$type  ?></div>
 					<?php endif; endforeach; endif; ?>
 				</div>
 
@@ -221,13 +240,13 @@
 
 							<!-- Asistencia-->
 							<?php if(count($asistencias)>0): foreach($asistencias as $ka=>$asistencia): ?>
-							
+
 							<th class="textCenter sz-6">
 								(<?= $ka+1 ?>)
 								<br>
 								<?= ConvertDays(date('D',$asistencia['sessdate'])).' '.date('d',$asistencia['sessdate']); ?>
 								<br>
-								<?=	ConvertMonth(date('M',$asistencia['sessdate'])); ?>								
+								<?=	ConvertMonth(date('M',$asistencia['sessdate'])); ?>
 							</th>
 
 							<?php endforeach; else: ?>
@@ -307,7 +326,7 @@
 
 							<!-- Exámenes -->
 							<?php
-							if(count($examenes)>0):						
+							if(count($examenes)>0):
 							foreach($examenes as $ke=>$examen):
 								$notaExamn = $LMS->getStudentNotes($examen['id'],$estudiante['id']);
 								if($notaExamn>=70):
@@ -321,7 +340,7 @@
 								endif;
 							?>
 								<td class="textCenter <?= $labelnota ?>"><?= $notaExamn == 0 ? '-' : ((round($notaExamn,2))*10).'%'; ?></td>
-							<?php endforeach; 
+							<?php endforeach;
 								else:
 							?>
 								<td class="textCenter">-</td>
@@ -396,9 +415,9 @@
 										<span class="ui-icon ui-icon-newwin" style="float:left;"></span>
 									</a>
 									<?php echo $LMS->GetField("mdl_user","CONCAT(lastname,' ',firstname)",$baja['userid']);?>
-								</td>	
-								<td><?= $baja['detalle'];?></td>							
-								<td align="center"><?= show_fecha($baja['date'],"d-m-Y");?></td>							
+								</td>
+								<td><?= $baja['detalle'];?></td>
+								<td align="center"><?= show_fecha($baja['date'],"d-m-Y");?></td>
 							</tr>
 						<?php endforeach;?>
 					</tbody>
@@ -417,4 +436,25 @@
 		</div>
 	</div>
 </div>
+
+
+
+<div id="pop_cancelled" class="pop-messages">
+	<div class="content">
+		<div class="pop-header">
+			<button type="button" class="close" data-button="close"><i class="fa fa-times"></i></button>
+		</div>
+
+		<div class="pop-body"></div>
+
+	</div>
+</div>
+
+
+
+
+
+
+<script type="text/javascript" src="<?= $HULK->javascript.'/bluebird.min.js'?>"></script>
+<script type="text/javascript" src="<?= $HULK->javascript.'/functions.js'?>"></script>
 <script type="text/javascript" src="views/courses/view.js"></script>
