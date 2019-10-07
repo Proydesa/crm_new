@@ -9,7 +9,7 @@ class H_Mail {
 
 		$CFG = new stdClass();
 
-		$CFG->libdir = "../lms/lib";
+		$CFG->libdir = "../lms_new/lib";
 		$CFG->directorypermissions = 00777;
 		$CFG->dataroot  = 'D:\AppServ\moodledata';
 
@@ -21,33 +21,27 @@ class H_Mail {
 		
 		$this->mail	= new PHPMailer();
 
-		/*$this->mail->IsSMTP(); // telling the class to use SMTP
-		$this->mail->SMTPDebug  = 0;                     // enables SMTP debug information (for testing)
-                                           // 1 = errors and messages
-                                           // 2 = messages only
-		$this->mail->SMTPAuth   = true;                  // enable SMTP authentication
-		$this->mail->Host       = "localhost"; // sets the SMTP server
-		$this->mail->Port       = 25;                    // set the SMTP port for the GMAIL server
-		$this->mail->Username   = "websitelaboral@proydesa.org"; // SMTP account username
-		$this->mail->Password   = "WSLaboral123";        // SMTP account password
-
-		$this->mail->From	   = 'noreply@proydesa.org';
-		$this->mail->FromName= 'Fundaci�n Proydesa';
-		$this->mail->AddReplyTo("noreply@proydesa.org","Fundaci�n Proydesa");
-		*/
 		$this->mail->IsSMTP();
-		$this->mail->SMTPDebug  = 0;    
-		$this->mail->SMTPAuth   = true; 
-		$this->mail->SMTPSecure = false;                 // enable SMTP authentication
-		$this->mail->Host       = "smtp.correoseguro.co"; // sets the SMTP server
-		$this->mail->Port       = 25;                    // set the SMTP port for the GMAIL server
-		$this->mail->Username   = "academia@fproydesa.com.ar"; // SMTP account username
-		$this->mail->Password   = "WSProy365";        // SMTP account password
-		$this->mail->From	   = 'academia@fproydesa.com.ar';
-		$this->mail->FromName= 'Fundacion Proydesa';
+		$this->mail->SMTPAuth   = true;
+
+		$this->mail->SMTPDebug  = false;
+		$this->mail->SMTPSecure = 'tls';
+		$this->mail->Host       = "smtp.office365.com";
+		$this->mail->Port       = 587;
+		$this->mail->Username   = "academia@proydesa.org";
+		$this->mail->Password   = "Akade280";
+		$this->mail->From   		= "academia@proydesa.org";
+		$this->mail->CharSet   	= 'UTF-8';
+		$this->mail->FromName		= 'Fundación Proydesa';
+
 		//$this->mail->AddAttachment("themes/cargando.gif");      // attachment
 		$this->mail->IsHTML(true);
 
+		return true;
+	}
+
+	function AddReplyTo($address="",$name=""){
+		$this->mail->addReplyTo($address,$name);
 		return true;
 	}
 
