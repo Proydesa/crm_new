@@ -62,14 +62,14 @@
 									<td class="ui-widget-content"><?= $row['forma_de_pago'];?></td>
 									<td class="ui-widget-content" colspan="2" align="center">
 									<?php if($row['lms_version']=="LMS2"): ?>
-										<a class="button" href="courses.php?v=edit&id=<?= $row['id'];?>">Editar</a>
+										<a class="btn btn-primary btn-xs" href="courses.php?v=edit&id=<?= $row['id'];?>">Editar</a>
 
 										<?php if($H_USER->has_capability('course/cambio_instructor')): ?>
-										<a class="button" href="courses.php?v=cambio_instructor&id=<?= $row['id'];?>">Cambiar instructor</a>
+										<a class="btn btn-primary btn-xs" href="courses.php?v=cambio_instructor&id=<?= $row['id'];?>">Cambiar instructor</a>
 										<?php endif; ?>
 
 										<?php if($H_USER->has_capability('convenios/view') && !$hasblocks): ?>
-										<a class="button" href="courses.php?v=reset_course_blocks&id=<?=$row['id']?>">Generar Bloques</a>
+										<a class="btn btn-primary btn-xs" href="courses.php?v=reset_course_blocks&id=<?=$row['id']?>">Generar Bloques</a>
 										<?php endif; ?>
 
 									<?php endif; ?>
@@ -85,8 +85,8 @@
 			<?php if($row['lms_version']=="LMS2"): ?>
 			<?php if(count($estudiantes)): ?>
 			<div class="portlet" align="center" style="padding:10px">
-				<a class="button" target="_blank" href="courses.php?v=inscriptos-print&id=<?= $row['id'];?>">Imprimir Listado</a>
-				<a class="button" href="courses.php?v=asistencia-completa&id=<?= $row['id'];?>">Asistencia</a>
+				<a class="btn btn-primary btn-xs" target="_blank" href="courses.php?v=inscriptos-print&id=<?= $row['id'];?>">Imprimir Listado</a>
+				<a class="btn btn-primary btn-xs" href="courses.php?v=asistencia-completa&id=<?= $row['id'];?>">Asistencia</a>
 				<?php
 				$arrIDs = array();
 				foreach($estudiantes as $ke=>$estudiante):
@@ -94,7 +94,7 @@
 				endforeach;
 				$linkAll = "javascript:window.open('hd.php?v=lista_notification&id=".implode(',',$arrIDs)."','Notificar','width=800px,height=600px')";
 				?>
-				<a class="button" href="#" onClick="<?= $linkAll ?>">Notificar a Todo el Curso</a>
+				<a class="btn btn-primary btn-xs" href="#" onClick="<?= $linkAll ?>">Notificar a Todo el Curso</a>
 			</div>
 			<?php endif;?>
 			<div class="portlet">

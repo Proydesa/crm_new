@@ -5,3 +5,6 @@ libraries/lms_lib/setupmoodle\.php
 
 data/temp/
 /Input/
+/prepros-6.config
+/setup.php
+/config.php
