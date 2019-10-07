@@ -31,7 +31,7 @@ class H_Mail {
 		$this->mail->Username   = "academia@proydesa.org";
 		$this->mail->Password   = "Akade280";
 		$this->mail->From   		= "academia@proydesa.org";
-		$this->mail->CharSet   	= 'UTF-8';
+		//$this->mail->CharSet   	= 'UTF-8';
 		$this->mail->FromName		= 'Fundación Proydesa';
 
 		//$this->mail->AddAttachment("themes/cargando.gif");      // attachment
