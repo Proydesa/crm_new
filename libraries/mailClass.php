@@ -4,7 +4,7 @@
 class H_Mail {
 
 	public $mail;
-	
+
 	function H_Mail() {
 
 		$CFG = new stdClass();
@@ -14,11 +14,11 @@ class H_Mail {
 		$CFG->dataroot  = 'D:\AppServ\moodledata';
 
 		//require_once "{$CFG->libdir}/setuplib.php";
-		//require_once "{$CFG->libdir}/textlib.class.php";	
-		require_once "{$CFG->libdir}/phpmailer/class.phpmailer.php";	
-		require_once "{$CFG->libdir}/phpmailer/class.smtp.php";	
+		//require_once "{$CFG->libdir}/textlib.class.php";
+		require_once "{$CFG->libdir}/phpmailer/class.phpmailer.php";
+		require_once "{$CFG->libdir}/phpmailer/class.smtp.php";
 		///global $HULK;
-		
+
 		$this->mail	= new PHPMailer();
 
 		$this->mail->IsSMTP();
@@ -66,19 +66,19 @@ class H_Mail {
 		return true;
 	}
 	function Send($subject = NULL,$body = NULL,$address = NULL){
-		
+
 		if($subject) $this->mail->Subject	= $subject;
 		if($body) $this->mail->Body    		= $body;
 		if($address) $this->mail->AddAddress($address);
-	
+
 		if(!$this->mail->Send()) {
 			echo "Mailer Error: " . $this->mail->ErrorInfo;
 			return false;
 		}
 		return true;
 	}
-	
-}	
-	
+
+}
+
 
 ?>
