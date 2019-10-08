@@ -128,7 +128,7 @@
 			<?php endif;?>
 
 
-			<a href="<?=$HULK->lms_wwwroot.'/blocks/ciclo_lectivo/ciclo_lectivo.php?courseid='.$row['id']?>" target="_blank">Ver Ciclo Lectivo <i class="fa fa-angle-double-right"></i></a>
+			<a href="https://www.proydesa.org/lms_new/blocks/ciclo_lectivo/ciclo_lectivo.php?courseid=<?=$row['id']?>" target="_blank">Ver Ciclo Lectivo <i class="fa fa-angle-double-right"></i></a>
 		</div>
 	</div>
 

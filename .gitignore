@@ -8,3 +8,4 @@ data/temp/
 /prepros-6.config
 /setup.php
 /config.php
+/libraries/lms_lib/setupmoodle.php
