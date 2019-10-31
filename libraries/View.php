@@ -10,36 +10,31 @@ class H_View {
 
 		$file=$HULK->viewdir.'/'.$file.EXT;
 
-		if ( ! file_exists($file))
-		{
+		if ( ! file_exists($file)){
 			/* Hacer funcion de manejo de errores al estilo show_error y manejo de un archivo de log y mensajes de sistema para 				*	el debug.
 			*	show_error('Unable to load the requested file: '.$file);
 			*/
 			echo 'Unable to load the requested file: '.$file;
 			die;
 		}
-		if (is_array($vars))
-		{
+		if (is_array($vars)){
 			extract($vars);
 		}
-		ob_start();		
+		ob_start();
 		//		if ((bool) @ini_get('short_open_tag') === FALSE AND config_item('rewrite_short_tags') == TRUE)
-		if ((bool) @ini_get('short_open_tag') === FALSE)
-		{
+		if ((bool) @ini_get('short_open_tag') === FALSE){
 			echo eval('?>'.preg_replace("/;*\s*\?>/", "; ?>", str_replace('<?=', '<?php echo ', file_get_contents($file))));
 			//include($file);
-		}
-		else
-		{
-			include($file); // include() vs include_once() allows for multiple views with the same name
+		}else{
+			echo 'fuck';
+			include($file);
 		}
 	}
 	function js_link($file){
 		global $HULK;
 
 		$file =	"{$HULK->javascript}/{$file}";
-		if ( ! file_exists($file))
-		{
+		if ( ! file_exists($file)){
 			// TODO: Manejo de errores.
 			echo 'Unable to load the requested file: '.$file;
 			die;
@@ -47,7 +42,7 @@ class H_View {
 		echo "<script src='{$file}' type='text/javascript'></script>";
 		return true;
 	}
-	
+
 	function js($script){
 		echo '<script type="text/javascript">';
 		echo $script;
@@ -58,16 +53,16 @@ class H_View {
 
 	function jquery($script){
 
-		$script2=' 
+		$script2='
 			    $(function(){
 			    '.$script.'
 					});';
 		return $this->js($script2);
 	}
-	
+
 	function jquery_datepicker($dom="#startdate, #enddate"){
 
-		$script=' 
+		$script='
 			    $(function(){
 			    	var dates = $( "'.$dom.'" ).datepicker({
 							dateFormat: "dd-mm-yy",
@@ -91,13 +86,13 @@ class H_View {
 	function jquery_datepicker2($dom="#startdate, #enddate"){
 		global $HULK;
 
-		$script=' 
+		$script='
 			    $(function(){
 			    	var dates = $( "'.$dom.'" ).datepicker({
-							changeMonth: true,	
-							changeYear: true, 
-							defaultDate: "+0d",							
-							yearRange: "2010:2020", 
+							changeMonth: true,
+							changeYear: true,
+							defaultDate: "+0d",
+							yearRange: "2010:2020",
 							dateFormat: "dd-mm-yy",
 							monthNamesShort: ["'.implode($HULK->meses,'","').'"],
 							onSelect: function( selectedDate ) {
@@ -112,17 +107,17 @@ class H_View {
 						});
 					});';
 		return $this->js($script);
-	}	
-	
+	}
+
 	function jquery_portlet(){
-		$script=' 
+		$script='
 			    $(function(){
 						$( ".column" ).sortable({
-							connectWith: ".column", 
+							connectWith: ".column",
 							handle: "div.portlet-header",
 							cancel: ".disabled",
-							cursor: "move",  
-							forcePlaceholderSize: true,  
+							cursor: "move",
+							forcePlaceholderSize: true,
 							opacity: 0.6
 						});
 

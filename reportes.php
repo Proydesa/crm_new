@@ -337,7 +337,7 @@ function deudores(){
 					la cuota 1 del intensivo es la 3 de los normales. Si el periodo es 3 y el mes de inicio del curso es octubre o noviembre
 					lo mismo, la cuota 1 es la 3 del normal y ahi en adelante.
 					*/
-					
+
 					if ($comision['intensivo']==1){
 						if ((substr($comision['periodo'],-1)=="2") AND (date("n",$comision['startdate'])==5 OR date("n",$comision['startdate'])==6)){
 							$cuota_alum['cuota']+=2;
@@ -383,7 +383,7 @@ function deudores(){
 						show_array($cuota_alum);
 					}						}else{
 							$data['deudores'][$comision['id']][$cuota_alum['cuota']]['valor_cuota'] += $cuota_alum['valor_pagado'];
-							$data['deudores'][$comision['id']][$cuota_alum['cuota']]['valor_pagado']+= $cuota_alum['valor_pagado'];							
+							$data['deudores'][$comision['id']][$cuota_alum['cuota']]['valor_pagado']+= $cuota_alum['valor_pagado'];
 						}
 					}else{
 							$data['deudores'][$comision['id']][$cuota_alum['cuota']]['valor_cuota'] += $cuota_alum['valor_cuota'];
@@ -397,10 +397,10 @@ function deudores(){
 			}
 		}
 	}
-	
+
 	//show_array($data['deudores']);
-	
-	
+
+
 	$view->Load('header');
 	if(empty($print)) $view->Load('menu',$data);
 	if(empty($print)) $view->Load('menuroot',$menuroot);
@@ -486,8 +486,8 @@ function d_cuota(){
 																				AND courseid={$enrolado['modelid']}
 																				AND periodo={$enrolado['periodo']}
 																				AND cancel=0);");
-																				
-		
+
+
 			if($cuota_alum){
 
 				if($cuota_alum['cuota'] > 0){
@@ -681,17 +681,17 @@ function inscriptos(){
 				$WHERE2 = "";
 			}
 
-			$row['alumnos'] = $LMS->GetAll("SELECT 
+			$row['alumnos'] = $LMS->GetAll("SELECT
 												u.id AS uid, CONCAT(u.lastname, ', ', u.firstname) AS alumno,
-												u.username, u.email, u.acid, u.phone1, u.phone2, 
-													(	select distinct co.detalle 
-														from {$HULK->dbname}.h_comprobantes co 
-															INNER JOIN {$HULK->dbname}.h_comprobantes_cuotas cc ON co.id = cc.comprobanteid 
+												u.username, u.email, u.acid, u.phone1, u.phone2,
+													(	select distinct co.detalle
+														from {$HULK->dbname}.h_comprobantes co
+															INNER JOIN {$HULK->dbname}.h_comprobantes_cuotas cc ON co.id = cc.comprobanteid
 															INNER JOIN {$HULK->dbname}.h_cuotas cu ON cc.cuotaid = cu.id
 														where
-															cu.courseid={$row['from_courseid']} and 
-															co.detalle like '%Promo%' and 
-															cu.cuota=1 and 
+															cu.courseid={$row['from_courseid']} and
+															co.detalle like '%Promo%' and
+															cu.cuota=1 and
 															co.concepto=3 and
 															cu.userid=u.id) detalle, timestart
 											FROM {$HULK->dbname}.vw_enrolados enr
@@ -700,7 +700,7 @@ function inscriptos(){
 												AND enr.roleid = 5
 												{$WHERE2}
 											ORDER BY u.lastname, u.firstname;");
-	
+
 			$row['capacidad'] = $H_DB->GetOne("SELECT aa.capacity
 																				 FROM h_academy_aulas aa INNER JOIN h_course_config cc ON aa.id = cc.aulaid
 																				 WHERE cc.courseid={$row['id']};");
@@ -856,7 +856,7 @@ function ekit_edit(){
 				$gg['submission'] = $LMS->GetOne("SELECT sub.id FROM mdl_assign_submission sub WHERE sub.assignment ={$gg['assignment']} AND sub.userid={$gg['userid']}	LIMIT 0,1;");
 				if (!$gg['submission']>0){
 					$gg['submission'] = $LMS->insert('mdl_assign_submission',array("assignment"=>$gg['assignment'],"userid"=>$gg['userid'],"timecreated"=>time(),"timemodified"=>time(),"status"=>"submitted","latest"=>1));
-				}	
+				}
 				//if($gg['onlinetext']!=""){
 					$gg['onlinetext']= str_replace('\"','"',$gg['onlinetext']);
 					$gg['onlinetext']= utf8_decode($gg['onlinetext']);
@@ -867,7 +867,7 @@ function ekit_edit(){
 						$LMS->insert('mdl_assignsubmission_onlinetext',$gg);
 						}
 					}
-					$LMS->update('mdl_assign_submission',array("status" => "submitted"),"id = {$gg['submission']}");					
+					$LMS->update('mdl_assign_submission',array("status" => "submitted"),"id = {$gg['submission']}");
 				//}
 			}
 		}
@@ -1407,20 +1407,20 @@ function inscriptos_dia(){
 		//die();
 		$comparativa=$LMS->GetAll($sql);
 
-		$sqlcambiocomision="SELECT 
-								periodo, 
+		$sqlcambiocomision="SELECT
+								periodo,
 								DAY(FROM_UNIXTIME(date)) as dia,
-								MONTHNAME(FROM_UNIXTIME(date)) as mes, 
+								MONTHNAME(FROM_UNIXTIME(date)) as mes,
 								YEAR(FROM_UNIXTIME(date)) as ano,
 								COUNT(*) as cant,
 								GROUP_CONCAT(DISTINCT userid SEPARATOR ',') as usuarios
-							FROM crm.h_bajas h 
-							WHERE 
-								YEAR(FROM_UNIXTIME(date)) IN ({$data['ano']}) AND 
-								MONTH(FROM_UNIXTIME(date)) IN ({$data['mes']}) AND 
-								cancel=0 AND 
-								periodo IN (192)  AND 
-								detalle LIKE '%tica por cambio de comisi%' 
+							FROM crm.h_bajas h
+							WHERE
+								YEAR(FROM_UNIXTIME(date)) IN ({$data['ano']}) AND
+								MONTH(FROM_UNIXTIME(date)) IN ({$data['mes']}) AND
+								cancel=0 AND
+								periodo IN (192)  AND
+								detalle LIKE '%tica por cambio de comisi%'
 							GROUP BY periodo, DAY(FROM_UNIXTIME(date));";
 		$data['cambios'] = $LMS->GetAll($sqlcambiocomision);
 		//show_array($cambiocomision);
@@ -1577,7 +1577,7 @@ function inscriptos_periodo(){
 
 	$bajas_anterior=$H_DB->GetAll("SELECT COUNT(*) as cant, periodo, courseid FROM h_bajas h WHERE `date`<='{$data['hoy_anterior']}' AND cancel=0 AND periodo IN ({$periodo_anterior}) AND detalle NOT LIKE '%tica por cambio de comisi%' GROUP BY courseid;");
 	$cambios_anterior=$H_DB->GetAll("SELECT COUNT(*) as cant, periodo, courseid FROM h_bajas h WHERE `date`<='{$data['hoy_anterior']}' AND cancel=0 AND periodo IN ({$periodo_anterior}) AND detalle LIKE '%tica por cambio de comisi%' GROUP BY courseid;");
-	
+
 	foreach($bajas_actual as $compa){
 		if($data['comparativa'][$LMS->GetField("mdl_course","shortname",$compa['courseid'])][$compa['periodo']]['insc']!=0){
 			$data['comparativa'][$LMS->GetField("mdl_course","shortname",$compa['courseid'])][$compa['periodo']]['bajas'] = $compa['cant'];
@@ -1598,8 +1598,8 @@ function inscriptos_periodo(){
 			$data['comparativa'][$LMS->GetField("mdl_course","shortname",$compa['courseid'])][$compa['periodo']]['cambios'] = $compa['cant'];
 		}
 	}
-//	show_array($data);
-//	die();
+	//	show_array($data);
+	//	die();
 	$view->Load('header');
 	if(empty($print)) $view->Load('menu',$data);
 	if(empty($print)) $view->Load('menuroot',$menuroot);
@@ -1758,9 +1758,9 @@ function inscriptos_mensual(){
 		$data['carreras']=$carreras;
 		$data['cantidad']=$cantidad;
 	}
-	
-//	show_array($data);
-	
+
+	//	show_array($data);
+
 	$view->Load('header');
 	if(empty($print)) $view->Load('menu',$data);
 	if(empty($print)) $view->Load('menuroot',$menuroot);
@@ -1796,7 +1796,7 @@ function empresas(){
 			$data['cursos_sel'] = array(0);
 		}
 
-/*		$data['sql'] = "SELECT g.id, g.name as empresa,
+	/*		$data['sql'] = "SELECT g.id, g.name as empresa,
 						g.address as direccion,
 						g.city as ciudad,
 						g.phone as telefono,

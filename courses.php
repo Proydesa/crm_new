@@ -472,6 +472,10 @@ switch($v){
 
 			date_default_timezone_set('America/Argentina/Buenos_Aires');
 
+			$arr_update = array(
+				'visible'=>($_POST['visible'] == 'on' ? 1 : 0)
+			);
+
 			if(!empty($_POST['newdate']) && !empty($_POST['day'])){
 				$dateid = $_POST['day'];
 				$newdate = explode('/',$_POST['newdate']);
@@ -490,15 +494,22 @@ switch($v){
 					'sessdate'=>$newdate,
 					'descriptionformat'=>1
 				));
+
 				$firstday = $data['asistencias'][0]['id'];
 				$lastday = $data['asistencias'][count($data['asistencias'])-1]['id'];
+
 				if($dateid==$firstday){
-					$LMS->update('mdl_course',array('startdate'=>$newdate),"id={$id}");
+					//$LMS->update('mdl_course',array('startdate'=>$newdate),"id={$id}");
+					$arr_update['startdate'] = $newdate;
 				}
 				if($dateid==$lastday){
-					$LMS->update('mdl_course',array('enddate'=>$newdate),"id={$id}");
+					$arr_update['enddate'] = $newdate;
+					//$LMS->update('mdl_course',array('enddate'=>$newdate),"id={$id}");
 				}
+
 			}
+
+			$LMS->update('mdl_course',$arr_update,"id={$id}");
 		}
 		////////////
 

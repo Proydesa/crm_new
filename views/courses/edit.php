@@ -2,8 +2,8 @@
 <div class="ui-widget">
 	<div class="column-c" align="center" style="width:70%">
 		<div class="portlet">
-			<div class="portlet-header">Editar <?= $course['shortname'];?></div>
-			
+			<div class="portlet-header"><h2>Editar <?= $course['shortname'];?></h2></div>
+
 			<div class="portlet-content">
 
 				<?php if(empty($_POST)): ?>
@@ -22,8 +22,8 @@
 						</div>
 					</div>
 
-					
-					<div class="form-wrapper">						
+
+					<div class="form-wrapper">
 						<div class="input-label"><span>Cambiar día de cursada</span></div>
 						<div class="input">
 							<select name="day" >
@@ -32,18 +32,25 @@
 									<option value="<?= $asistencia['id'] ?>"><?= $_daynames[date('w',$asistencia['sessdate'])-1].' '.date('d',$asistencia['sessdate']).' de '.$_monthnames[date('n',$asistencia['sessdate'])-1].' de '.date('Y').($asistencia['cancelled'] ? ' (cancelada)' : '') ?></option>
 								<?php endif; endforeach; endif; ?>
 							</select>
-						</div>						
+						</div>
 					</div>
 					<div class="form-wrapper">
 						<div class="input-label"><span>Nuevo Día</span></div>
 						<div class="input">
 							<input id="new_date" name="newdate" type="text">
-						</div> 
+						</div>
 					</div>
 					<div class="form-wrapper">
 						<div class="input-label"><span>Motivo</span></div>
 						<div class="input">
 							<textarea name="description" rows="6" ></textarea>
+						</div>
+					</div>
+
+					<div class="form-wrapper">
+						<div class="input-label"><span>Visible</span></div>
+						<div class="input">
+							<input name="visible" type="checkbox" <?= $course['visible'] ? 'checked' : '' ?> >
 						</div>
 					</div>
 

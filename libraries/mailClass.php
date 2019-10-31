@@ -28,9 +28,9 @@ class H_Mail {
 		$this->mail->SMTPSecure = 'tls';
 		$this->mail->Host       = "smtp.office365.com";
 		$this->mail->Port       = 587;
-		$this->mail->Username   = "academia@proydesa.org";
-		$this->mail->Password   = "Akade280";
-		$this->mail->From   		= "academia@proydesa.org";
+		$this->mail->Username   = "noreply@proydesa.org";
+		$this->mail->Password   = "Sod91380";
+		$this->mail->From   		= "noreply@proydesa.org";
 		//$this->mail->CharSet   	= 'UTF-8';
 		$this->mail->FromName		= 'Fundación Proydesa';
 

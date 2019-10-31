@@ -1,9 +1,9 @@
 <script>
-	function Print(){	
+	function Print(){
 		$(".rendicion").width("100%");
 		document.body.offsetHeight;
 		window.print();
-		$(".rendicion").width("80%");		
+		$(".rendicion").width("80%");
 	}
 </script>
 
@@ -60,7 +60,7 @@
 								}
 							?>
 							<tr style="height: 20px;" class="<?= $especial; ?>">
-								<td class="ui-widget-content"><?=  date('h:i',$comprobante['fecha']); ?>hs</td>							
+								<td class="ui-widget-content"><?=  date('h:i',$comprobante['fecha']); ?>hs</td>
 								<td class="ui-widget-content" nowrap id="nrocomprobante-<?=$comprobante['id']?>">
 									<?php if ($comprobante['numero']>0):?>
 										&nbsp;<?= $comprobante['puntodeventa']; ?>-<?= sprintf("%08d",$comprobante['numero']);?>
@@ -100,7 +100,7 @@
 							<td align="right"><b>$<?= number_format($total,2, ',','.');?></b></td>
 						</tr>
 						<tr>
-							<td colspan="8" align="center">
+							<td colspan="9" align="center" style="padding:1rem">
 								<?php foreach($HULK->conceptos as $con=>$cepto):?>
 								Total <?=$cepto;?>: $ <?= number_format($totales[$con],2, ',','.');?> &nbsp; &nbsp; &nbsp;<br/>
 								<?php endforeach;?>
@@ -123,6 +123,67 @@
 						<input type="submit" class="button-add" name="rendir" value="rendir" />
 					<?php endif;?>
 				</div>
+
+				<p>Ir al procedimiento de caja</p>
+
+
+				<?php if($H_USER->has_capability('reportes/comp_pend')): ?>
+
+				<hr>
+				<div class="portlet-header">Comprobantes Pendientes de cobro</div>
+
+				<?php if($pendientes): ?>
+
+				<table class="ui-widget" id="comp_pendientes-export" align="center" style="width:100%;">
+					<thead class="ui-widget-header">
+						<th>Número</th>
+						<th>Tipo</th>
+						<th>Concepto</th>
+						<th>Fecha</th>
+						<th>Importe</th>
+						<th>Detalle</th>
+						<th>Contacto / Empresa</th>
+						<th>Usuario</th>
+					</thead>
+					<tbody>
+						<?php foreach($pendientes as $row): ?>
+							<tr class="ui-widget-content" style="height: 20px;">
+								<td class="ui-widget-content" align="center" nowrap><?= $row['puntodeventa'].'-'.sprintf("%08d",$row['numero']); ?></td>
+								<td class="ui-widget-content"><?= $HULK->tipos[$row['tipo']]; ?></td>
+								<td class="ui-widget-content"><?= $HULK->conceptos[$row['concepto']]; ?></td>
+								<td class="ui-widget-content" align="center" nowrap><?= date("Y-m-d", $row['date']); ?></td>
+								<td class="ui-widget-content" align="right" nowrap>$ <?= number_format($row['importe'],2,",","."); ?></td>
+								<td class="ui-widget-content"><?= $row['detalle']; ?></td>
+								<?php if($row['grupoid'] > 0) : ?>
+									<td class="ui-widget-content" ondblclick="window.location.href='grupos.php?v=view&id=<?= $row['grupoid'];?>';">
+										<a href="grupos.php?v=view&id=<?= $row['grupoid'];?>" target="_blank">
+										<span class="ui-icon ui-icon-newwin" style="float:left;"></span></a>
+										<b><?= $H_DB->GetField("h_grupos", "name", $row['grupoid']); ?></b>
+									</td>
+								<?php else: ?>
+									<td class="ui-widget-content" ondblclick="window.location.href='contactos.php?v=view&id=<?= $row['userid'];?>';">
+										<a href="contactos.php?v=view&id=<?= $row['userid'];?>" target="_blank">
+										<span class="ui-icon ui-icon-newwin" style="float:left;"></span></a>
+										<b><?= $LMS->GetField("mdl_user", "CONCAT(lastname, ', ', firstname, ' - DNI: ', username)", $row['userid']); ?></b>
+									</td>
+								<?php endif; ?>
+								<td class="ui-widget-content" ondblclick="window.location.href='contactos.php?v=view&id=<?= $row['takenby'];?>';">
+									<a href="contactos.php?v=view&id=<?= $row['takenby'];?>" target="_blank">
+									<span class="ui-icon ui-icon-newwin" style="float:left;"></span></a>
+									<b><?= $LMS->GetField("mdl_user", "CONCAT(lastname, ', ', firstname)", $row['takenby']); ?></b>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+					<tfoot>
+					</tfoot>
+				</table>
+				<?php else: ?>
+				<p>No se encontraron comprobantes pendientes de cobro</p>
+				<?php endif; ?>
+
+				<?php endif; ?>
+
 				</form>
 			</div>
 		</div>

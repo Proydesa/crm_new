@@ -8,7 +8,7 @@ $H_USER->require_login();
 $data['v'] = $v = $_REQUEST['v'];
 
 switch($v){
-/***********************/
+	/***********************/
 	case 'nuevo_usuario':
 
 			if ($_POST){
@@ -174,7 +174,7 @@ switch($v){
 
 					if(!$_POST['banco']){$banco = 0;}else{$banco = $_POST['banco'];}
 					if(!$_POST['tarjeta']){$tarjeta = 0;}else{$tarjeta = $_POST['tarjeta'];}
-					
+
 					$comprobante->numero = 0;
 					$cuotas_default = $H_DB->getCuotasDefault($comision);
 					$p_especial = $H_DB->compararCuotas($cuotas,$cuotas_default);
@@ -208,15 +208,15 @@ switch($v){
 						$comprobante->date		= time();
 						$comprobante->importe	= $importe;
 						$comprobante->concepto	= $concepto;
-						$comprobante->tipo		= $tipo;			
+						$comprobante->tipo		= $tipo;
 						$comprobante->detalle	= $_POST['detalle'];
 						$comprobante->takenby 	= $H_USER->get_property('id');
 						$comprobante->nrocheque = $nrocheque;
 						$comprobante->pendiente = $pendiente;
 						$comprobante->bancoid 	= $banco;
 						$comprobante->tarjetaid = $tarjeta;
-						
-						if ($tipo==1){ $comprobante->puntodeventa="0001";}	
+
+						if ($tipo==1){ $comprobante->puntodeventa="0001";}
 
 						if(!$comprobante->id = $H_DB->insert("h_comprobantes",$comprobante)){
 							show_error("Pagos","Error al insertar en la base de datos");
@@ -247,7 +247,7 @@ switch($v){
 						$comprobante->takenby 	= $H_USER->get_property('id');
 						$comprobante->nrocheque = $nrocheque;
 						$comprobante->pendiente = $pendiente;
-						if ($tipo==1){ $comprobante->puntodeventa="0001";}	
+						if ($tipo==1){ $comprobante->puntodeventa="0001";}
 
 						if(!$comprobante->id = $H_DB->insert("h_comprobantes",$comprobante)){
 							show_error("Pagos","Error al insertar en la base de datos");
@@ -518,7 +518,7 @@ switch($v){
 					$data['cuotas'][$courseid.$periodo]['cuota'.$cuota['cuota']] = $cuota['valor_cuota']-$cuota['valor_pagado'];
 					$data['cuotas'][$courseid.$periodo]['periodo'] = $periodo;
 
-//					if ($courseid == $data['from_course'] && $periodo == $HULK->periodo_insc){
+		//					if ($courseid == $data['from_course'] && $periodo == $HULK->periodo_insc){
 					if ($courseid == $data['from_course'] && $periodo == $HULK->periodo){
 						$data['cuotas_actual']['id'] = $cuota['courseid'];
 						$data['cuotas_actual']['cuota'.$cuota['cuota']] = $cuota['valor_cuota'];
@@ -758,7 +758,7 @@ switch($v){
 		}
 
 		break;
-/********************/
+	/********************/
 	case 'view':
 
 		if ($_REQUEST['id']){
@@ -769,17 +769,17 @@ switch($v){
 		}
 
 		$data['row'] = $LMS->getUser($id);
-		
+
 		$menuroot['ruta'] = array("Contactos"=>"contactos.php?v=list","{$data['row']['firstname']} {$data['row']['lastname']}"=>"contactos.php?v=view&id={$data['row']['id']}");
 
 		// 29/08/2018 creacion de variable con url definida para los diferentes ambientes
-		
+
 		$urlLMS = '/lms_new/user/profile.php?id='.$id;
-		
+
 		if (AMBIENTE =='DESARROLLO'){
 			$urlLMS = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].$urlLMS;
 		}elseif (AMBIENTE =='PRODUCCION'){
-				$urlLMS = $_SERVER['REQUEST_SCHEME'].'://www.proydesa.org'.$urlLMS;	
+				$urlLMS = $_SERVER['REQUEST_SCHEME'].'://www.proydesa.org'.$urlLMS;
 		}
 		$data['urlLMS']=$urlLMS;
 		// show_array($data['row']);
@@ -949,7 +949,7 @@ switch($v){
 															FROM ((mdl_certificates cert INNER JOIN mdl_course c ON cert.courseid = c.id) INNER JOIN mdl_user u ON cert.userid = u.id) INNER JOIN mdl_user AS mdl_user_1 ON cert.createby = mdl_user_1.id
 															WHERE (cert.courseid = {$row['id']}) AND cert.userid={$id}
 															ORDER BY cert.timecreate DESC;");
-*/
+					*/
 					if($row['insc_id'] > 0){
 						// Verifico si está dado de baja
 						$data['cursos'][$indice]['baja'] = $H_DB->GetRow("SELECT id,detalle,`date`,user FROM h_bajas
@@ -996,7 +996,7 @@ switch($v){
 		if (isset($certificados)){	$data['certificados']	=	$certificados;}
 		break;
 
-/************************/
+	/************************/
 	case 'list':
 		$data['q'] = $q = utf8_decode($_REQUEST['q']);
 		$H_USER->require_capability('contact/view');
@@ -1074,7 +1074,7 @@ switch($v){
 
 		break;
 
-/*****************/
+	/*****************/
 	case 'pagos':
 
 		$H_USER->require_capability('contact/paid/register');
@@ -1099,12 +1099,12 @@ switch($v){
 
 			//TODO: Creo recibo de pago
 			$comprobante = $_POST;
-			
+
 			if($comprobante['importe']>0){
 				$comprobante['userid']		= $id;
 				$comprobante['date']			= time();
 				$comprobante['takenby']		= $H_USER->get_property('id');
-				if ($comprobante['tipo']==1){$comprobante['puntodeventa']="0001";}				
+				if ($comprobante['tipo']==1){$comprobante['puntodeventa']="0001";}
 				if(!$comprobante['pendiente']) $comprobante['pendiente'] = 0;
 				if(!$comprobante['id'] = $H_DB->insert("h_comprobantes",$comprobante)){
 					show_error("Pagos","Error al insertar en la base de datos");
@@ -1269,10 +1269,10 @@ switch($v){
 												WHERE h.userid={$id} ORDER BY h.date DESC,h.numero DESC;");
 
 		$data['tarjetas'] = $H_DB->GetAll("SELECT * FROM h_tarjetas WHERE cod_estado='A';");
-		
+
 		$data['bancos'] = $H_DB->GetAll("SELECT * FROM h_bancos WHERE cod_estado='A' ORDER BY name;");
-		
-		
+
+
 		break;
 
 	case 'pagos-print':
@@ -1307,9 +1307,9 @@ switch($v){
 			$data['comprobante']['iva4']="X";
 
 		if($data['comprobante']['tipo']!=3){
-			$data['cuotas'] = $H_DB->GetAll("SELECT c.*,cc.*,i.comisionid FROM h_comprobantes_cuotas cc	 
+			$data['cuotas'] = $H_DB->GetAll("SELECT c.*,cc.*,i.comisionid FROM h_comprobantes_cuotas cc
 											INNER JOIN h_cuotas c ON cc.cuotaid=c.id
-											INNER JOIN h_inscripcion i ON i.id=c.insc_id											
+											INNER JOIN h_inscripcion i ON i.id=c.insc_id
 											WHERE cc.comprobanteid={$id};");
 			if($data['cuotas']){
 				$t=1;
@@ -1345,7 +1345,7 @@ switch($v){
 			}
 		}
 		//alan
-		
+
 		if(!$data['cobro'])	{
 			if($data['comprobante']['tipo']==1){
 				$view->Load('print/recibo',$data);
@@ -1356,7 +1356,7 @@ switch($v){
 			}
 			die();
 		}
-		
+
 		if($data['cobro']){
 			if($data['comprobante']['tipo']==1){
 				$view->Load('print/recibocobro',$data);
@@ -1431,11 +1431,11 @@ switch($v){
 		}
 
 		include("{$HULK->libdir}/pdfClass/class.ezpdf.php");
-	//	include("{$HULK->libdir}/pdfClass/class.backgroundpdf.php");
-	//	require_once("{$HULK->libdir}/dompdf/dompdf_config.inc.php");
+		//	include("{$HULK->libdir}/pdfClass/class.backgroundpdf.php");
+		//	require_once("{$HULK->libdir}/dompdf/dompdf_config.inc.php");
 
-		$pdf = new Cezpdf('A4');
-	//	$pdf->selectFont('libraries/pdfClass/fonts/Helvetica.afm');
+			$pdf = new Cezpdf('A4');
+		//	$pdf->selectFont('libraries/pdfClass/fonts/Helvetica.afm');
 
 		$pdf->addText(400,717,12,'Hola mundo');
 		/*if($data['comprobante']['tipo']==1){
@@ -1593,7 +1593,7 @@ switch($v){
 
 		break;
 
-/*****************/
+	/*****************/
 	case 'roles':
 
 		$data['id']       = $id = $_REQUEST['id'];
@@ -1644,14 +1644,14 @@ switch($v){
 						$LMS->enrolUser($id, 100001, 5);
 					}elseif($roleid==9 || $roleid==10){
 						$LMS->enrolUser($id, 100000, 5);
-					}			
+					}
 				}else{
 					$rolesnoborrar=0;
 					if($roleid==2){
 						$LMS->unenrolUser($id, 100001, 5);
 					}elseif($roleid==9 || $roleid==10){
 						$LMS->unenrolUser($id, 100000, 5);
-					}			
+					}
 				}
 				$LMS->delete("mdl_role_assignments","contextid NOT IN ({$rolesnoborrar}) AND userid={$id} AND roleid = {$roleid}");
 			}
@@ -1673,7 +1673,7 @@ switch($v){
 				show_error("Error","Seleccione un usuario.");
 		}
 	break;
-/*****************/
+	/*****************/
 	case 'capacidades':
 
 		$data['id']       = $id = $_REQUEST['id'];
@@ -1806,7 +1806,7 @@ switch($v){
 
 		break;
 
-/*cuota edit, debajo de lo anterior*/
+	/*cuota edit, debajo de lo anterior*/
 	case 'cuota_edit':
 		if(!$H_USER->has_capability('cuota/editar')):
 			show_error("Error","No tiene permisos para editar cuotas");
@@ -1950,7 +1950,7 @@ switch($v){
 			}
 		break;
 
-/*****************/
+	/*****************/
 	case 'ver_administrativos':
 
 		$data['q'] = $q = $_REQUEST['q'];
