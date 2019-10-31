@@ -756,7 +756,7 @@ class H_LMS extends H_LMS_CONN {
 		$result	=	$this->GetAll("SELECT sess.id, sess.sessdate, sess.description
 									FROM mdl_attendance_sessions_cancelled sess
 									INNER JOIN mdl_attendance a ON sess.attendanceid=a.id
-									WHERE a.course={$id}
+									WHERE a.course={$id} AND sess.deleted=0
 									ORDER BY sess.sessdate;");
 
 		return $result;

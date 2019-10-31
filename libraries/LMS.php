@@ -106,7 +106,7 @@ static private $instance = NULL;
 		}
 		catch ( exception $e )
 		{
-			if (constant( 'DEBUG' ) === true)
+			if (defined('DEBUG') && constant( 'DEBUG' ) === true)
 			{
 				print_r($e);
 			}

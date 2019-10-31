@@ -157,10 +157,21 @@ $(function(){
 		var post = get_form(this);
 		post.mode = 'change_cancelled_description';
 		ajax('views/courses/ajaxCourses',post)
-		.then(function(data){
-			window.location.reload();
-		})
-	})
+			.then(function(data){
+				window.location.reload();
+			});
+	});
+	$('#pop_cancelled').on('click','.delete',function(){
+		var check = confirm('Seguro deseas borrar esta clase cancelada?');
+		if(check){
+			var post = get_form('#pop_cancelled form');
+			post.mode = 'delete_cancelled_class';
+			ajax('views/courses/ajaxCourses',post)
+				.then(function(data){
+					window.location.reload();
+				});
+		}
+	});
 
 	BuildHeader();
 	NotifyAttendance();

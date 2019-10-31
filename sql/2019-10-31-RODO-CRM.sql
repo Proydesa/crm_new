@@ -1,0 +1,1 @@
+ALTER TABLE `mdl_attendance_sessions_cancelled` ADD `deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `description`;

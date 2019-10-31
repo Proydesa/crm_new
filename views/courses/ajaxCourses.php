@@ -23,6 +23,11 @@ switch(Input::get('mode')):
 
 		break;
 
+	case 'delete_cancelled_class':
+		$Courses->delete_cancelled_class(Input::get('id'));
+		echo Responses::response('ok');
+		break;
+
 	default:
 		echo Responses::response('fail');
 		break;

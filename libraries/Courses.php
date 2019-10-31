@@ -15,7 +15,11 @@ class Courses {
 
 
 	public function update_cancelled_class_description($id=0,$description=''){
-		return $this->_lms->update("mdl_attendance_sessions_cancelled",array('description'=>$description),"id={$id}");
+		return $this->_lms->update("mdl_attendance_sessions_cancelled",array('description'=>utf8_decode($description)),"id={$id}");
+	}
+
+	public function delete_cancelled_class($id){
+		return $this->_lms->update('mdl_attendance_sessions_cancelled',array('deleted'=>1),"id={$id}");
 	}
 
 

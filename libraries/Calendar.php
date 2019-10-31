@@ -235,6 +235,7 @@ class Calendar {
 				$sessdate = strtotime($arr_date[2].'-'.$arr_date[1].'-'.$arr_date[0].' '.date('H',$course['olddate']).':'.date('i',$course['olddate']).':00');
 				//$sessdate = $timestamp+(abs($timestamp-$course['olddate']));
 
+				$asistencias = $this->_lms->getCourseAttendance($course['courseid']);
 
 				$this->_lms->insert('mdl_attendance_sessions_cancelled',array(
 					'attendanceid'=>$course['attendanceid'],
@@ -250,6 +251,23 @@ class Calendar {
 					'duration'=>$course['duration'],
 					'descriptionformat'=>1
 				));
+
+				if($asistencias){
+					$arr_update = array();
+					$firstday = $asistencias[0]['id'];
+					$lastday = $asistencias[count($asistencias)-1]['id'];
+
+					if($course['sessid']==$firstday){
+						$arr_update['startdate'] = $sessdate;
+					}
+					if($course['sessid']==$lastday){
+						$arr_update['enddate'] = $sessdate;
+					}
+					if(!empty($arr_update)){
+						$this->_lms->update('mdl_course',$arr_update,"id=".$course['courseid']);						
+					}
+				}
+
 
 			}
 

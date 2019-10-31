@@ -7,16 +7,18 @@ class H_Mail {
 
 	function H_Mail() {
 
+		global $HULK;
+
 		$CFG = new stdClass();
 
-		$CFG->libdir = "../lms_new/lib";
+		$CFG->libdir = "../lms/lib";
 		$CFG->directorypermissions = 00777;
 		$CFG->dataroot  = 'D:\AppServ\moodledata';
 
 		//require_once "{$CFG->libdir}/setuplib.php";
 		//require_once "{$CFG->libdir}/textlib.class.php";
-		require_once "{$CFG->libdir}/phpmailer/class.phpmailer.php";
-		require_once "{$CFG->libdir}/phpmailer/class.smtp.php";
+		require_once "{$HULK->lms_dirroot}/lib/phpmailer/class.phpmailer.php";
+		require_once "{$HULK->lms_dirroot}/lib/phpmailer/class.smtp.php";
 		///global $HULK;
 
 		$this->mail	= new PHPMailer();
@@ -29,7 +31,7 @@ class H_Mail {
 		$this->mail->Host       = "smtp.office365.com";
 		$this->mail->Port       = 587;
 		$this->mail->Username   = "noreply@proydesa.org";
-		$this->mail->Password   = "Sod91380";
+		$this->mail->Password   = "Nry5160!";
 		$this->mail->From   		= "noreply@proydesa.org";
 		//$this->mail->CharSet   	= 'UTF-8';
 		$this->mail->FromName		= 'Fundación Proydesa';
