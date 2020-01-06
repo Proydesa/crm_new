@@ -193,7 +193,7 @@ switch($v){
 											AND itemname != 'Asistencia' AND itemname NOT LIKE '%e-Kit%' AND itemname NOT LIKE '%Graduacion%'
 											ORDER BY sortorder;");
 		}
-		$data['cuotas'] = $H_DB->GetAll("SELECT DISTINCT(c.cuota) FROM h_cuotas c inner JOIN h_inscripcion h ON c.insc_id = h.id and h.comisionid={$id} and c.courseid={$data['row']['from_courseid']} ORDER BY c.cuota");
+		$data['cuotas'] = $H_DB->GetAll("SELECT DISTINCT(c.cuota) FROM h_cuotas c inner JOIN h_inscripcion h ON c.insc_id = h.id WHERE h.comisionid={$id} ORDER BY c.cuota");
 
 		/*$data['cuotas'] = $H_DB->GetAll("SELECT DISTINCT(c.cuota) FROM h_cuotas c LEFT JOIN h_inscripcion h ON h.courseid=c.courseid WHERE h.comisionid={$id} ORDER BY c.cuota");*/
 

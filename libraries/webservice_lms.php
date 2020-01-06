@@ -470,7 +470,7 @@ class H_LMS extends H_LMS_CONN {
 	}
 	function getConvenioCourse($convenio){
 
-		$result		= $this->GetAll("SELECT c.id, c.fullname, c.shortname
+		$result		= $this->GetAll("SELECT c.id, c.fullname, c.shortname, c.intensivo
 									FROM mdl_course c
 									INNER JOIN mdl_proy_convenios co ON co.categoryid = c.category
 					 				WHERE co.id IN ({$convenio})
@@ -480,7 +480,7 @@ class H_LMS extends H_LMS_CONN {
 	// Devuelve los cursos en los cuales la academia tienen generadas comisiones para ese periodo en ese convenio
 	function getConvenioCourseActivos($convenio,$periodo,$academy){
 
-		$result		= $this->GetAll("SELECT DISTINCT c.id, c.fullname, c.shortname
+		$result		= $this->GetAll("SELECT DISTINCT c.id, c.fullname, c.shortname, c.intensivo
 									FROM mdl_course c
 									INNER JOIN mdl_proy_convenios co ON co.categoryid = c.category
 									INNER JOIN mdl_course comi ON comi.from_courseid = c.id
@@ -490,7 +490,7 @@ class H_LMS extends H_LMS_CONN {
 	}
 	// Devuelve los cursos en los cuales la academia tienen generadas comisiones para ese periodo
 	function getModelCourseActivos($periodo,$academy){
-		$result		= $this->GetAll("SELECT DISTINCT c.id, c.fullname, c.shortname
+		$result		= $this->GetAll("SELECT DISTINCT c.id, c.fullname, c.shortname, c.intensivo
 									FROM mdl_course c
 									INNER JOIN mdl_course comi ON comi.from_courseid = c.id
 					 				WHERE comi.periodo={$periodo} AND comi.academyid={$academy}
@@ -782,7 +782,17 @@ class H_LMS extends H_LMS_CONN {
 	function getValorCuota($courseid,$studentid,$cuota){
 		//$result = $H_DB->GetOne("SELECT (valor_pagado-valor_cuota) as diferencia FROM h_cuotas WHERE courseid={$courseid} AND userid={$studentid} AND cuota={$cuota}");
 		global $H_DB,$HULK;
-		$result = $H_DB->GetOne("SELECT (c.valor_pagado-(c.valor_cuota-(c.valor_cuota*(i.becado/100)))) as diferencia FROM h_cuotas as c LEFT JOIN h_inscripcion as i ON i.id=c.insc_id LEFT JOIN {$HULK->lms_dbname}.mdl_course as mc ON mc.id=i.comisionid WHERE i.comisionid={$courseid} AND i.userid={$studentid} AND c.cuota={$cuota} AND UNIX_TIMESTAMP()-(UNIX_TIMESTAMP(CONCAT(DATE_FORMAT(DATE_ADD(FROM_UNIXTIME(mc.startdate, '%Y-%m-%d %H:%i:%S'), INTERVAL {$cuota}-1 MONTH),'%Y'),'-',DATE_FORMAT(DATE_ADD(FROM_UNIXTIME(mc.startdate, '%Y-%m-%d %H:%i:%S'), INTERVAL {$cuota}-1 MONTH),'%m'),'-05 00:00:00' ) )) > 0");
+		$result = $H_DB->GetOne(
+			"SELECT (c.valor_pagado-(c.valor_cuota-(c.valor_cuota*(i.becado/100)))) as diferencia 
+			FROM h_cuotas as c 
+			LEFT JOIN h_inscripcion as i ON i.id=c.insc_id 
+			LEFT JOIN {$HULK->lms_dbname}.mdl_course as mc ON mc.id=i.comisionid 
+			WHERE 
+				i.comisionid={$courseid} 
+				AND i.userid={$studentid} 
+				AND c.cuota={$cuota}"
+		);
+		//	AND UNIX_TIMESTAMP()-(UNIX_TIMESTAMP(CONCAT(DATE_FORMAT(DATE_ADD(FROM_UNIXTIME(mc.startdate, '%Y-%m-%d %H:%i:%S'), INTERVAL {$cuota}-1 MONTH),'%Y'),'-',DATE_FORMAT(DATE_ADD(FROM_UNIXTIME(mc.startdate, '%Y-%m-%d %H:%i:%S'), INTERVAL {$cuota}-1 MONTH),'%m'),'-05 00:00:00' ) )) > 0
 		return $result;
 	}
 	///////// END EDIT //////////////////

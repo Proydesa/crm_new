@@ -215,7 +215,7 @@
 		$('#porc_desc').change(function(){
 			$('.cuota').last().val($('.cuota2').last().val());
 				aux = $('.cuota').last().val() - ($("#total2").val() * $('#porc_desc').val() / 100);
-// recorrer do---- while aux < cuota.
+				// recorrer do---- while aux < cuota.
 				$('.cuota').last().val(Math.ceil(aux));
 				calculateSum();
 		});
@@ -252,14 +252,14 @@
 		<?php	endif; ?>
 
 		$('#curso').change(function(){
-<?php if ($H_USER->has_capability('contact/paid/register')) { ?>
+		<?php if ($H_USER->has_capability('contact/paid/register')) { ?>
 			$('#comision').empty().load('ajax.php?f=ComiList&userid={$id}&curso=' + $('#curso').val() + '&periodo=' + $('#periodo_insc').val() + '&academy='+ $('#academyid').val());
 			$('#cuotas').load('ajax.php?f=Cuotas&curso='+ $('#curso').val() + '&periodo=' + $('#periodo_insc').val(),function() { calculateSum();});
 			$('#libros').load('ajax.php?f=Libros&curso='+ $('#curso').val(),function() { calculateSum();});
 			$('#valor_minimo').val(<?=$HULK->minimo_cuota;?>);
-<?php		} else { ?>
+		<?php		} else { ?>
 			$('#comision').empty().load('ajax.php?f=ComiList&userid={$id}&curso=' + $('#curso').val());
-<?php		} ?>
+		<?php		} ?>
 
 
 

@@ -32,6 +32,7 @@ class H_Mail {
 		$this->mail->Port       = 587;
 		$this->mail->Username   = "noreply@proydesa.org";
 		$this->mail->Password   = "Nry5160!";
+		$this->mail->Password   = "Osz6271!";
 		$this->mail->From   		= "noreply@proydesa.org";
 		//$this->mail->CharSet   	= 'UTF-8';
 		$this->mail->FromName		= 'Fundación Proydesa';

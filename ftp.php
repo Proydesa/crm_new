@@ -13,12 +13,12 @@ $H_USER->require_capability('ftp/view');
 switch($v){
 /***********************/
 	case 'links':
-	
+
 		$view->Load('header',$data);
 
 		$view->Load('ftp/links',$_GET);
 
-		$view->Load('footer');	
+		$view->Load('footer');
 		break;
 	default:
 		$view->Load('header',$data);

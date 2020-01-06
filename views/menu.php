@@ -229,11 +229,6 @@
 					</li>
 					<?php endif;?>
 
-					<?php if ($H_USER->has_capability('reportes/deudores')): ?>
-					<li>
-						<a href="reportes.php?v=deudores" class="item" >Inscriptos - Deudores</a>
-					</li>
-					<?php endif;?>
 
 					<?php if ($H_USER->has_capability('reportes/ekits')):	?>
 					<li>
@@ -247,6 +242,11 @@
 					</li>
 					<?php endif;?>
 
+					<?php if ($H_USER->has_capability('reportes/deudores')): ?>
+					<li>
+						<a href="reportes.php?v=deudores" class="item" >Inscriptos - Deudores</a>
+					</li>
+					<?php endif;?>
 					<?php if ($H_USER->has_capability('reportes/inscriptos')):	?>
 					<li>
 						<a href="#" class="item">Inscriptos  <i class="fa fa-caret-down"></i></a>
@@ -267,6 +267,10 @@
 								<a href="reportes.php?v=inscriptos_periodo_calendario" >Inscriptos por rango de fechas</a>
 							</li>
 						</ul>
+					</li>
+
+					<li>
+						<a href="reportes.php?v=inscripciones_online" class="item">Inscripciones Online</a>
 					</li>
 					<?php endif;?>
 

@@ -32,7 +32,7 @@
 	error_reporting(E_ERROR | E_PARSE);
 	//error_reporting(E_ALL);
 
-	/* 
+	/*
 	 * check availability of tar, zip, bzip2 and gzip
 	 */
 
@@ -106,7 +106,7 @@
     } else {
 		$currentDir="";
 	}
-    
+
     if (isset($_POST['file'])) {
 	    $file=$_POST['file'];
 	    $file=StripSlashes($file);
@@ -154,7 +154,7 @@ if (isset($_SESSION['server'])) {
     } else {
 		$passive = false;
 	}
-		
+
 	// If language is not yet set, check the default language or try to get the language from your browser.
 
     $validLanguage = false;
@@ -207,9 +207,9 @@ if (isset($_SESSION['server'])) {
 		{
 			$msg = $ftp->getCurrentDirectoryShort();
 			// what to do now ???
-			if(isset($actionType)) 
+			if(isset($actionType))
 			{
-				switch ($actionType) 
+				switch ($actionType)
 				{
 			 		case "changemode":
 						$_SESSION["ftpmode"] = $ftpMode;
@@ -243,7 +243,7 @@ if (isset($_SESSION['server'])) {
 								// 2. unzip file
 								// 3. clean up
 								set_time_limit(30); //for big archives
-								$dir = $ftp->downloadDir . $ftp->userDir . "/";  
+								$dir = $ftp->downloadDir . $ftp->userDir . "/";
 
 								// 2. mkdir
 								mkdir($dir);
@@ -316,7 +316,7 @@ if (isset($_SESSION['server'])) {
 			preg_match("/\.htm$/", $file)
 			||
 			preg_match("/\.html$/", $file)
-		) 
+		)
 		{
 ?>
 			<script type="text/javascript" src="<?= $ftp_directory;?>include/fckeditor/fckeditor.js"></script>
@@ -348,7 +348,7 @@ if (isset($_SESSION['server'])) {
 <?
 									$newMode=($ftp->mode==1)?0:1;
 
-									if($ftp->loggedOn) 
+									if($ftp->loggedOn)
 									{
 ?>
 										<table cellpadding="0" cellspacing="0">
@@ -387,9 +387,9 @@ if (isset($_SESSION['server'])) {
 											</tr>
 										</table>
 <?
-									} 
-									else 
-									{ 
+									}
+									else
+									{
 ?>
 										<table cellpadding="0" cellspacing="0">
 											<tr>
@@ -398,7 +398,7 @@ if (isset($_SESSION['server'])) {
 											</tr>
 										</table>
 <?
-									} 
+									}
 ?>
 								</td>
 							</tr>
@@ -447,7 +447,7 @@ if (isset($_SESSION['server'])) {
 						$zipfile = $file . ".zip";
 
 						// a directory for every user, just in case...
-						$dir = $ftp->downloadDir . $ftp->userDir . "/";  
+						$dir = $ftp->downloadDir . $ftp->userDir . "/";
 
 						header("Content-disposition: attachment; filename=\"$zipfile\"");
 						header("Content-type: application/octetstream");
@@ -457,14 +457,14 @@ if (isset($_SESSION['server'])) {
 
 						$zipfile = $ftp->downloadDir . $zipfile;
 
-						//Create temporary directory 
+						//Create temporary directory
 						mkdir($dir);
 
 						//Get entire directory and store to temporary directory
 						$ftp->getRecursive($ftp->currentDir, $file);
 
 						//zip the directory
-						$zip = new ss_zip('',6); 
+						$zip = new ss_zip('',6);
 						$zip->zipDirTree($dir, $dir);
 						$zip->save($zipfile);
 
@@ -489,7 +489,7 @@ if (isset($_SESSION['server'])) {
 						break;
 					case "unzip": // BK20061114
 						set_time_limit(30); //for big archives
-						$dir = $ftp->downloadDir . $ftp->userDir . "/";  
+						$dir = $ftp->downloadDir . $ftp->userDir . "/";
 
 						// 1. download
 						$ftp->get($file);
@@ -561,7 +561,7 @@ if (isset($_SESSION['server'])) {
 						<tr>
 <?
 							$newMode=($ftp->mode==1)?0:1;
-							if($ftp->loggedOn) 
+							if($ftp->loggedOn)
 							{
 ?>
 								<td colspan="6" class="menu" width="100%" valign="middle">
@@ -674,7 +674,7 @@ if (isset($_SESSION['server'])) {
 													</tr>
 												</table>
 												<table id="action_edit" style="display:none;" border="0" cellspacing="0" cellpadding="0">
-													<!-- edit file 
+													<!-- edit file
 													Only if $user is allowed to edit the file.
 													-->
 													<tr>
@@ -686,7 +686,7 @@ if (isset($_SESSION['server'])) {
 												</table>
 												<table id="action_rename" style="display:none;" border="0" cellspacing="0" cellpadding="0">
 
-													<!-- rename file 
+													<!-- rename file
 													Only if $user is allowed to rename the file
 													-->
 													<tr>
@@ -713,8 +713,8 @@ if (isset($_SESSION['server'])) {
 												</table>
 												<table id="action_permissions" style="display:none;" border="0" cellspacing="0" cellpadding="0">
 
-													<!-- permissions 
-													Only if $user is allowed to edit the permissions 
+													<!-- permissions
+													Only if $user is allowed to edit the permissions
 													-->
 													<tr>
 														<td valign="top"><img src="<?= $ftp_directory;?>img/menu_settings.gif" alt=""/></td>
@@ -884,7 +884,7 @@ if (isset($_SESSION['server'])) {
 														}
 													}
 
-													
+
 													$delAction = "delfile";
 												}
 
@@ -901,7 +901,7 @@ if (isset($_SESSION['server'])) {
 													<td class="listcol"><?=$myDir["user"];?></td>
 													<td class="listcol"><?=$myDir["group"];?></td>-->
 													<?php if(strlen($ftp->currentDir)>1) $directorio = substr($ftp->currentDir,1); else $directorio = $ftp->currentDir;?>
-													<td class="listhead"><a href="ftp.php?v=links&link=<?=$server_dir.$directorio."/".$fileName;?>&name=<?=$fileName;?>" target="_blank">Link</a></td>											
+													<td class="listhead"><a href="ftp.php?v=links&link=<?=$server_dir.$directorio."/".$fileName;?>&name=<?=$fileName;?>" target="_blank">Link</a></td>
 
 													</tr>
 <?

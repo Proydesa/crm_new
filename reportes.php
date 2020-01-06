@@ -1842,5 +1842,97 @@ function empresas(){
 
 }
 
+function inscripciones_online(){
+
+	global $HULK,$LMS,$H_DB,$H_USER,$view,$jquerynew;
+
+	$jquerynew = true;
+	$data['v'] = $v = $_REQUEST['v'];
+
+	$where = "";
+	$keywords = $data['keywords'] = $_POST['keywords'];
+	$period = $data['period'] = $_POST['periods'];
+	print_r($keywords);
+
+	if($keywords){
+		$where = "WHERE (io.firstname LIKE '%{$keywords}%' OR io.lastname LIKE '%{$keywords}%' OR io.email LIKE '%{$keywords}%' OR io.dni = '{$keywords}')";
+	}
+	if($period){
+		$where .= empty($where) ? "WHERE " : " AND ";
+		$where .= "c.periodo='{$period}'";
+	}
+
+
+	$sql = $H_DB->Execute("
+		SELECT
+			io.*, DATE_FORMAT(io.added,'%d/%m/%Y %H:%i hs.') added, CONCAT_WS(' ',io.firstname,io.lastname) fullname,
+			c.shortname
+		FROM h_inscripcion_online io
+		LEFT JOIN {$HULK->lms_dbname}.mdl_course c ON c.id=io.courseid
+		{$where}"
+	);
+	$data['rows'] = $sql->GetRows();
+
+
+	$view->Load('header');
+	if(empty($print)) $view->Load('menu',$data);
+	if(empty($print)) $view->Load('menuroot',$menuroot);
+	$view->Load('reportes/'.$v, $data);
+	if(empty($print)) $view->Load('footer');
+}
+
+function set_status($status){
+	$output = new stdClass();
+	switch ($status) {
+		case 'paid':
+			$output->label = 'pagado';
+			$output->colour = 'success';
+			break;
+		case 'bank':
+			$output->label = 'transferido';
+			$output->colour = 'info';
+			break;
+		case 'cancelled':
+			$output->label = 'pago cancelado';
+			$output->colour = 'danger';
+			break;
+
+		case 'payment_in_process':
+			$output->label = 'pago en proceso';
+			$output->colour = 'warning';
+			break;
+
+		default:
+			$output->label = '';
+			$output->colour = '';
+			break;
+	}
+
+	return $output;
+
+}
+
+function check_role_assignment($courseid=0, $userid=0){
+	global $LMS;
+	$contextid = $LMS->GetOne(
+		"SELECT id
+		FROM mdl_context
+		WHERE instanceid={$courseid} AND contextlevel=50"
+	);
+
+	if(!$contextid) return false;
+
+	$assignmentid = $LMS->GetOne(
+		"SELECT id
+		FROM mdl_role_assignments ra
+		WHERE roleid=5 AND userid={$userid} AND contextid={$contextid}"
+	);
+	if(!$assignmentid) return false;
+
+	return true;
+
+}
+
+
 
 ?>
