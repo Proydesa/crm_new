@@ -19,7 +19,7 @@ class H_LMS extends H_LMS_CONN {
 		$this->tbl['user']				=	$this->base_moodle.'.mdl_user';
 		$this->tbl['role_assignments']	=	$this->base_moodle.'.mdl_role_assignments';
 	}
-// Funciones de academias
+	// Funciones de academias
 	function getAcademys($q="",$limit = 999,$inicio = 0,$params=NULL){
 		$result = $this->GetAll("SELECT DISTINCT a.* FROM mdl_proy_academy a
 						WHERE a.deleted = 0
@@ -173,11 +173,11 @@ class H_LMS extends H_LMS_CONN {
 
 	function setAcademy($academy){
 
-		$academy = array_map(utf8_decode,$academy); 
+		$academy = array_map(utf8_decode,$academy);
 		$this->update("mdl_proy_academy",$academy,"id = {$academy['id']}");
 
 		if($academy['categoryid']>0){
-			$this->update($this->tbl['course_categories'], array("name"=>$academy['name']),"id = {$academy['categoryid']}");			
+			$this->update($this->tbl['course_categories'], array("name"=>$academy['name']),"id = {$academy['categoryid']}");
 		}else{
 			if($this->record_exists($this->tbl['course_categories'],$academy['name'],'name')){
 				$categoryid=$this->getField($this->tbl['course_categories'], "id", $academy['name'],'name');
@@ -452,7 +452,7 @@ class H_LMS extends H_LMS_CONN {
 							ORDER BY i.startdate DESC;");
 
 	}
-// Funciones de convenios
+	// Funciones de convenios
 	function getConvenios(){
 		global $HULK;
 		$result		= $this->GetAll("SELECT  c.*
@@ -505,9 +505,9 @@ class H_LMS extends H_LMS_CONN {
 		return $result;
 	}
 
-	
 
-// Funciones de manejo de usuario
+
+	// Funciones de manejo de usuario
 	function getUser($id){
 		$result =	$this->GetRow("SELECT u.*
 									FROM mdl_user u
@@ -545,7 +545,7 @@ class H_LMS extends H_LMS_CONN {
 														ORDER BY course, rol;");
 		return $result;
 	}
-// Funciones de manejos de cursos
+	// Funciones de manejos de cursos
 	function getCourse($id){
 		global $HULK;
 		if (!$result = $this->GetRow("SELECT c.* FROM {$HULK->dbname}.vw_course c WHERE c.id={$id};")){
@@ -561,16 +561,16 @@ class H_LMS extends H_LMS_CONN {
 		if($bajas){
 			$WHERE .= " AND u.id NOT IN({$bajas})";
 		}
-		$result = $this->GetAll("SELECT 
-									u.id, 
-									u.username, 
-									CONCAT(u.lastname, ', ', u.firstname) AS fullname, 
-									CONCAT(u.firstname, ' ', u.lastname) AS namefull, 
-									e.timestart, 
-									u.email, 
-									u.phone2 as phone, 
-									u.obs, 
-									case 
+		$result = $this->GetAll("SELECT
+									u.id,
+									u.username,
+									CONCAT(u.lastname, ', ', u.firstname) AS fullname,
+									CONCAT(u.firstname, ' ', u.lastname) AS namefull,
+									e.timestart,
+									u.email,
+									u.phone2 as phone,
+									u.obs,
+									case
 									  when u.autorizousoimg is null then 'N'
 									  when u.autorizousoimg = 0 then 'N'
 									  when u.autorizousoimg = 1 then 'S'
@@ -660,13 +660,13 @@ class H_LMS extends H_LMS_CONN {
 			if(!empty($ignore_days)){
 				foreach($ignore_days as $day){
 					$where .= " AND c.date != '{$day}'";
-				}				
+				}
 			}
 		}
 
-		$q = "SELECT c.date 
-			FROM h_calendario c 
-			WHERE YEAR(c.date) = '{$date}' AND {$where} 
+		$q = "SELECT c.date
+			FROM h_calendario c
+			WHERE YEAR(c.date) = '{$date}' AND {$where}
 			ORDER BY c.date ASC";
 
 		$result = $H_DB->GetAll($q);
@@ -683,7 +683,7 @@ class H_LMS extends H_LMS_CONN {
 
 	function setCourseAttendance($courseid=0,$startdate=0,$clases=1,$ignoretech=true,$daycodes='',$schedules='',$ignore_days=array()){
 
-		global $H_DB;		
+		global $H_DB;
 
 		$attendanceid = $this->getfield('mdl_attendance','id',$courseid,'course');
 
@@ -783,16 +783,16 @@ class H_LMS extends H_LMS_CONN {
 		//$result = $H_DB->GetOne("SELECT (valor_pagado-valor_cuota) as diferencia FROM h_cuotas WHERE courseid={$courseid} AND userid={$studentid} AND cuota={$cuota}");
 		global $H_DB,$HULK;
 		$result = $H_DB->GetOne(
-			"SELECT (c.valor_pagado-(c.valor_cuota-(c.valor_cuota*(i.becado/100)))) as diferencia 
-			FROM h_cuotas as c 
-			LEFT JOIN h_inscripcion as i ON i.id=c.insc_id 
-			LEFT JOIN {$HULK->lms_dbname}.mdl_course as mc ON mc.id=i.comisionid 
-			WHERE 
-				i.comisionid={$courseid} 
-				AND i.userid={$studentid} 
-				AND c.cuota={$cuota}"
+			"SELECT (c.valor_pagado-(c.valor_cuota-(c.valor_cuota*(i.becado/100)))) as diferencia
+			FROM h_cuotas as c
+			LEFT JOIN h_inscripcion as i ON i.id=c.insc_id
+			LEFT JOIN {$HULK->lms_dbname}.mdl_course as mc ON mc.id=i.comisionid
+			WHERE
+				i.comisionid={$courseid}
+				AND i.userid={$studentid}
+				AND c.cuota={$cuota}
+				AND UNIX_TIMESTAMP()-(UNIX_TIMESTAMP(CONCAT(DATE_FORMAT(DATE_ADD(FROM_UNIXTIME(mc.startdate, '%Y-%m-%d %H:%i:%S'), INTERVAL {$cuota}-1 MONTH),'%Y'),'-',DATE_FORMAT(DATE_ADD(FROM_UNIXTIME(mc.startdate, '%Y-%m-%d %H:%i:%S'), INTERVAL {$cuota}-1 MONTH),'%m'),'-05 00:00:00' ) )) > 0"
 		);
-		//	AND UNIX_TIMESTAMP()-(UNIX_TIMESTAMP(CONCAT(DATE_FORMAT(DATE_ADD(FROM_UNIXTIME(mc.startdate, '%Y-%m-%d %H:%i:%S'), INTERVAL {$cuota}-1 MONTH),'%Y'),'-',DATE_FORMAT(DATE_ADD(FROM_UNIXTIME(mc.startdate, '%Y-%m-%d %H:%i:%S'), INTERVAL {$cuota}-1 MONTH),'%m'),'-05 00:00:00' ) )) > 0
 		return $result;
 	}
 	///////// END EDIT //////////////////
@@ -818,7 +818,7 @@ class H_LMS extends H_LMS_CONN {
 		$id = $this->insert('mdl_user',$user);
 		return $id;
 	}
-	
+
 	/* cambiar estatus de usuario en una comisión */
 	function user_status($userid,$courseid,$status="GET"){
 		global $HULK;
@@ -877,7 +877,7 @@ class H_LMS extends H_LMS_CONN {
 			}
 		}
 	}
-	
+
 	/* cambiar nota final */
 	function user_final($userid,$courseid,$status){
 		global $HULK;
@@ -953,8 +953,8 @@ class H_LMS extends H_LMS_CONN {
 							 		WHERE roleid={$roleid} AND userid={$userid} AND contextid={$context};");
 
 		if (empty($ra)) {             // Create a new entry
-			$ra = array( 
-				'roleid'	=> $roleid, 
+			$ra = array(
+				'roleid'	=> $roleid,
 				'contextid'	=> $context,
 				'userid'	=> $userid,
 				'timemodified' 	=> time(),
@@ -1103,7 +1103,7 @@ class H_LMS extends H_LMS_CONN {
 
 		global $DB;
 
-		
+
 		if (!$course = create_course($data)) {
 			print_error('coursenotcreated');
 		}
@@ -1137,7 +1137,7 @@ class H_LMS extends H_LMS_CONN {
 										$module_instance = $DB->get_record($module->name, array('id'=>$course_module->instance));
 									}else{
 										flush_buffers('&nbsp;&nbsp;&nbsp;Actividad: ERROR -> No se encontro la libreria de '.$module->name);
-										continue;											
+										continue;
 									}
 								}else{
 									flush_buffers('&nbsp;&nbsp;&nbsp;Actividad: ERROR -> No se encontro en BBDD '.$module->name);
@@ -1159,20 +1159,20 @@ class H_LMS extends H_LMS_CONN {
 								    $module_instance->id = $DB->insert_record('quiz', $module_instance);
 								    @$DB->insert_record('quiz_sections', array('quizid' => $module_instance->id, 'firstslot' => 1, 'heading' => '', 'shufflequestions' => 0));
 								    // Do the processing required after an add or an update.
-								   // quiz_after_add_or_update($module_instance);	
+								   // quiz_after_add_or_update($module_instance);
 								}else{
 									$module_instance->id = $addinstancefunction($module_instance,null);
 								}
-	
+
 								$course_module->course =  $course->id;
 								$course_module->instance =  $module_instance->id;
 								$course_module->section =  $section->id;
-							
+
 								//$course_module->id = add_course_module($course_module);
 								$course_module->added = time();
-							    unset($course_module->id);							    
+							    unset($course_module->id);
     							if($course_module->id = $DB->insert_record("course_modules", $course_module)){
-	    							rebuild_course_cache($course_module->course, true);							
+	    							rebuild_course_cache($course_module->course, true);
 									course_add_cm_to_section($course->id,$course_module->id,$section->section);
     							}
 
@@ -1214,7 +1214,7 @@ class H_LMS extends H_LMS_CONN {
 						}
 				  	}
 				}
-			}	
+			}
 		}
 		//$this->resetCourseBlocks($course->id);
 		return $course->id;
@@ -1237,8 +1237,8 @@ class H_LMS extends H_LMS_CONN {
 	function ultimoPeriodoInstructor($userid){
 		// Devuelve el ultimo periodo en que está enrolado como instructor
 		global $H_DB,$HULK;
-		if($periodo = $H_DB->GetOne("SELECT periodo FROM {$HULK->dbname}.vw_enrolados 
-									where userid={$userid} AND roleid=4 
+		if($periodo = $H_DB->GetOne("SELECT periodo FROM {$HULK->dbname}.vw_enrolados
+									where userid={$userid} AND roleid=4
 									ORDER BY periodo DESC LIMIT 0,1;")){
 			return $periodo;
 		}
@@ -1246,20 +1246,20 @@ class H_LMS extends H_LMS_CONN {
 	}
 	function ultimoPeriodoEstudiante($userid){
 		// Devuelve ultimo periodo en el que está enrolado como estudiante
-		global $H_DB;		
-		if($periodo = $H_DB->GetOne("SELECT periodo FROM {$HULK->dbname}.vw_enrolados 
-									where userid={$userid} AND roleid=5 
+		global $H_DB;
+		if($periodo = $H_DB->GetOne("SELECT periodo FROM {$HULK->dbname}.vw_enrolados
+									where userid={$userid} AND roleid=5
 									ORDER BY periodo DESC LIMIT 0,1;")){
 			return $periodo;
 		}
 		return false;
 	}
 	function getAcademyConveniosActivosField($academyid){
-		
+
 		if($result = $this->GetOne("SELECT DISTINCT GROUP_CONCAT(c.shortname)
 									FROM mdl_proy_convenios c
 									INNER JOIN mdl_proy_academy_convenio ac ON ac.convenioid = c.id
-								 	WHERE ac.academyid={$academyid} 
+								 	WHERE ac.academyid={$academyid}
 								 	GROUP BY (ac.academyid) ORDER BY c.shortname;")){
 			return $result;
 		}
@@ -1270,7 +1270,7 @@ class H_LMS extends H_LMS_CONN {
 			return true;
 	}
 	function getTotalesAsistenciaEnAcademiaParaFecha($idAcademia,$fecha){
-		
+
 		global $HULK;
 
 		$result = $this->GetAll("SELECT sta.acronym, count(1) total
@@ -1280,9 +1280,9 @@ class H_LMS extends H_LMS_CONN {
 										mdl_attendance_log attl ,
 										mdl_attendance_statuses sta,
 										mdl_user u
-									WHERE 
+									WHERE
 										c.academyid = ".$idAcademia."
-									and	c.id= a.course  
+									and	c.id= a.course
 									and a.id = sess.attendanceid
 									and sess.id =attl.sessionid
 									and attl.studentid= u.id
@@ -1292,7 +1292,7 @@ class H_LMS extends H_LMS_CONN {
 									group by sta.acronym");
 		return $result;
 	}
-	
+
 	function getTotalesAsistenciaEnCursoParaAlumnoConTipo($idCurso,$idAlumno,$tipo){
 		global $HULK;
 		$result = $this->GetAll("SELECT sta.acronym,count(1) total
@@ -1302,8 +1302,8 @@ class H_LMS extends H_LMS_CONN {
 										mdl_attendance_log attl ,
 										mdl_attendance_statuses sta,
 										mdl_user u
-									WHERE 
-										c.id= a.course  
+									WHERE
+										c.id= a.course
 									and a.id = sess.attendanceid
 									and sess.id =attl.sessionid
 									and attl.studentid= u.id
@@ -1316,7 +1316,7 @@ class H_LMS extends H_LMS_CONN {
 		return $result;
 	}
 	function getAlumnosAusentesEnAcademiaEnFechaConTipo($idAcademia,$fecha){
-		
+
 		global $HULK;
 		$sql ="SELECT u.firstname nombre ,u.lastname apellido ,c.id idCurso ,u.id idAlumno,c.fullname nombre_curso
 		FROM mdl_attendance_sessions sess,
@@ -1325,9 +1325,9 @@ class H_LMS extends H_LMS_CONN {
 			mdl_attendance_log attl ,
 			mdl_attendance_statuses sta,
 			mdl_user u
-		WHERE 
+		WHERE
 			c.academyid = ".$idAcademia."
-		and	c.id= a.course  
+		and	c.id= a.course
 		and a.id = sess.attendanceid
 		and sess.id =attl.sessionid
 		and attl.studentid= u.id
@@ -1343,18 +1343,18 @@ class H_LMS extends H_LMS_CONN {
 		$fechaReverse = substr($fecha,-4).'-'.substr($fecha,3,2).'-'.substr($fecha,0,2);
 		$fechacero = strtotime($fechaReverse."T00:00:00+00:00");
 		$fechafin = strtotime($fechaReverse."T23:59:59+00:00");
-	
+
 		$sql = "SELECT
 					c.id,
 					c.fullname
 				FROM {$HULK->lms_dbname}.mdl_course c
 					inner join {$HULK->lms_dbname}.mdl_attendance a ON c.id = a.course
 					inner join {$HULK->lms_dbname}.mdl_attendance_sessions sess ON a.id = sess.attendanceid
-				where  
+				where
 					sess.sessdate between {$fechacero} and {$fechafin}
 					and ( (c.academyid = {$idAcademia} and {$idAcademia} != 0 ) or {$idAcademia} = 0 )
 					order by c.id";
-		
+
 		return $this->GetAll($sql) ;
 	}
 	function getCoursesByRange($from='',$to=''){
@@ -1366,7 +1366,7 @@ class H_LMS extends H_LMS_CONN {
 		return $this->GetAll(
 			"SELECT c.id, c.fullname, c.shortname, c.startdate, c.intensivo, c.periodo, FROM_UNIXTIME(c.startdate) inicio, cc.aulaid
 			FROM mdl_course c
-			LEFT JOIN {$HULK->dbname}.h_course_config cc ON cc.courseid=c.id 
+			LEFT JOIN {$HULK->dbname}.h_course_config cc ON cc.courseid=c.id
 			WHERE c.startdate>={$from} AND c.startdate<={$to}
 			GROUP BY cc.courseid"
 		);

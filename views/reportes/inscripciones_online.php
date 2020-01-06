@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 <section class="p-2">
 
@@ -28,7 +31,7 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<label for="">&nbsp;</label>
-						<button class="btn btn-primary btn-block btn-sm"><i class="fa fa-search fa-fw"></i> Buscar</button>
+						<button class="btn btn-outline-dark btn-block btn-sm"><i class="fa fa-search fa-fw"></i> Buscar</button>
 					</div>
 				</div>
 			</div>
@@ -80,14 +83,19 @@
 						</td>
 						<td><?=$row->added?></td>
 						<td>
-							<span><?=$row->payment=='bank' ? 'Transferencia Bancaria' : 'MercadoPago' ?></span><br>
+							<p><span><?=$row->payment=='bank' ? 'Transferencia Bancaria' : 'MercadoPago' ?></span></p>
+							<?php if($row->file_hash && $row->file_name): ?>
+							<p><a href="https://proydesa.org/portal/inscripcion-online/download-file/<?=$row->file_name?>/<?=$row->file_hash?>" target="_blank" ><i class="fa fa-download fa-fw"></i> descargar comprobante</a></p>
+							<?php endif; ?>
 						</td>
-						<td><span class="badge badge-<?=set_status($row->status)->colour?>"><?=set_status($row->status)->label?></span></td>
+						<td>
+							<span class="badge badge-<?=set_status($row->status)->colour?>"><?=set_status($row->status)->label?></span>
+						</td>
 						<td align="right">
 							<?php if(!check_role_assignment($row->courseid,$row->userid)): ?>
-							<a href="contactos.php?v=inscribir_usuario&id=<?=$row->userid?>" target="_blank" class="btn btn-primary btn-xs"><i class="fa fa-angle-right fa-fw"></i> Inscribir alumno</a>
+							<a href="contactos.php?v=inscribir_usuario&id=<?=$row->userid?>" target="_blank" class="btn btn-outline-dark btn-xs"><i class="fa fa-angle-right fa-fw"></i> Inscribir alumno</a>
 							<?php else: ?>
-							<a href="contactos.php?v=pagos&id=<?=$row->userid?>" target="_blank" class="btn btn-primary btn-xs">Comprobantes</a>
+							<a href="contactos.php?v=pagos&id=<?=$row->userid?>" target="_blank" class="btn btn-outline-dark btn-xs">Ver Comprobantes</a>
 							<?php endif; ?>
 
 						</td>
